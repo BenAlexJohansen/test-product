@@ -3,42 +3,42 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Pivot Employee Portal</title>
+  <title>Pivot Enhanced Employee Portal</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
     :root {
-      --primary: #6366f1;
-      --primary-dark: #4f46e5;
-      --primary-light: #818cf8;
-      --secondary: #f59e0b;
-      --success: #10b981;
-      --danger: #ef4444;
-      --warning: #f59e0b;
-      --info: #3b82f6;
+      --primary: #1e40af;
+      --primary-dark: #1e3a8a;
+      --primary-light: #3b82f6;
+      --secondary: #0ea5e9;
+      --success: #059669;
+      --danger: #dc2626;
+      --warning: #d97706;
+      --info: #0284c7;
       
-      --bg-primary: #0f0f23;
-      --bg-secondary: #1a1a2e;
-      --bg-tertiary: #16213e;
-      --bg-card: rgba(255, 255, 255, 0.03);
-      --bg-card-hover: rgba(255, 255, 255, 0.06);
-      --bg-glass: rgba(255, 255, 255, 0.05);
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #111827;
+      --bg-tertiary: #1f2937;
+      --bg-card: rgba(30, 64, 175, 0.05);
+      --bg-card-hover: rgba(30, 64, 175, 0.1);
+      --bg-glass: rgba(30, 64, 175, 0.08);
       
-      --text-primary: #ffffff;
+      --text-primary: #f8fafc;
       --text-secondary: #cbd5e1;
       --text-muted: #94a3b8;
-      --text-accent: #6366f1;
+      --text-accent: #3b82f6;
       
-      --border: rgba(255, 255, 255, 0.08);
-      --border-hover: rgba(255, 255, 255, 0.15);
-      --border-focus: #6366f1;
+      --border: rgba(59, 130, 246, 0.15);
+      --border-hover: rgba(59, 130, 246, 0.25);
+      --border-focus: #3b82f6;
       
       --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
       --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
       --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
       --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
       --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-      --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.3);
+      --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.3);
       
       --radius-sm: 6px;
       --radius: 8px;
@@ -75,9 +75,9 @@
       width: 100%;
       height: 100%;
       background: 
-        radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(245, 158, 11, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 40% 40%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+        radial-gradient(circle at 20% 80%, rgba(30, 64, 175, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(14, 165, 233, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(5, 150, 105, 0.1) 0%, transparent 50%);
       z-index: -1;
       animation: backgroundFloat 20s ease-in-out infinite;
     }
@@ -148,7 +148,7 @@
       text-align: left;
     }
 
-    .employee-select, .login-input {
+    .login-input, .login-select {
       width: 100%;
       padding: 1rem;
       background: var(--bg-secondary);
@@ -158,18 +158,31 @@
       font-size: 1rem;
       margin-bottom: 1rem;
       transition: var(--transition);
-    }
-
-    .login-input {
       text-align: center;
       font-weight: 600;
       letter-spacing: 0.1em;
     }
 
-    .employee-select:focus, .login-input:focus {
+    .login-select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+      background-position: right 0.5rem center;
+      background-repeat: no-repeat;
+      background-size: 1.5em 1.5em;
+      padding-right: 2.5rem;
+      text-align: left;
+    }
+
+    .login-select option {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      padding: 0.5rem;
+    }
+
+    .login-input:focus, .login-select:focus {
       outline: none;
       border-color: var(--border-focus);
-      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
     }
 
     .login-btn {
@@ -204,14 +217,14 @@
       position: sticky;
       top: 0;
       z-index: 1000;
-      background: rgba(15, 15, 35, 0.8);
+      background: rgba(10, 10, 15, 0.9);
       backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
       padding: 1rem 0;
     }
 
     .header-content {
-      max-width: 1200px;
+      max-width: 1400px;
       margin: 0 auto;
       padding: 0 2rem;
       display: flex;
@@ -273,7 +286,7 @@
       text-align: center;
     }
 
-    .logout-btn, .messages-btn {
+    .logout-btn, .chat-btn {
       background: var(--bg-glass);
       color: var(--text-secondary);
       border: 1px solid var(--border);
@@ -285,45 +298,17 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
+      font-size: 0.875rem;
     }
 
-    .logout-btn:hover, .messages-btn:hover {
+    .logout-btn:hover, .chat-btn:hover {
       background: var(--bg-card-hover);
       color: var(--text-primary);
-    }
-
-    .date-controls {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-    }
-
-    .date-btn {
-      width: 2.5rem;
-      height: 2.5rem;
-      border: none;
-      background: var(--bg-glass);
-      color: var(--text-secondary);
-      border-radius: var(--radius);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: var(--transition);
-      border: 1px solid var(--border);
-      backdrop-filter: blur(10px);
-    }
-
-    .date-btn:hover {
-      background: var(--bg-card-hover);
-      color: var(--text-primary);
-      border-color: var(--border-hover);
-      transform: translateY(-1px);
     }
 
     /* Main Content */
     .main {
-      max-width: 1200px;
+      max-width: 1400px;
       margin: 0 auto;
       padding: 2rem;
       min-height: calc(100vh - 100px);
@@ -390,6 +375,150 @@
       font-size: 1.125rem;
     }
 
+    /* Forms */
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .form-input, .form-select {
+      width: 100%;
+      padding: 1rem;
+      background: var(--bg-secondary);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      font-size: 1rem;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+
+    .form-select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+      background-position: right 0.5rem center;
+      background-repeat: no-repeat;
+      background-size: 1.5em 1.5em;
+      padding-right: 2.5rem;
+    }
+
+    .form-select option {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      padding: 0.5rem;
+    }
+
+    .form-input:focus, .form-select:focus {
+      outline: none;
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      background: var(--bg-card);
+    }
+
+    .form-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      min-height: 3rem;
+      text-decoration: none;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg), var(--shadow-glow);
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, var(--secondary), #0ea5e9);
+      color: white;
+      box-shadow: var(--shadow-md);
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+      min-height: auto;
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg), 0 0 20px rgba(14, 165, 233, 0.3);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, var(--success), #059669);
+      color: white;
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+      min-height: auto;
+    }
+
+    .btn-warning {
+      background: linear-gradient(135deg, var(--warning), #d97706);
+      color: white;
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+      min-height: auto;
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, var(--danger), #dc2626);
+      color: white;
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+      min-height: auto;
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
     /* Task List */
     .task-list {
       list-style: none;
@@ -442,13 +571,14 @@
       transform: scaleY(1);
     }
 
-    .task-checkbox {
-      width: 1.25rem;
-      height: 1.25rem;
-      cursor: pointer;
-      accent-color: var(--primary);
-      transform: scale(1.2);
-      margin-top: 0.25rem;
+    .task-item.pending-approval {
+      border-color: var(--warning);
+      background: rgba(217, 119, 6, 0.1);
+    }
+
+    .task-item.pending-approval::before {
+      background: linear-gradient(135deg, var(--warning), #d97706);
+      transform: scaleY(1);
     }
 
     .task-content {
@@ -483,7 +613,7 @@
       gap: 0.5rem;
       font-size: 0.75rem;
       color: var(--text-muted);
-      min-width: 120px;
+      min-width: 150px;
     }
 
     .task-actions {
@@ -497,41 +627,6 @@
 
     .task-item:hover .task-actions {
       opacity: 1;
-    }
-
-    /* Buttons */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: var(--radius-md);
-      font-weight: 600;
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      cursor: pointer;
-      transition: var(--transition);
-      position: relative;
-      overflow: hidden;
-      text-decoration: none;
-    }
-
-    .btn-photo {
-      background: linear-gradient(135deg, var(--secondary), #d97706);
-      color: white;
-    }
-
-    .btn-status {
-      background: linear-gradient(135deg, var(--info), #2563eb);
-      color: white;
-    }
-
-    .btn:hover {
-      transform: translateY(-1px);
-      box-shadow: var(--shadow-md);
     }
 
     /* Status Badges */
@@ -556,13 +651,18 @@
     }
 
     .status-blocked {
-      background: rgba(239, 68, 68, 0.2);
+      background: rgba(220, 38, 38, 0.2);
       color: #fca5a5;
     }
 
     .status-completed {
-      background: rgba(16, 185, 129, 0.2);
+      background: rgba(5, 150, 105, 0.2);
       color: #6ee7b7;
+    }
+
+    .status-pending-approval {
+      background: rgba(217, 119, 6, 0.2);
+      color: #fcd34d;
     }
 
     .priority-badge {
@@ -575,22 +675,22 @@
     }
 
     .priority-high {
-      background: rgba(239, 68, 68, 0.2);
+      background: rgba(220, 38, 38, 0.2);
       color: #fca5a5;
     }
 
     .priority-medium {
-      background: rgba(245, 158, 11, 0.2);
+      background: rgba(217, 119, 6, 0.2);
       color: #fcd34d;
     }
 
     .priority-low {
-      background: rgba(16, 185, 129, 0.2);
+      background: rgba(5, 150, 105, 0.2);
       color: #6ee7b7;
     }
 
     .photo-required-badge {
-      background: rgba(245, 158, 11, 0.2);
+      background: rgba(217, 119, 6, 0.2);
       color: #fcd34d;
       padding: 0.25rem 0.5rem;
       border-radius: var(--radius-full);
@@ -598,6 +698,41 @@
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 0.05em;
+    }
+
+    .recurring-badge {
+      background: rgba(14, 165, 233, 0.2);
+      color: #7dd3fc;
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius-full);
+      font-size: 0.625rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .due-date-badge {
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius-full);
+      font-size: 0.625rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .due-today {
+      background: rgba(217, 119, 6, 0.2);
+      color: #fcd34d;
+    }
+
+    .due-overdue {
+      background: rgba(220, 38, 38, 0.2);
+      color: #fca5a5;
+    }
+
+    .due-upcoming {
+      background: rgba(59, 130, 246, 0.2);
+      color: #93c5fd;
     }
 
     .task-photo {
@@ -657,8 +792,8 @@
       margin: 0 auto 2rem;
     }
 
-    /* Messages Panel */
-    .messages-panel {
+    /* Chat System */
+    .chat-panel {
       position: fixed;
       top: 0;
       right: -400px;
@@ -673,11 +808,11 @@
       flex-direction: column;
     }
 
-    .messages-panel.open {
+    .chat-panel.open {
       right: 0;
     }
 
-    .messages-header {
+    .chat-header {
       padding: 1.5rem;
       border-bottom: 1px solid var(--border);
       display: flex;
@@ -686,14 +821,14 @@
       gap: 1rem;
     }
 
-    .messages-title {
+    .chat-title {
       font-size: 1.25rem;
       font-weight: 600;
       color: var(--text-primary);
       flex: 1;
     }
 
-    .messages-close {
+    .chat-close {
       background: none;
       border: none;
       color: var(--text-secondary);
@@ -702,49 +837,113 @@
       transition: var(--transition);
     }
 
-    .messages-close:hover {
+    .chat-close:hover {
       color: var(--text-primary);
     }
 
-    .messages-content {
+    .chat-content {
       flex: 1;
       overflow-y: auto;
       padding: 1rem;
-    }
-
-    .message {
-      background: var(--bg-card);
-      padding: 1rem;
-      border-radius: var(--radius-md);
-      margin-bottom: 1rem;
-      border-left: 3px solid var(--primary);
-    }
-
-    .message.unread {
-      border-left-color: var(--secondary);
-      background: rgba(245, 158, 11, 0.1);
-    }
-
-    .message-header {
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.5rem;
+      flex-direction: column;
+      gap: 1rem;
     }
 
-    .message-from {
-      font-weight: 600;
+    .chat-message {
+      max-width: 80%;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-md);
+      position: relative;
+    }
+
+    .chat-message.admin {
+      align-self: flex-start;
+      background: var(--bg-secondary);
       color: var(--text-primary);
+      border: 1px solid var(--border);
     }
 
-    .message-time {
+    .chat-message.employee {
+      align-self: flex-end;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+    }
+
+    .chat-message-time {
+      font-size: 0.625rem;
+      opacity: 0.7;
+      margin-top: 0.25rem;
+    }
+
+    .chat-input-area {
+      padding: 1rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .chat-input {
+      flex: 1;
+      padding: 0.75rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      resize: none;
+      min-height: 40px;
+      max-height: 120px;
+    }
+
+    .chat-send {
+      padding: 0.75rem 1rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .chat-send:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Photo Upload */
+    .photo-upload {
+      position: relative;
+      display: inline-block;
+    }
+
+    .photo-upload input[type="file"] {
+      position: absolute;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    .photo-upload-btn {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: linear-gradient(135deg, var(--secondary), #0ea5e9);
+      color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: var(--transition);
       font-size: 0.75rem;
-      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
 
-    .message-content {
-      color: var(--text-secondary);
-      line-height: 1.5;
+    .photo-upload-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
     }
 
     /* Photo Modal */
@@ -831,7 +1030,7 @@
     }
 
     .notification.info {
-      background: linear-gradient(135deg, var(--info), #2563eb);
+      background: linear-gradient(135deg, var(--info), #0284c7);
     }
 
     /* Responsive */
@@ -856,7 +1055,7 @@
         margin-top: 0.5rem;
       }
 
-      .messages-panel {
+      .chat-panel {
         width: 100%;
         right: -100%;
       }
@@ -892,21 +1091,17 @@
   <div id="login-screen" class="login-screen">
     <div class="login-card">
       <div class="login-logo">
-        <i class="fas fa-user"></i>
+        <i class="fas fa-user-check"></i>
       </div>
       <h1 class="login-title">Employee Portal</h1>
-      <p class="login-subtitle">Access your tasks and updates</p>
+      <p class="login-subtitle">Access your assigned tasks</p>
       
       <form class="login-form" id="login-form">
-        <select class="employee-select" id="employee-select">
+        <select id="employee-select" class="login-select" required>
           <option value="">Select Your Name</option>
-          <option value="emp001">John Smith (ID: 001)</option>
-          <option value="emp002">Sarah Johnson (ID: 002)</option>
-          <option value="emp003">Mike Davis (ID: 003)</option>
-          <option value="emp004">Lisa Wilson (ID: 004)</option>
-          <option value="emp005">David Brown (ID: 005)</option>
         </select>
-        <input type="password" class="login-input" id="user-passcode" placeholder="Your Passcode" maxlength="6">
+        
+        <input type="password" class="login-input" id="employee-passcode" placeholder="Enter Your Passcode" maxlength="6">
         
         <button type="submit" class="login-btn">
           <i class="fas fa-sign-in-alt"></i>
@@ -924,46 +1119,45 @@
       <div class="header-content">
         <a href="#" class="logo">
           <div class="logo-icon">
-            <i class="fas fa-user"></i>
+            <i class="fas fa-user-check"></i>
           </div>
           <span>Employee Portal</span>
         </a>
         
         <div class="user-info">
-          <div class="user-badge" id="user-badge">
+          <div class="user-badge">
             <i class="fas fa-user"></i>
-            <span id="current-user">Employee</span>
+            <span id="current-employee-name">Employee</span>
           </div>
-          <button class="messages-btn" onclick="employeePortal.toggleMessages()">
+          <button class="chat-btn" onclick="employeePortal.toggleChat()">
             <i class="fas fa-comments"></i>
-            Messages
-            <span id="unread-count" class="notification-badge" style="display: none;">0</span>
+            Chat with Admin
+            <span id="chat-unread-count" class="notification-badge" style="display: none;">0</span>
           </button>
           <button class="logout-btn" onclick="employeePortal.logout()">
             <i class="fas fa-sign-out-alt"></i>
             Logout
           </button>
         </div>
-        
-        <div class="date-controls">
-          <button class="date-btn" onclick="employeePortal.navigateDate(-1)">
-            <i class="fas fa-chevron-left"></i>
-          </button>
-          <button class="date-btn" onclick="employeePortal.navigateDate(1)">
-            <i class="fas fa-chevron-right"></i>
-          </button>
-        </div>
       </div>
     </header>
 
-    <!-- Messages Panel -->
-    <div id="messages-panel" class="messages-panel">
-      <div class="messages-header">
-        <h3 class="messages-title">Messages</h3>
-        <button class="messages-close" onclick="employeePortal.toggleMessages()">&times;</button>
+    <!-- Chat Panel -->
+    <div id="chat-panel" class="chat-panel">
+      <div class="chat-header">
+        <h3 class="chat-title">Chat with Admin</h3>
+        <button class="chat-close" onclick="employeePortal.toggleChat()">&times;</button>
       </div>
-      <div class="messages-content" id="messages-content">
+      
+      <div class="chat-content" id="chat-content">
         <!-- Messages will be populated here -->
+      </div>
+      
+      <div class="chat-input-area">
+        <textarea id="chat-input" class="chat-input" placeholder="Type your message to admin..." rows="1"></textarea>
+        <button class="chat-send" onclick="employeePortal.sendChatMessage()">
+          <i class="fas fa-paper-plane"></i>
+        </button>
       </div>
     </div>
 
@@ -984,22 +1178,28 @@
       <div class="card">
         <div class="card-header">
           <div class="card-icon">
-            <i class="fas fa-calendar-check"></i>
+            <i class="fas fa-calendar-day"></i>
           </div>
-          <h2 class="card-title">
-            My Tasks for <span id="current-date"></span>
-          </h2>
+          <h2 class="card-title">My Tasks</h2>
         </div>
         
-        <div id="user-tasks" class="task-list"></div>
+        <div style="margin-bottom: 2rem;">
+          <label class="form-label" for="view-date">
+            <i class="fas fa-calendar"></i>
+            View Tasks for Date
+          </label>
+          <input type="date" id="view-date" class="form-input" style="max-width: 200px;" />
+        </div>
+
+        <div id="employee-tasks" class="task-list"></div>
         
-        <div id="user-empty" class="empty-state">
+        <div id="employee-empty" class="empty-state">
           <div class="empty-state-icon">
-            <i class="fas fa-calendar-check"></i>
+            <i class="fas fa-clipboard-check"></i>
           </div>
-          <h3 class="empty-state-title">No tasks assigned</h3>
+          <h3 class="empty-state-title">No tasks for this date</h3>
           <p class="empty-state-description">
-            You have no tasks assigned for today. Check back later or contact your supervisor.
+            Check back later or select a different date to view your assigned tasks.
           </p>
         </div>
       </div>
@@ -1007,22 +1207,14 @@
   </div>
 
   <script>
-    class EmployeePortal {
+    class EnhancedEmployeePortal {
       constructor() {
-        this.currentDate = new Date();
-        this.currentUser = null;
-        this.employees = {
-          'emp001': { name: 'John Smith', passcode: '123456' },
-          'emp002': { name: 'Sarah Johnson', passcode: '234567' },
-          'emp003': { name: 'Mike Davis', passcode: '345678' },
-          'emp004': { name: 'Lisa Wilson', passcode: '456789' },
-          'emp005': { name: 'David Brown', passcode: '567890' }
-        };
+        this.currentEmployee = null;
+        this.employees = {};
         
         this.initializeElements();
         this.attachEventListeners();
-        this.updateCurrentDate();
-        this.initializeSharedData();
+        this.loadEmployees();
         this.startDataSync();
       }
 
@@ -1032,21 +1224,22 @@
         this.mainApp = document.getElementById('main-app');
         this.loginForm = document.getElementById('login-form');
         this.employeeSelect = document.getElementById('employee-select');
-        this.userPasscode = document.getElementById('user-passcode');
+        this.employeePasscode = document.getElementById('employee-passcode');
         this.loginError = document.getElementById('login-error');
         
         // Header elements
-        this.currentUserEl = document.getElementById('current-user');
-        this.unreadCountEl = document.getElementById('unread-count');
+        this.currentEmployeeName = document.getElementById('current-employee-name');
+        this.chatUnreadCountEl = document.getElementById('chat-unread-count');
         
-        // Messages elements
-        this.messagesPanel = document.getElementById('messages-panel');
-        this.messagesContent = document.getElementById('messages-content');
+        // Chat elements
+        this.chatPanel = document.getElementById('chat-panel');
+        this.chatContent = document.getElementById('chat-content');
+        this.chatInput = document.getElementById('chat-input');
         
-        // Display elements
-        this.currentDateEl = document.getElementById('current-date');
-        this.userTasks = document.getElementById('user-tasks');
-        this.userEmpty = document.getElementById('user-empty');
+        // Task elements
+        this.viewDate = document.getElementById('view-date');
+        this.employeeTasks = document.getElementById('employee-tasks');
+        this.employeeEmpty = document.getElementById('employee-empty');
         
         // Modal elements
         this.photoModal = document.getElementById('photo-modal');
@@ -1063,85 +1256,114 @@
           e.preventDefault();
           this.handleLogin();
         });
+
+        this.viewDate.addEventListener('change', () => {
+          this.updateTaskView();
+        });
+
+        // Chat input handling
+        this.chatInput.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            this.sendChatMessage();
+          }
+        });
+
+        // Set today as default date
+        const today = new Date().toISOString().split('T')[0];
+        this.viewDate.value = today;
       }
 
-      initializeSharedData() {
-        // Initialize shared data structure if it doesn't exist
-        if (!localStorage.getItem('pivotData')) {
-          const initialData = {
-            tasks: {},
-            messages: [],
-            lastUpdated: new Date().toISOString()
-          };
-          localStorage.setItem('pivotData', JSON.stringify(initialData));
-        }
+      loadEmployees() {
+        const data = this.getSharedData();
+        this.employees = data.employees || {};
+        this.updateEmployeeDropdown();
+      }
+
+      updateEmployeeDropdown() {
+        this.employeeSelect.innerHTML = '<option value="">Select Your Name</option>';
+        
+        Object.entries(this.employees).forEach(([id, employee]) => {
+          const option = document.createElement('option');
+          option.value = id;
+          option.textContent = employee.name;
+          this.employeeSelect.appendChild(option);
+        });
       }
 
       startDataSync() {
-        // Sync data every 2 seconds
+        // Sync data every 3 seconds
         setInterval(() => {
-          this.syncData();
-        }, 2000);
-      }
-
-      syncData() {
-        if (this.currentUser) {
-          this.updateUserTasks();
-          this.updateUnreadCount();
-        }
+          this.loadEmployees();
+          this.updateTaskView();
+          this.updateChatUnreadCount();
+          this.loadChatMessages();
+        }, 3000);
       }
 
       getSharedData() {
-        const data = localStorage.getItem('pivotData');
-        return data ? JSON.parse(data) : { tasks: {}, messages: [], lastUpdated: new Date().toISOString() };
+        const data = localStorage.getItem('pivotEnhancedData');
+        return data ? JSON.parse(data) : { 
+          tasks: {}, 
+          messages: [], 
+          chats: {},
+          employees: {},
+          lastUpdated: new Date().toISOString() 
+        };
       }
 
       updateSharedData(data) {
         data.lastUpdated = new Date().toISOString();
-        localStorage.setItem('pivotData', JSON.stringify(data));
+        localStorage.setItem('pivotEnhancedData', JSON.stringify(data));
       }
 
       handleLogin() {
         const employeeId = this.employeeSelect.value;
-        const passcode = this.userPasscode.value.trim();
+        const passcode = this.employeePasscode.value.trim();
         
-        if (!employeeId) {
-          this.showLoginError('Please select your name');
+        if (!employeeId || !passcode) {
+          this.showLoginError('Please select your name and enter passcode');
           return;
         }
-        
+
         const employee = this.employees[employeeId];
-        if (employee && passcode === employee.passcode) {
-          this.login(employeeId, employee.name);
+        if (!employee) {
+          this.showLoginError('Employee not found');
+          return;
+        }
+
+        if (employee.passcode === passcode) {
+          this.login(employeeId, employee);
         } else {
           this.showLoginError('Invalid passcode');
         }
       }
 
-      login(userId, userName) {
-        this.currentUser = userId;
-        this.currentUserEl.textContent = userName;
-        
+      login(employeeId, employee) {
+        this.currentEmployee = { id: employeeId, ...employee };
         this.loginScreen.style.display = 'none';
         this.mainApp.style.display = 'block';
         
-        this.updateUserTasks();
-        this.updateUnreadCount();
-        this.showNotification(`Welcome, ${userName}!`, 'success');
+        this.currentEmployeeName.textContent = employee.name;
+        this.updateTaskView();
+        this.updateChatUnreadCount();
+        this.loadChatMessages();
+        
+        this.showNotification(`Welcome, ${employee.name}!`, 'success');
       }
 
       logout() {
-        this.currentUser = null;
+        this.currentEmployee = null;
         this.loginScreen.style.display = 'flex';
         this.mainApp.style.display = 'none';
         
         // Reset login form
         this.employeeSelect.value = '';
-        this.userPasscode.value = '';
+        this.employeePasscode.value = '';
         this.hideLoginError();
         
-        // Close messages panel
-        this.messagesPanel.classList.remove('open');
+        // Close chat panel
+        this.chatPanel.classList.remove('open');
       }
 
       showLoginError(message) {
@@ -1153,27 +1375,108 @@
         this.loginError.style.display = 'none';
       }
 
-      formatDateKey(date) {
-        return date.toISOString().split('T')[0];
+      updateTaskView() {
+        if (!this.currentEmployee) return;
+
+        const dateKey = this.viewDate.value;
+        const data = this.getSharedData();
+        const allTasks = data.tasks[dateKey] || [];
+        
+        // Filter tasks assigned to current employee
+        const myTasks = allTasks.filter(task => task.assignedTo === this.currentEmployee.id);
+
+        if (myTasks.length === 0) {
+          this.employeeTasks.style.display = 'none';
+          this.employeeEmpty.style.display = 'block';
+        } else {
+          this.employeeTasks.style.display = 'block';
+          this.employeeEmpty.style.display = 'none';
+          this.renderTasks(myTasks, dateKey);
+        }
       }
 
-      formatDisplayDate(date) {
-        return date.toLocaleDateString('en-US', {
-          weekday: 'long',
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric'
+      renderTasks(tasks, dateKey) {
+        this.employeeTasks.innerHTML = '';
+
+        tasks.forEach(task => {
+          const taskEl = document.createElement('div');
+          taskEl.className = `task-item ${task.approved ? 'completed' : ''} ${task.status === 'pending-approval' ? 'pending-approval' : ''}`;
+          
+          const dueStatus = this.getDueDateStatus(task.dueDate);
+          const canComplete = !task.completed && task.status !== 'pending-approval';
+          const isPendingApproval = task.completed && !task.approved && task.status === 'pending-approval';
+          
+          taskEl.innerHTML = `
+            <div class="task-content">
+              <div class="task-text ${task.approved ? 'completed' : ''}">${task.description}</div>
+              <div class="task-details">
+                Due: ${new Date(task.dueDate).toLocaleString()} |
+                Created: ${new Date(task.createdAt).toLocaleString()}
+                ${task.completedAt ? ` | Submitted: ${new Date(task.completedAt).toLocaleString()}` : ''}
+                ${task.approvedAt ? ` | Approved: ${new Date(task.approvedAt).toLocaleString()}` : ''}
+              </div>
+            </div>
+            <div class="task-meta">
+              <span class="priority-badge priority-${task.priority}">${task.priority}</span>
+              <span class="status-badge status-${task.status}">${task.status.replace('-', ' ')}</span>
+              <span class="due-date-badge due-${dueStatus}">${dueStatus}</span>
+              ${task.requirePhoto ? '<span class="photo-required-badge">Photo Required</span>' : ''}
+              ${task.recurring !== 'none' ? `<span class="recurring-badge">${task.recurring}</span>` : ''}
+              ${task.photo && task.photoMetadata ? '<div class="timestamp-info">📅 Timestamp Verified</div>' : ''}
+              <div class="task-actions">
+                ${task.photo ? `<img src="${task.photo}" class="task-photo" onclick="employeePortal.showPhotoModal('${task.photo}', ${JSON.stringify(task).replace(/"/g, '&quot;')})" alt="Task photo">` : ''}
+                ${canComplete ? this.getTaskActionButtons(task, dateKey) : ''}
+                ${isPendingApproval ? '<span style="color: var(--warning); font-size: 0.75rem; font-weight: 600;">⏳ Awaiting Admin Approval</span>' : ''}
+                ${task.approved ? '<span style="color: var(--success); font-size: 0.75rem; font-weight: 600;">✅ Approved & Complete</span>' : ''}
+              </div>
+            </div>
+          `;
+
+          this.employeeTasks.appendChild(taskEl);
         });
       }
 
-      updateCurrentDate() {
-        this.currentDateEl.textContent = this.formatDisplayDate(this.currentDate);
-      }
+      getTaskActionButtons(task, dateKey) {
+        let buttons = '';
+        
+        // Status update buttons
+        if (task.status === 'not-started') {
+          buttons += `<button class="btn btn-secondary" onclick="employeePortal.updateTaskStatus('${task.id}', '${dateKey}', 'in-progress')">
+            <i class="fas fa-play"></i> Start
+          </button>`;
+        }
+        
+        if (task.status === 'in-progress') {
+          buttons += `<button class="btn btn-warning" onclick="employeePortal.updateTaskStatus('${task.id}', '${dateKey}', 'blocked')">
+            <i class="fas fa-pause"></i> Blocked
+          </button>`;
+        }
+        
+        if (task.status === 'blocked') {
+          buttons += `<button class="btn btn-secondary" onclick="employeePortal.updateTaskStatus('${task.id}', '${dateKey}', 'in-progress')">
+            <i class="fas fa-play"></i> Resume
+          </button>`;
+        }
 
-      navigateDate(direction) {
-        this.currentDate.setDate(this.currentDate.getDate() + direction);
-        this.updateCurrentDate();
-        this.updateUserTasks();
+        // Complete button (with photo requirement check)
+        if (task.status !== 'not-started') {
+          if (task.requirePhoto && !task.photo) {
+            buttons += `
+              <div class="photo-upload">
+                <input type="file" accept="image/*" onchange="employeePortal.uploadPhoto('${task.id}', '${dateKey}', this)">
+                <button class="photo-upload-btn">
+                  <i class="fas fa-camera"></i> Upload Photo to Complete
+                </button>
+              </div>
+            `;
+          } else {
+            buttons += `<button class="btn btn-success" onclick="employeePortal.completeTask('${task.id}', '${dateKey}')">
+              <i class="fas fa-check"></i> Complete
+            </button>`;
+          }
+        }
+
+        return buttons;
       }
 
       updateTaskStatus(taskId, dateKey, newStatus) {
@@ -1181,119 +1484,230 @@
         const tasks = data.tasks[dateKey] || [];
         const task = tasks.find(t => t.id === taskId);
         
-        if (!task || task.assignedTo !== this.currentUser) return;
+        if (!task) return;
 
         task.status = newStatus;
-        
-        // Auto-complete if status is completed
-        if (newStatus === 'completed' && !task.completed) {
-          task.completed = true;
-          task.completedAt = new Date().toISOString();
-        } else if (newStatus !== 'completed' && task.completed) {
-          task.completed = false;
-          task.completedAt = null;
-        }
-
-        // Send notification to admin
-        const employeeName = this.employees[this.currentUser]?.name || 'Unknown';
-        this.addMessage(this.currentUser, 'admin', `Task status updated to "${newStatus}": ${task.description}`);
-
         this.updateSharedData(data);
-        this.updateUserTasks();
-        this.showNotification(`Task status updated to: ${newStatus}`, 'success');
+        this.updateTaskView();
+
+        const statusMessages = {
+          'in-progress': 'Task started',
+          'blocked': 'Task marked as blocked',
+          'not-started': 'Task reset'
+        };
+
+        this.showNotification(statusMessages[newStatus] || 'Status updated', 'info');
       }
 
-      toggleTask(taskId, dateKey) {
+      uploadPhoto(taskId, dateKey, input) {
+        const file = input.files[0];
+        if (!file) return;
+
+        // Validate file type
+        if (!file.type.startsWith('image/')) {
+          this.showNotification('Please select an image file', 'error');
+          return;
+        }
+
+        // Validate file size (max 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+          this.showNotification('Image must be less than 5MB', 'error');
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const data = this.getSharedData();
+          const tasks = data.tasks[dateKey] || [];
+          const task = tasks.find(t => t.id === taskId);
+          
+          if (!task) return;
+
+          // Add photo with timestamp verification
+          task.photo = e.target.result;
+          task.photoMetadata = {
+            uploadedAt: new Date().toISOString(),
+            uploadedBy: this.currentEmployee.id,
+            fileName: file.name,
+            fileSize: file.size,
+            fileType: file.type
+          };
+
+          this.updateSharedData(data);
+          this.updateTaskView();
+          this.showNotification('Photo uploaded successfully! You can now complete the task.', 'success');
+        };
+
+        reader.readAsDataURL(file);
+      }
+
+      completeTask(taskId, dateKey) {
         const data = this.getSharedData();
         const tasks = data.tasks[dateKey] || [];
         const task = tasks.find(t => t.id === taskId);
         
-        if (!task || task.assignedTo !== this.currentUser) return;
+        if (!task) return;
 
-        // Check if photo is required but not provided
-        if (!task.completed && task.requirePhoto && !task.photo) {
-          this.showNotification('Photo required to complete this task', 'error');
+        // Check if photo is required but not uploaded
+        if (task.requirePhoto && !task.photo) {
+          this.showNotification('Photo is required to complete this task', 'error');
           return;
         }
 
-        task.completed = !task.completed;
-        task.completedAt = task.completed ? new Date().toISOString() : null;
-        task.status = task.completed ? 'completed' : 'not-started';
-
-        // Send notification to admin if employee completes task
-        if (task.completed) {
-          const employeeName = this.employees[this.currentUser]?.name || 'Unknown';
-          this.addMessage(this.currentUser, 'admin', `Task completed: ${task.description}`);
-        }
+        task.completed = true;
+        task.status = 'pending-approval';
+        task.completedAt = new Date().toISOString();
 
         this.updateSharedData(data);
-        this.updateUserTasks();
+        this.updateTaskView();
 
-        this.showNotification(
-          task.completed ? 
-          `Task completed: "${task.description}"` : 
-          `Task reopened: "${task.description}"`,
-          'success'
-        );
+        // Send notification to admin
+        this.addMessage(this.currentEmployee.name, 'admin', `Task completed and submitted for approval: "${task.description}"`);
+
+        this.showNotification('Task submitted for admin approval!', 'success');
       }
 
-      uploadPhoto(taskId, dateKey) {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = 'image/*';
-        input.addEventListener('change', async (e) => {
-          const file = e.target.files[0];
-          if (file) {
-            try {
-              this.showNotification('📸 Uploading photo...', 'info');
-              
-              // Convert file to base64 with timestamp verification
-              const reader = new FileReader();
-              reader.onload = (e) => {
-                const photoData = e.target.result;
-                const timestamp = new Date().toISOString();
-                
-                const data = this.getSharedData();
-                const tasks = data.tasks[dateKey] || [];
-                const task = tasks.find(t => t.id === taskId);
-                
-                if (task && task.assignedTo === this.currentUser) {
-                  task.photo = photoData;
-                  task.photoTimestamp = timestamp;
-                  task.photoMetadata = {
-                    uploadedBy: this.currentUser,
-                    uploadedAt: timestamp,
-                    fileSize: file.size,
-                    fileName: file.name,
-                    verified: true
-                  };
-                  
-                  // Auto-complete task if photo was required
-                  if (task.requirePhoto && !task.completed) {
-                    task.completed = true;
-                    task.completedAt = new Date().toISOString();
-                    task.status = 'completed';
-                    
-                    // Send notification to admin
-                    const employeeName = this.employees[this.currentUser]?.name || 'Unknown';
-                    this.addMessage(this.currentUser, 'admin', `Task completed with photo: ${task.description}`);
-                  }
-                  
-                  this.updateSharedData(data);
-                  this.updateUserTasks();
-                  
-                  this.showNotification('📸 Photo uploaded and verified successfully!', 'success');
-                }
-              };
-              reader.readAsDataURL(file);
-              
-            } catch (error) {
-              console.error('Error uploading photo:', error);
-              this.showNotification('❌ Failed to upload photo', 'error');
-            }
-          }
+      getDueDateStatus(dueDate) {
+        const now = new Date();
+        const due = new Date(dueDate);
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        const dueDay = new Date(due.getFullYear(), due.getMonth(), due.getDate());
+
+        if (dueDay < today) {
+          return 'overdue';
+        } else if (dueDay.getTime() === today.getTime()) {
+          return 'today';
+        } else {
+          return 'upcoming';
+        }
+      }
+
+      // Chat System Methods
+      toggleChat() {
+        this.chatPanel.classList.toggle('open');
+        if (this.chatPanel.classList.contains('open')) {
+          this.loadChatMessages();
+          this.markChatMessagesAsRead();
+        }
+      }
+
+      loadChatMessages() {
+        if (!this.currentEmployee) return;
+
+        const data = this.getSharedData();
+        const chatKey = `admin_${this.currentEmployee.id}`;
+        const messages = data.chats[chatKey] || [];
+
+        this.chatContent.innerHTML = '';
+
+        if (messages.length === 0) {
+          this.chatContent.innerHTML = `
+            <div style="text-align: center; color: var(--text-muted); padding: 2rem;">
+              No messages yet. Start a conversation with your admin!
+            </div>
+          `;
+          return;
+        }
+
+        messages.forEach(message => {
+          const messageEl = document.createElement('div');
+          messageEl.className = `chat-message ${message.from === 'admin' ? 'admin' : 'employee'}`;
+          messageEl.innerHTML = `
+            <div>${message.content}</div>
+            <div class="chat-message-time">${new Date(message.time).toLocaleString()}</div>
+          `;
+          this.chatContent.appendChild(messageEl);
         });
-        input.click();
+
+        // Scroll to bottom
+        this.chatContent.scrollTop = this.chatContent.scrollHeight;
+      }
+
+      sendChatMessage() {
+        const content = this.chatInput.value.trim();
+        if (!content || !this.currentEmployee) return;
+
+        const data = this.getSharedData();
+        const chatKey = `admin_${this.currentEmployee.id}`;
+        
+        if (!data.chats[chatKey]) {
+          data.chats[chatKey] = [];
+        }
+
+        const message = {
+          id: Date.now().toString(),
+          from: 'employee',
+          to: 'admin',
+          content: content,
+          time: new Date().toISOString(),
+          read: false
+        };
+
+        data.chats[chatKey].push(message);
+        this.updateSharedData(data);
+
+        // Clear input
+        this.chatInput.value = '';
+
+        // Reload messages
+        this.loadChatMessages();
+
+        this.showNotification('Message sent to admin', 'success');
+      }
+
+      markChatMessagesAsRead() {
+        if (!this.currentEmployee) return;
+
+        const data = this.getSharedData();
+        const chatKey = `admin_${this.currentEmployee.id}`;
+        
+        if (data.chats[chatKey]) {
+          data.chats[chatKey].forEach(msg => {
+            if (msg.to === this.currentEmployee.id) {
+              msg.read = true;
+            }
+          });
+          this.updateSharedData(data);
+        }
+      }
+
+      updateChatUnreadCount() {
+        if (!this.currentEmployee) return;
+
+        const data = this.getSharedData();
+        const chatKey = `admin_${this.currentEmployee.id}`;
+        let unreadCount = 0;
+
+        if (data.chats[chatKey]) {
+          data.chats[chatKey].forEach(msg => {
+            if (!msg.read && msg.to === this.currentEmployee.id) {
+              unreadCount++;
+            }
+          });
+        }
+
+        if (unreadCount > 0) {
+          this.chatUnreadCountEl.textContent = unreadCount;
+          this.chatUnreadCountEl.style.display = 'inline';
+        } else {
+          this.chatUnreadCountEl.style.display = 'none';
+        }
+      }
+
+      addMessage(from, to, content) {
+        const data = this.getSharedData();
+        const message = {
+          id: Date.now().toString(),
+          from: from,
+          to: to,
+          content: content,
+          time: new Date().toISOString(),
+          read: false,
+          isEmployee: true
+        };
+
+        data.messages.push(message);
+        this.updateSharedData(data);
       }
 
       showPhotoModal(photoUrl, task) {
@@ -1302,12 +1716,12 @@
         let timestampInfo = '';
         if (task.photoMetadata) {
           const uploadTime = new Date(task.photoMetadata.uploadedAt).toLocaleString();
-          const uploaderName = this.employees[task.photoMetadata.uploadedBy]?.name || 'Unknown';
-          timestampInfo = `<br><small>📅 Uploaded: ${uploadTime}<br>👤 By: ${uploaderName}<br>✅ Timestamp Verified</small>`;
+          timestampInfo = `<br><small>📅 Uploaded: ${uploadTime}<br>✅ Timestamp Verified</small>`;
         }
         
         this.modalPhotoInfo.innerHTML = `
           <strong>${task.description}</strong><br>
+          Due: ${new Date(task.dueDate).toLocaleString()}<br>
           Completed: ${task.completedAt ? new Date(task.completedAt).toLocaleString() : 'N/A'}
           ${timestampInfo}
         `;
@@ -1316,148 +1730,6 @@
 
       closePhotoModal() {
         this.photoModal.classList.remove('show');
-      }
-
-      addMessage(from, to, content) {
-        const data = this.getSharedData();
-        const message = {
-          id: Date.now().toString(),
-          from: this.employees[from]?.name || 'Unknown',
-          to: to,
-          content: content,
-          time: new Date().toISOString(),
-          read: false,
-          isAdmin: false
-        };
-
-        data.messages.push(message);
-        this.updateSharedData(data);
-      }
-
-      toggleMessages() {
-        this.messagesPanel.classList.toggle('open');
-        if (this.messagesPanel.classList.contains('open')) {
-          this.updateMessagesPanel();
-          this.markMessagesAsRead();
-        }
-      }
-
-      updateMessagesPanel() {
-        const data = this.getSharedData();
-        const relevantMessages = data.messages.filter(msg => 
-          msg.to === this.currentUser || msg.from === this.employees[this.currentUser]?.name
-        );
-
-        this.messagesContent.innerHTML = '';
-        
-        if (relevantMessages.length === 0) {
-          this.messagesContent.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 2rem;">No messages yet</div>';
-          return;
-        }
-
-        relevantMessages.reverse().forEach(message => {
-          const messageEl = document.createElement('div');
-          messageEl.className = `message ${!message.read ? 'unread' : ''}`;
-          messageEl.innerHTML = `
-            <div class="message-header">
-              <span class="message-from">${message.from}</span>
-              <span class="message-time">${new Date(message.time).toLocaleString()}</span>
-            </div>
-            <div class="message-content">${message.content}</div>
-          `;
-          this.messagesContent.appendChild(messageEl);
-        });
-      }
-
-      markMessagesAsRead() {
-        const data = this.getSharedData();
-        data.messages.forEach(msg => {
-          if (msg.to === this.currentUser) {
-            msg.read = true;
-          }
-        });
-        this.updateSharedData(data);
-        this.updateUnreadCount();
-      }
-
-      updateUnreadCount() {
-        if (!this.currentUser) return;
-        
-        const data = this.getSharedData();
-        const unreadMessages = data.messages.filter(msg => 
-          !msg.read && msg.to === this.currentUser
-        );
-
-        const unreadCount = unreadMessages.length;
-        
-        if (unreadCount > 0) {
-          this.unreadCountEl.textContent = unreadCount;
-          this.unreadCountEl.style.display = 'inline';
-        } else {
-          this.unreadCountEl.style.display = 'none';
-        }
-      }
-
-      updateUserTasks() {
-        if (!this.currentUser) return;
-        
-        const dateKey = this.formatDateKey(this.currentDate);
-        const data = this.getSharedData();
-        const allTasks = data.tasks[dateKey] || [];
-        const userTasks = allTasks.filter(task => task.assignedTo === this.currentUser);
-
-        if (userTasks.length === 0) {
-          this.userTasks.style.display = 'none';
-          this.userEmpty.style.display = 'block';
-        } else {
-          this.userTasks.style.display = 'block';
-          this.userEmpty.style.display = 'none';
-          this.renderTasks(userTasks, dateKey);
-        }
-      }
-
-      renderTasks(tasks, dateKey) {
-        this.userTasks.innerHTML = '';
-
-        tasks.forEach(task => {
-          const taskEl = document.createElement('div');
-          taskEl.className = `task-item ${task.completed ? 'completed' : ''}`;
-          
-          const statusOptions = ['not-started', 'in-progress', 'blocked', 'completed'];
-          const statusSelect = `
-            <select onchange="employeePortal.updateTaskStatus('${task.id}', '${dateKey}', this.value)" style="background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 4px; color: var(--text-primary); padding: 0.25rem; font-size: 0.75rem;">
-              ${statusOptions.map(status => `<option value="${status}" ${task.status === status ? 'selected' : ''}>${status.replace('-', ' ').toUpperCase()}</option>`).join('')}
-            </select>
-          `;
-          
-          taskEl.innerHTML = `
-            <input 
-              type="checkbox" 
-              class="task-checkbox" 
-              ${task.completed ? 'checked' : ''}
-              onchange="employeePortal.toggleTask('${task.id}', '${dateKey}')"
-            />
-            <div class="task-content">
-              <div class="task-text ${task.completed ? 'completed' : ''}">${task.description}</div>
-              <div class="task-details">
-                Created: ${new Date(task.createdAt).toLocaleString()}
-                ${task.completedAt ? ` | Completed: ${new Date(task.completedAt).toLocaleString()}` : ''}
-              </div>
-            </div>
-            <div class="task-meta">
-              <span class="priority-badge priority-${task.priority}">${task.priority}</span>
-              ${statusSelect}
-              ${task.requirePhoto ? '<span class="photo-required-badge">Photo Required</span>' : ''}
-              ${task.photo && task.photoMetadata ? '<div class="timestamp-info">📅 Timestamp Verified</div>' : ''}
-              <div class="task-actions">
-                ${task.photo ? `<img src="${task.photo}" class="task-photo" onclick="employeePortal.showPhotoModal('${task.photo}', ${JSON.stringify(task).replace(/"/g, '&quot;')})" alt="Task photo">` : ''}
-                ${!task.completed && (task.requirePhoto || !task.photo) ? `<button class="btn btn-photo" onclick="employeePortal.uploadPhoto('${task.id}', '${dateKey}')"><i class="fas fa-camera"></i></button>` : ''}
-              </div>
-            </div>
-          `;
-
-          this.userTasks.appendChild(taskEl);
-        });
       }
 
       showNotification(message, type = 'success') {
@@ -1470,12 +1742,13 @@
       }
     }
 
-    // Initialize Employee Portal
-    const employeePortal = new EmployeePortal();
+    // Initialize Enhanced Employee Portal
+    const employeePortal = new EnhancedEmployeePortal();
     
     // Make it globally accessible
     window.employeePortal = employeePortal;
   </script>
 </body>
 </html>
+
 
