@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -685,4 +686,1489 @@
       align-items: center;
       justify-content: center;
       gap: 1rem;
-(Content truncated due to size limit. Use line ranges to read in chunks)
+      padding: 3rem;
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+
+    .loading-spinner {
+      width: 2rem;
+      height: 2rem;
+      border: 2px solid var(--border-color);
+      border-top: 2px solid #667eea;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 3rem 2rem;
+      color: var(--text-muted);
+    }
+
+    .empty-state-icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      opacity: 0.5;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .empty-state-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text-secondary);
+    }
+
+    .empty-state-description {
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
+
+    /* Notifications */
+    .notification {
+      position: fixed;
+      top: 6rem;
+      right: 2rem;
+      padding: 1rem 1.5rem;
+      border-radius: var(--radius-md);
+      color: white;
+      font-weight: 500;
+      font-size: 0.875rem;
+      box-shadow: var(--shadow-lg);
+      transform: translateX(100%);
+      transition: var(--transition-normal);
+      z-index: 1001;
+      max-width: 300px;
+    }
+
+    .notification.show {
+      transform: translateX(0);
+    }
+
+    .notification.success {
+      background: var(--success-gradient);
+    }
+
+    .notification.error {
+      background: var(--danger-gradient);
+    }
+
+    .notification.warning {
+      background: var(--warning-gradient);
+    }
+
+    /* Message Styles */
+    .message {
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      margin: 1rem 0;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .message.error {
+      background: rgba(250, 112, 154, 0.1);
+      color: #fa709a;
+      border: 1px solid rgba(250, 112, 154, 0.2);
+    }
+
+    .message.success {
+      background: rgba(67, 233, 123, 0.1);
+      color: #43e97b;
+      border: 1px solid rgba(67, 233, 123, 0.2);
+    }
+
+    /* Firebase Setup Notice */
+    .firebase-notice {
+      background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 235, 59, 0.1));
+      border: 1px solid rgba(255, 193, 7, 0.3);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .firebase-notice::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, #ffc107, #ffeb3b);
+    }
+
+    .firebase-notice h3 {
+      color: #ffc107;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .firebase-notice a {
+      color: #667eea;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .firebase-notice a:hover {
+      text-decoration: underline;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+      }
+
+      .app-title {
+        order: -1;
+      }
+
+      .main {
+        padding: 1rem;
+      }
+
+      .card {
+        padding: 1.5rem;
+      }
+
+      .task-item {
+        padding: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .task-actions {
+        opacity: 1;
+        width: 100%;
+        justify-content: flex-end;
+        margin-top: 0.5rem;
+      }
+
+      .analytics-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav-controls {
+        width: 100%;
+      }
+
+      .nav-btn {
+        flex: 1;
+        justify-content: center;
+      }
+
+      .date-nav {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+
+    /* Accessibility */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* Focus styles */
+    button:focus-visible, input:focus-visible, select:focus-visible {
+      outline: 2px solid #667eea;
+      outline-offset: 2px;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-secondary);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--border-hover);
+    }
+
+    /* Animations for task completion */
+    @keyframes taskComplete {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .task-item.completing {
+      animation: taskComplete 0.3s ease-in-out;
+    }
+
+    /* Floating action button for mobile */
+    .fab {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      width: 3.5rem;
+      height: 3.5rem;
+      border-radius: 50%;
+      background: var(--primary-gradient);
+      color: white;
+      border: none;
+      cursor: pointer;
+      box-shadow: var(--shadow-lg);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      transition: var(--transition-fast);
+      z-index: 1000;
+    }
+
+    .fab:hover {
+      transform: scale(1.1);
+      box-shadow: var(--shadow-xl);
+    }
+
+    @media (max-width: 768px) {
+      .fab {
+        display: flex;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <div class="logo">
+        <i class="fas fa-tasks"></i>
+        <span>TaskFlow Pro</span>
+      </div>
+      
+      <div class="nav-controls">
+        <button class="nav-btn" id="calendar-nav-btn" onclick="taskManager.showCalendarView()" aria-label="Switch to Calendar View">
+          <i class="fas fa-calendar-day"></i>
+          <span>Calendar</span>
+        </button>
+        <button class="nav-btn" id="admin-nav-btn" onclick="taskManager.showAdminView()" aria-label="Switch to Admin View">
+          <i class="fas fa-cog"></i>
+          <span>Admin</span>
+        </button>
+        <button class="nav-btn" id="analytics-nav-btn" onclick="taskManager.showAnalyticsView()" aria-label="Switch to Analytics View">
+          <i class="fas fa-chart-line"></i>
+          <span>Analytics</span>
+        </button>
+      </div>
+      
+      <h1 class="app-title" id="app-title">TaskFlow Pro</h1>
+      
+      <div class="date-nav" id="date-nav" style="display: none;">
+        <button class="date-nav-btn" id="prev-day" aria-label="Previous Day">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="date-nav-btn" id="next-day" aria-label="Next Day">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Notification Container -->
+  <div id="notification" class="notification">
+    <span id="notification-message">Tasks synchronized</span>
+  </div>
+
+  <!-- Photo Modal -->
+  <div id="photo-modal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="taskManager.closePhotoModal()">&times;</button>
+      <img id="modal-photo" src="" alt="Task completion photo">
+      <div id="modal-photo-info" style="margin-top: 1rem; text-align: center; color: var(--text-secondary);"></div>
+    </div>
+  </div>
+
+  <main class="main">
+    <!-- Firebase Setup Notice -->
+    <div class="firebase-notice">
+      <h3>
+        <i class="fab fa-firebase"></i>
+        Firebase Setup Required
+      </h3>
+      <p>To use this with a real Firebase backend, you need to:</p>
+      <ol style="margin: 1rem 0; padding-left: 1.5rem; line-height: 1.6;">
+        <li>Create a Firebase project at <a href="https://console.firebase.google.com" target="_blank">console.firebase.google.com</a></li>
+        <li>Enable Firestore database and Storage</li>
+        <li>Replace the config object below with your Firebase config</li>
+        <li>Add your domain to Firebase authorized domains</li>
+      </ol>
+      <p><strong>For now, this demo shows how the code would work with Firebase including photo uploads and analytics.</strong></p>
+    </div>
+
+    <!-- Calendar View -->
+    <div id="calendar-view" class="view active">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-calendar-check"></i>
+            Tasks for <span id="task-date-label"></span>
+          </h2>
+        </div>
+        
+        <div id="loading-calendar" class="loading" style="display: none;">
+          <div class="loading-spinner"></div>
+          <span>Loading your tasks...</span>
+        </div>
+        
+        <div id="calendar-error" class="message error" style="display: none;">
+          <i class="fas fa-exclamation-triangle"></i>
+          <span></span>
+        </div>
+        
+        <ul id="task-list" class="task-list"></ul>
+      </div>
+    </div>
+
+    <!-- Admin View -->
+    <div id="admin-view" class="view">
+      <div class="admin-grid">
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i class="fas fa-plus-circle"></i>
+              Create New Task
+            </h2>
+          </div>
+          
+          <form id="task-form">
+            <div class="form-group">
+              <label class="form-label" for="task-date">
+                <i class="fas fa-calendar"></i>
+                Select Date
+              </label>
+              <input type="date" id="task-date" class="form-input" aria-describedby="date-help" />
+              <small id="date-help" class="sr-only">Select the date for the new task</small>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="new-task">
+                <i class="fas fa-edit"></i>
+                Task Description
+              </label>
+              <input 
+                type="text" 
+                id="new-task" 
+                class="form-input"
+                placeholder="e.g., Review quarterly reports" 
+                maxlength="200"
+                aria-describedby="task-help"
+              />
+              <small id="task-help" class="sr-only">Enter a description for the new task (max 200 characters)</small>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="task-priority">
+                <i class="fas fa-flag"></i>
+                Priority Level
+              </label>
+              <select id="task-priority" class="form-select">
+                <option value="low">Low Priority</option>
+                <option value="medium" selected>Medium Priority</option>
+                <option value="high">High Priority</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="recurrence-type">
+                <i class="fas fa-repeat"></i>
+                Repeat Schedule
+              </label>
+              <select id="recurrence-type" class="form-select" aria-describedby="recurrence-help">
+                <option value="none">One-time</option>
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+              </select>
+              <small id="recurrence-help" class="sr-only">Choose how often this task should repeat</small>
+            </div>
+
+            <div id="recurrence-options"></div>
+            <div id="admin-messages"></div>
+
+            <button type="submit" id="add-task" class="btn btn-primary" aria-describedby="add-task-help">
+              <i class="fas fa-plus"></i>
+              <span>Add Task</span>
+            </button>
+            <small id="add-task-help" class="sr-only">Click to create the new task</small>
+          </form>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2 class="card-title">
+              <i class="fas fa-list-check"></i>
+              Tasks for Selected Date
+            </h2>
+          </div>
+          
+          <div id="loading-admin" class="loading" style="display: none;">
+            <div class="loading-spinner"></div>
+            <span>Loading tasks...</span>
+          </div>
+          
+          <div id="admin-error" class="message error" style="display: none;">
+            <i class="fas fa-exclamation-triangle"></i>
+            <span></span>
+          </div>
+          
+          <ul id="admin-task-list" class="task-list"></ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Analytics View -->
+    <div id="analytics-view" class="view">
+      <div class="analytics-grid">
+        <div class="stat-card">
+          <div class="stat-value" id="total-tasks">0</div>
+          <div class="stat-label">Total Tasks</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="completed-tasks">0</div>
+          <div class="stat-label">Completed Tasks</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="completion-rate">0%</div>
+          <div class="stat-label">Completion Rate</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="tasks-with-photos">0</div>
+          <div class="stat-label">Tasks with Photos</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-chart-line"></i>
+            Productivity Trends
+          </h2>
+        </div>
+        <div class="chart-container">
+          <canvas id="productivity-chart"></canvas>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">
+            <i class="fas fa-chart-pie"></i>
+            Task Priority Distribution
+          </h2>
+        </div>
+        <div class="chart-container">
+          <canvas id="priority-chart"></canvas>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Floating Action Button for Mobile -->
+  <button class="fab" id="fab" onclick="taskManager.showAdminView()" aria-label="Add New Task">
+    <i class="fas fa-plus"></i>
+  </button>
+
+  <script type="module">
+    // Enhanced Task Manager Application with Photo Completion and Analytics
+    class TaskManager {
+      constructor() {
+        this.selectedDate = new Date();
+        this.currentView = 'calendar';
+        this.tasksCache = new Map();
+        this.isLoading = false;
+        this.notification = document.getElementById('notification');
+        this.notificationMessage = document.getElementById('notification-message');
+        this.photoModal = document.getElementById('photo-modal');
+        this.modalPhoto = document.getElementById('modal-photo');
+        this.modalPhotoInfo = document.getElementById('modal-photo-info');
+        
+        this.initializeElements();
+        this.attachEventListeners();
+        this.initializeApp();
+      }
+
+      // Firebase configuration (replace with your actual config)
+      firebaseConfig = {
+        apiKey: "your-api-key",
+        authDomain: "your-project.firebaseapp.com",
+        projectId: "your-project-id",
+        storageBucket: "your-project.appspot.com",
+        messagingSenderId: "123456789",
+        appId: "your-app-id"
+      };
+
+      // Enhanced Mock Firebase with photo support and analytics data
+      mockFirebase = {
+        data: new Map([
+          ["2025-06-15", [
+            { 
+              id: "1", 
+              task: "Review quarterly financial reports", 
+              completed: true, 
+              recurring: null, 
+              createdAt: new Date('2025-06-15T09:00:00'), 
+              completedAt: new Date('2025-06-15T11:30:00'),
+              priority: "high",
+              photo: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iIzY2N2VlYSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+UmVwb3J0IENvbXBsZXRlZDwvdGV4dD48L3N2Zz4="
+            },
+            { 
+              id: "2", 
+              task: "Team standup meeting", 
+              completed: true, 
+              recurring: null, 
+              createdAt: new Date('2025-06-15T10:00:00'), 
+              completedAt: new Date('2025-06-15T10:30:00'),
+              priority: "medium"
+            },
+            { 
+              id: "3", 
+              task: "Update project documentation", 
+              completed: false, 
+              recurring: null, 
+              createdAt: new Date('2025-06-15T14:00:00'), 
+              priority: "low"
+            }
+          ]],
+          ["2025-06-17", [
+            { 
+              id: "4", 
+              task: "Prepare presentation for client meeting", 
+              completed: false, 
+              recurring: null, 
+              createdAt: new Date('2025-06-17T09:00:00'), 
+              priority: "high"
+            },
+            { 
+              id: "5", 
+              task: "Code review for new features", 
+              completed: true, 
+              recurring: null, 
+              createdAt: new Date('2025-06-17T11:00:00'), 
+              completedAt: new Date('2025-06-17T12:00:00'),
+              priority: "medium",
+              photo: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iIzI3YWU2MCIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+Q29kZSBSZXZpZXdlZDwvdGV4dD48L3N2Zz4="
+            }
+          ]],
+          ["2025-06-16", [
+            { 
+              id: "6", 
+              task: "Database backup verification", 
+              completed: true, 
+              recurring: null, 
+              createdAt: new Date('2025-06-16T08:00:00'), 
+              completedAt: new Date('2025-06-16T09:00:00'),
+              priority: "high",
+              photo: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iI2ZhNzA5YSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+QmFja3VwIFZlcmlmaWVkPC90ZXh0Pjwvc3ZnPg=="
+            },
+            { 
+              id: "7", 
+              task: "Client feedback review", 
+              completed: true, 
+              recurring: null, 
+              createdAt: new Date('2025-06-16T14:00:00'), 
+              completedAt: new Date('2025-06-16T15:30:00'),
+              priority: "medium"
+            }
+          ]]
+        ]),
+
+        async getTasks(dateKey) {
+          await this.simulateDelay(400);
+          const tasks = this.data.get(dateKey) || [];
+          return [...tasks].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+        },
+
+        async addTask(dateKey, taskData) {
+          await this.simulateDelay(300);
+          const newTask = {
+            id: Date.now().toString() + Math.random().toString(36).substr(2, 9),
+            ...taskData,
+            createdAt: new Date(),
+            priority: taskData.priority || "medium"
+          };
+          
+          if (!this.data.has(dateKey)) {
+            this.data.set(dateKey, []);
+          }
+          this.data.get(dateKey).push(newTask);
+          
+          console.log(`Added task to Firebase:`, { dateKey, task: newTask });
+          return newTask;
+        },
+
+        async updateTask(taskId, updates) {
+          await this.simulateDelay(200);
+          
+          for (const [dateKey, tasks] of this.data.entries()) {
+            const taskIndex = tasks.findIndex(t => t.id === taskId);
+            if (taskIndex !== -1) {
+              tasks[taskIndex] = { 
+                ...tasks[taskIndex], 
+                ...updates, 
+                updatedAt: new Date(),
+                ...(updates.completed && !tasks[taskIndex].completed ? { completedAt: new Date() } : {})
+              };
+              console.log(`Updated task ${taskId}:`, updates);
+              return true;
+            }
+          }
+          
+          throw new Error(`Task ${taskId} not found`);
+        },
+
+        async deleteTask(taskId) {
+          await this.simulateDelay(200);
+          
+          for (const [dateKey, tasks] of this.data.entries()) {
+            const taskIndex = tasks.findIndex(t => t.id === taskId);
+            if (taskIndex !== -1) {
+              tasks.splice(taskIndex, 1);
+              console.log(`Deleted task ${taskId}`);
+              return true;
+            }
+          }
+          
+          throw new Error(`Task ${taskId} not found`);
+        },
+
+        async uploadPhoto(file) {
+          await this.simulateDelay(1000);
+          // In real implementation, this would upload to Firebase Storage
+          return new Promise((resolve) => {
+            const reader = new FileReader();
+            reader.onload = (e) => resolve(e.target.result);
+            reader.readAsDataURL(file);
+          });
+        },
+
+        async getAllTasks() {
+          await this.simulateDelay(500);
+          const allTasks = [];
+          for (const [dateKey, tasks] of this.data.entries()) {
+            allTasks.push(...tasks.map(task => ({ ...task, date: dateKey })));
+          }
+          return allTasks;
+        },
+
+        async simulateDelay(ms) {
+          return new Promise(resolve => setTimeout(resolve, ms));
+        }
+      };
+
+      initializeElements() {
+        // Calendar elements
+        this.appTitle = document.getElementById("app-title");
+        this.dateNav = document.getElementById("date-nav");
+        this.taskDateLabel = document.getElementById("task-date-label");
+        this.taskList = document.getElementById("task-list");
+        this.loadingCalendar = document.getElementById("loading-calendar");
+        this.calendarError = document.getElementById("calendar-error");
+        this.prevBtn = document.getElementById("prev-day");
+        this.nextBtn = document.getElementById("next-day");
+        
+        // Admin elements
+        this.taskDateInput = document.getElementById("task-date");
+        this.newTaskInput = document.getElementById("new-task");
+        this.taskPrioritySelect = document.getElementById("task-priority");
+        this.addTaskButton = document.getElementById("add-task");
+        this.taskForm = document.getElementById("task-form");
+        this.adminTaskList = document.getElementById("admin-task-list");
+        this.loadingAdmin = document.getElementById("loading-admin");
+        this.adminError = document.getElementById("admin-error");
+        this.adminMessages = document.getElementById("admin-messages");
+        
+        // Navigation buttons
+        this.calendarNavBtn = document.getElementById("calendar-nav-btn");
+        this.adminNavBtn = document.getElementById("admin-nav-btn");
+        this.analyticsNavBtn = document.getElementById("analytics-nav-btn");
+        
+        // Analytics elements
+        this.totalTasksEl = document.getElementById("total-tasks");
+        this.completedTasksEl = document.getElementById("completed-tasks");
+        this.completionRateEl = document.getElementById("completion-rate");
+        this.tasksWithPhotosEl = document.getElementById("tasks-with-photos");
+        
+        // FAB
+        this.fab = document.getElementById("fab");
+      }
+
+      attachEventListeners() {
+        // Calendar navigation
+        this.prevBtn.addEventListener("click", () => this.navigateDate(-1));
+        this.nextBtn.addEventListener("click", () => this.navigateDate(1));
+        
+        // Admin controls
+        this.taskDateInput.addEventListener("change", () => this.onAdminDateChange());
+        this.taskForm.addEventListener("submit", (e) => {
+          e.preventDefault();
+          this.addTask();
+        });
+        this.newTaskInput.addEventListener("keypress", (e) => {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            this.addTask();
+          }
+        });
+        
+        // Keyboard navigation
+        document.addEventListener("keydown", (e) => this.handleKeyboardNavigation(e));
+        
+        // Touch gestures for mobile
+        this.addTouchGestures();
+      }
+
+      addTouchGestures() {
+        let startX = 0;
+        let startY = 0;
+        
+        document.addEventListener('touchstart', (e) => {
+          startX = e.touches[0].clientX;
+          startY = e.touches[0].clientY;
+        });
+        
+        document.addEventListener('touchend', (e) => {
+          if (!startX || !startY) return;
+          
+          const endX = e.changedTouches[0].clientX;
+          const endY = e.changedTouches[0].clientY;
+          
+          const diffX = startX - endX;
+          const diffY = startY - endY;
+          
+          // Only handle horizontal swipes in calendar view
+          if (this.currentView === 'calendar' && Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+            if (diffX > 0) {
+              this.navigateDate(1); // Swipe left = next day
+            } else {
+              this.navigateDate(-1); // Swipe right = previous day
+            }
+          }
+          
+          startX = 0;
+          startY = 0;
+        });
+      }
+
+      handleKeyboardNavigation(e) {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+        
+        switch(e.key) {
+          case 'ArrowLeft':
+            if (this.currentView === 'calendar') {
+              e.preventDefault();
+              this.navigateDate(-1);
+            }
+            break;
+          case 'ArrowRight':
+            if (this.currentView === 'calendar') {
+              e.preventDefault();
+              this.navigateDate(1);
+            }
+            break;
+          case '1':
+            e.preventDefault();
+            this.showCalendarView();
+            break;
+          case '2':
+            e.preventDefault();
+            this.showAdminView();
+            break;
+          case '3':
+            e.preventDefault();
+            this.showAnalyticsView();
+            break;
+        }
+      }
+
+      formatDateKey(date) {
+        return date.toISOString().split("T")[0];
+      }
+
+      showNotification(message = "Tasks synchronized", type = "success") {
+        this.notificationMessage.textContent = message;
+        this.notification.className = `notification ${type} show`;
+        
+        setTimeout(() => {
+          this.notification.classList.remove('show');
+        }, 3000);
+      }
+
+      showError(element, message) {
+        const errorSpan = element.querySelector('span');
+        if (errorSpan) {
+          errorSpan.textContent = message;
+        }
+        element.style.display = 'flex';
+        setTimeout(() => {
+          element.style.display = 'none';
+        }, 5000);
+      }
+
+      showSuccess(element, message) {
+        element.innerHTML = `<div class="message success"><i class="fas fa-check-circle"></i><span>${message}</span></div>`;
+        setTimeout(() => {
+          element.innerHTML = '';
+        }, 3000);
+      }
+
+      // View switching with improved animations
+      showCalendarView() {
+        document.getElementById('calendar-view').classList.add('active');
+        document.getElementById('admin-view').classList.remove('active');
+        document.getElementById('analytics-view').classList.remove('active');
+        this.dateNav.style.display = 'flex';
+        this.currentView = 'calendar';
+        
+        // Update navigation button states
+        this.calendarNavBtn.classList.add('active');
+        this.adminNavBtn.classList.remove('active');
+        this.analyticsNavBtn.classList.remove('active');
+        
+        this.renderHeaderDate(this.selectedDate);
+        this.refreshCurrentView();
+      }
+
+      showAdminView() {
+        document.getElementById('calendar-view').classList.remove('active');
+        document.getElementById('admin-view').classList.add('active');
+        document.getElementById('analytics-view').classList.remove('active');
+        this.dateNav.style.display = 'none';
+        this.appTitle.textContent = 'Admin Dashboard';
+        this.currentView = 'admin';
+        
+        // Update navigation button states
+        this.calendarNavBtn.classList.remove('active');
+        this.adminNavBtn.classList.add('active');
+        this.analyticsNavBtn.classList.remove('active');
+        
+        this.taskDateInput.valueAsDate = this.selectedDate;
+        this.renderAdminTasksForDate(this.formatDateKey(this.selectedDate));
+      }
+
+      showAnalyticsView() {
+        document.getElementById('calendar-view').classList.remove('active');
+        document.getElementById('admin-view').classList.remove('active');
+        document.getElementById('analytics-view').classList.add('active');
+        this.dateNav.style.display = 'none';
+        this.appTitle.textContent = 'Analytics Dashboard';
+        this.currentView = 'analytics';
+        
+        // Update navigation button states
+        this.calendarNavBtn.classList.remove('active');
+        this.adminNavBtn.classList.remove('active');
+        this.analyticsNavBtn.classList.add('active');
+        
+        this.loadAnalytics();
+      }
+
+      navigateDate(direction) {
+        this.selectedDate.setDate(this.selectedDate.getDate() + direction);
+        this.renderHeaderDate(this.selectedDate);
+        
+        if (this.currentView === 'admin') {
+          this.taskDateInput.valueAsDate = new Date(this.selectedDate);
+          this.renderAdminTasksForDate(this.formatDateKey(this.selectedDate));
+        }
+      }
+
+      onAdminDateChange() {
+        const selectedDate = this.taskDateInput.valueAsDate;
+        if (selectedDate) {
+          this.selectedDate = new Date(selectedDate);
+          this.renderAdminTasksForDate(this.formatDateKey(selectedDate));
+        }
+      }
+
+      // Enhanced task rendering
+      async renderTasks(date) {
+        const key = this.formatDateKey(date);
+        this.taskDateLabel.textContent = date.toLocaleDateString('en-US', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+        
+        this.loadingCalendar.style.display = 'flex';
+        this.calendarError.style.display = 'none';
+        this.taskList.innerHTML = "";
+
+        try {
+          const tasks = await this.mockFirebase.getTasks(key);
+          this.tasksCache.set(key, tasks);
+
+          this.loadingCalendar.style.display = 'none';
+
+          if (tasks.length === 0) {
+            this.taskList.innerHTML = `
+              <li class="empty-state">
+                <div class="empty-state-icon">
+                  <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="empty-state-title">No tasks scheduled</div>
+                <div class="empty-state-description">
+                  You're all caught up for this day! Add some tasks to get started.
+                </div>
+              </li>
+            `;
+            return;
+          }
+
+          this.renderTaskList(tasks, this.taskList, false);
+
+        } catch (error) {
+          console.error("Error loading tasks:", error);
+          this.loadingCalendar.style.display = 'none';
+          this.showError(this.calendarError, "Failed to load tasks. Please check your connection and try again.");
+        }
+      }
+
+      async renderAdminTasksForDate(dateKey) {
+        this.loadingAdmin.style.display = 'flex';
+        this.adminError.style.display = 'none';
+        this.adminTaskList.innerHTML = "";
+
+        try {
+          const tasks = await this.mockFirebase.getTasks(dateKey);
+          this.tasksCache.set(dateKey, tasks);
+
+          this.loadingAdmin.style.display = 'none';
+
+          if (tasks.length === 0) {
+            this.adminTaskList.innerHTML = `
+              <li class="empty-state">
+                <div class="empty-state-icon">
+                  <i class="fas fa-plus-circle"></i>
+                </div>
+                <div class="empty-state-title">No tasks yet</div>
+                <div class="empty-state-description">
+                  Create your first task for this date using the form above.
+                </div>
+              </li>
+            `;
+            return;
+          }
+
+          this.renderTaskList(tasks, this.adminTaskList, true);
+
+        } catch (error) {
+          console.error("Error loading admin tasks:", error);
+          this.loadingAdmin.style.display = 'none';
+          this.showError(this.adminError, "Failed to load tasks. Please check your connection and try again.");
+        }
+      }
+
+      // Enhanced unified task rendering with photo support
+      renderTaskList(tasks, container, showDeleteButton = false) {
+        container.innerHTML = "";
+        
+        tasks.forEach(task => {
+          const li = document.createElement("li");
+          li.className = `task-item ${task.completed ? 'completed' : ''}`;
+          li.setAttribute('data-task-id', task.id);
+
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.className = "task-checkbox";
+          checkbox.checked = task.completed;
+          checkbox.setAttribute('aria-label', `Mark "${task.task}" as ${task.completed ? 'incomplete' : 'complete'}`);
+          checkbox.addEventListener("change", () => this.toggleTaskCompletion(task, checkbox, li));
+
+          const taskText = document.createElement("span");
+          taskText.className = `task-text ${task.completed ? 'completed' : ''}`;
+          taskText.textContent = task.task;
+
+          const taskMeta = document.createElement("div");
+          taskMeta.className = "task-meta";
+          
+          const timeSpan = document.createElement("span");
+          timeSpan.textContent = new Date(task.createdAt).toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit'
+          });
+          
+          const prioritySpan = document.createElement("span");
+          prioritySpan.textContent = task.priority?.toUpperCase() || 'MEDIUM';
+          prioritySpan.style.color = this.getPriorityColor(task.priority);
+          
+          taskMeta.appendChild(timeSpan);
+          taskMeta.appendChild(prioritySpan);
+
+          li.appendChild(checkbox);
+          li.appendChild(taskText);
+
+          // Add photo if exists
+          if (task.photo) {
+            const photoImg = document.createElement("img");
+            photoImg.src = task.photo;
+            photoImg.className = "task-photo";
+            photoImg.alt = "Task completion photo";
+            photoImg.addEventListener("click", () => this.showPhotoModal(task.photo, task));
+            li.appendChild(photoImg);
+          }
+
+          li.appendChild(taskMeta);
+
+          if (showDeleteButton || !task.completed) {
+            const taskActions = document.createElement("div");
+            taskActions.className = "task-actions";
+            
+            // Add photo upload button for incomplete tasks
+            if (!task.completed) {
+              const photoBtn = document.createElement("button");
+              photoBtn.innerHTML = '<i class="fas fa-camera"></i>';
+              photoBtn.className = "btn btn-photo";
+              photoBtn.setAttribute('aria-label', `Add photo for "${task.task}"`);
+              photoBtn.addEventListener("click", () => this.showPhotoUpload(task));
+              taskActions.appendChild(photoBtn);
+            }
+            
+            if (showDeleteButton) {
+              const deleteBtn = document.createElement("button");
+              deleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
+              deleteBtn.className = "btn btn-danger";
+              deleteBtn.setAttribute('aria-label', `Delete task "${task.task}"`);
+              deleteBtn.addEventListener("click", () => this.deleteTask(task));
+              taskActions.appendChild(deleteBtn);
+            }
+            
+            li.appendChild(taskActions);
+          }
+
+          container.appendChild(li);
+        });
+      }
+
+      getPriorityColor(priority) {
+        switch(priority) {
+          case 'high': return '#fa709a';
+          case 'medium': return '#667eea';
+          case 'low': return '#43e97b';
+          default: return '#667eea';
+        }
+      }
+
+      showPhotoUpload(task) {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        input.addEventListener('change', async (e) => {
+          const file = e.target.files[0];
+          if (file) {
+            try {
+              this.showNotification("📸 Uploading photo...", "warning");
+              const photoUrl = await this.mockFirebase.uploadPhoto(file);
+              await this.mockFirebase.updateTask(task.id, { 
+                photo: photoUrl,
+                completed: true,
+                completedAt: new Date()
+              });
+              
+              this.updateTaskInCache(task.id, { 
+                photo: photoUrl,
+                completed: true,
+                completedAt: new Date()
+              });
+              
+              this.refreshCurrentView();
+              this.showNotification("📸 Photo uploaded and task completed!");
+            } catch (error) {
+              console.error("Error uploading photo:", error);
+              this.showNotification("❌ Failed to upload photo", "error");
+            }
+          }
+        });
+        input.click();
+      }
+
+      showPhotoModal(photoUrl, task) {
+        this.modalPhoto.src = photoUrl;
+        this.modalPhotoInfo.innerHTML = `
+          <strong>${task.task}</strong><br>
+          Completed: ${task.completedAt ? new Date(task.completedAt).toLocaleString() : 'N/A'}
+        `;
+        this.photoModal.classList.add('show');
+      }
+
+      closePhotoModal() {
+        this.photoModal.classList.remove('show');
+      }
+
+      async toggleTaskCompletion(task, checkbox, taskItem) {
+        const originalState = task.completed;
+        
+        try {
+          // Add completion animation
+          taskItem.classList.add('completing');
+          
+          // Optimistic update
+          task.completed = checkbox.checked;
+          const taskText = taskItem.querySelector('.task-text');
+          taskText.classList.toggle('completed', task.completed);
+          taskItem.classList.toggle('completed', task.completed);
+          
+          // Update in Firebase
+          await this.mockFirebase.updateTask(task.id, { 
+            completed: task.completed,
+            ...(task.completed ? { completedAt: new Date() } : { completedAt: null })
+          });
+          
+          // Update cache
+          this.updateTaskInCache(task.id, { 
+            completed: task.completed,
+            ...(task.completed ? { completedAt: new Date() } : { completedAt: null })
+          });
+          
+          this.showNotification(
+            task.completed ? 
+            `✅ Task completed: "${task.task.substring(0, 30)}${task.task.length > 30 ? '...' : ''}"` : 
+            `🔄 Task reopened: "${task.task.substring(0, 30)}${task.task.length > 30 ? '...' : ''}"`
+          );
+          
+        } catch (error) {
+          console.error("Error updating task:", error);
+          
+          // Revert optimistic update
+          task.completed = originalState;
+          checkbox.checked = originalState;
+          const taskText = taskItem.querySelector('.task-text');
+          taskText.classList.toggle('completed', originalState);
+          taskItem.classList.toggle('completed', originalState);
+          
+          this.showNotification("❌ Failed to update task", "error");
+        } finally {
+          setTimeout(() => {
+            taskItem.classList.remove('completing');
+          }, 300);
+        }
+      }
+
+      async deleteTask(task) {
+        if (!confirm(`Are you sure you want to delete "${task.task}"?\n\nThis action cannot be undone.`)) {
+          return;
+        }
+
+        try {
+          await this.mockFirebase.deleteTask(task.id);
+          
+          // Remove from cache
+          this.removeTaskFromCache(task.id);
+          
+          // Refresh current view
+          this.refreshCurrentView();
+          
+          this.showNotification(`🗑️ Task deleted: "${task.task.substring(0, 30)}${task.task.length > 30 ? '...' : ''}"`);
+          
+        } catch (error) {
+          console.error("Error deleting task:", error);
+          this.showNotification("❌ Failed to delete task", "error");
+        }
+      }
+
+      async addTask() {
+        const dateKey = this.taskDateInput.value;
+        const taskText = this.newTaskInput.value.trim();
+        const priority = this.taskPrioritySelect.value;
+
+        if (!taskText || !dateKey) {
+          this.showError(this.adminError, "Please enter a task description and select a date.");
+          this.newTaskInput.focus();
+          return;
+        }
+
+        if (taskText.length > 200) {
+          this.showError(this.adminError, "Task description is too long (maximum 200 characters).");
+          this.newTaskInput.focus();
+          return;
+        }
+
+        try {
+          this.addTaskButton.disabled = true;
+          this.addTaskButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i><span>Adding...</span>';
+
+          const taskData = {
+            task: this.sanitizeInput(taskText),
+            completed: false,
+            recurring: null,
+            priority: priority
+          };
+
+          const newTask = await this.mockFirebase.addTask(dateKey, taskData);
+          
+          // Update cache
+          this.addTaskToCache(dateKey, newTask);
+          
+          // Clear form
+          this.newTaskInput.value = "";
+          this.taskPrioritySelect.value = "medium";
+          
+          // Refresh views
+          this.renderAdminTasksForDate(dateKey);
+          
+          // If calendar is viewing the same date, refresh it too
+          if (this.formatDateKey(this.selectedDate) === dateKey) {
+            this.renderTasks(this.selectedDate);
+          }
+          
+          this.showSuccess(this.adminMessages, "✅ Task created successfully!");
+          this.showNotification(`📝 New task added: "${newTask.task.substring(0, 30)}${newTask.task.length > 30 ? '...' : ''}"`);
+
+        } catch (error) {
+          console.error("Error adding task:", error);
+          this.showError(this.adminError, "Failed to create task. Please try again.");
+        } finally {
+          this.addTaskButton.disabled = false;
+          this.addTaskButton.innerHTML = '<i class="fas fa-plus"></i><span>Add Task</span>';
+        }
+      }
+
+      // Analytics functionality
+      async loadAnalytics() {
+        try {
+          const allTasks = await this.mockFirebase.getAllTasks();
+          
+          const totalTasks = allTasks.length;
+          const completedTasks = allTasks.filter(task => task.completed).length;
+          const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+          const tasksWithPhotos = allTasks.filter(task => task.photo).length;
+          
+          // Update stat cards
+          this.totalTasksEl.textContent = totalTasks;
+          this.completedTasksEl.textContent = completedTasks;
+          this.completionRateEl.textContent = `${completionRate}%`;
+          this.tasksWithPhotosEl.textContent = tasksWithPhotos;
+          
+          // Generate charts
+          this.generateProductivityChart(allTasks);
+          this.generatePriorityChart(allTasks);
+          
+        } catch (error) {
+          console.error("Error loading analytics:", error);
+          this.showNotification("❌ Failed to load analytics", "error");
+        }
+      }
+
+      generateProductivityChart(tasks) {
+        const ctx = document.getElementById('productivity-chart').getContext('2d');
+        
+        // Group tasks by date
+        const tasksByDate = {};
+        tasks.forEach(task => {
+          const date = task.date;
+          if (!tasksByDate[date]) {
+            tasksByDate[date] = { total: 0, completed: 0 };
+          }
+          tasksByDate[date].total++;
+          if (task.completed) {
+            tasksByDate[date].completed++;
+          }
+        });
+        
+        const dates = Object.keys(tasksByDate).sort();
+        const completionRates = dates.map(date => {
+          const data = tasksByDate[date];
+          return data.total > 0 ? (data.completed / data.total) * 100 : 0;
+        });
+        
+        new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: dates.map(date => new Date(date).toLocaleDateString()),
+            datasets: [{
+              label: 'Completion Rate (%)',
+              data: completionRates,
+              borderColor: '#667eea',
+              backgroundColor: 'rgba(102, 126, 234, 0.1)',
+              tension: 0.4,
+              fill: true
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                labels: {
+                  color: '#b8b8d1'
+                }
+              }
+            },
+            scales: {
+              x: {
+                ticks: {
+                  color: '#8b8ba7'
+                },
+                grid: {
+                  color: 'rgba(255, 255, 255, 0.1)'
+                }
+              },
+              y: {
+                ticks: {
+                  color: '#8b8ba7'
+                },
+                grid: {
+                  color: 'rgba(255, 255, 255, 0.1)'
+                },
+                min: 0,
+                max: 100
+              }
+            }
+          }
+        });
+      }
+
+      generatePriorityChart(tasks) {
+        const ctx = document.getElementById('priority-chart').getContext('2d');
+        
+        const priorityCounts = {
+          high: tasks.filter(task => task.priority === 'high').length,
+          medium: tasks.filter(task => task.priority === 'medium').length,
+          low: tasks.filter(task => task.priority === 'low').length
+        };
+        
+        new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+            labels: ['High Priority', 'Medium Priority', 'Low Priority'],
+            datasets: [{
+              data: [priorityCounts.high, priorityCounts.medium, priorityCounts.low],
+              backgroundColor: ['#fa709a', '#667eea', '#43e97b'],
+              borderWidth: 0
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: {
+                  color: '#b8b8d1',
+                  padding: 20
+                }
+              }
+            }
+          }
+        });
+      }
+
+      // Cache management methods
+      updateTaskInCache(taskId, updates) {
+        for (const [dateKey, tasks] of this.tasksCache.entries()) {
+          const taskIndex = tasks.findIndex(t => t.id === taskId);
+          if (taskIndex !== -1) {
+            tasks[taskIndex] = { ...tasks[taskIndex], ...updates };
+            break;
+          }
+        }
+      }
+
+      removeTaskFromCache(taskId) {
+        for (const [dateKey, tasks] of this.tasksCache.entries()) {
+          const taskIndex = tasks.findIndex(t => t.id === taskId);
+          if (taskIndex !== -1) {
+            tasks.splice(taskIndex, 1);
+            break;
+          }
+        }
+      }
+
+      addTaskToCache(dateKey, task) {
+        if (!this.tasksCache.has(dateKey)) {
+          this.tasksCache.set(dateKey, []);
+        }
+        this.tasksCache.get(dateKey).push(task);
+      }
+
+      // Utility methods
+      sanitizeInput(input) {
+        const div = document.createElement('div');
+        div.textContent = input;
+        return div.innerHTML;
+      }
+
+      refreshCurrentView() {
+        if (this.currentView === 'calendar') {
+          this.renderTasks(this.selectedDate);
+        } else if (this.currentView === 'admin') {
+          this.renderAdminTasksForDate(this.taskDateInput.value);
+        } else if (this.currentView === 'analytics') {
+          this.loadAnalytics();
+        }
+      }
+
+      renderHeaderDate(date) {
+        if (this.currentView === 'calendar') {
+          this.appTitle.textContent = date.toLocaleDateString('en-US', {
+            weekday: 'short',
+            month: 'short',
+            day: 'numeric'
+          });
+        }
+        
+        this.renderTasks(date);
+      }
+
+      initializeApp() {
+        // Set today's date as default
+        this.taskDateInput.valueAsDate = this.selectedDate;
+        
+        // Initialize calendar view
+        this.renderHeaderDate(this.selectedDate);
+        
+        // Set initial navigation button state
+        this.calendarNavBtn.classList.add('active');
+        
+        // Show welcome notification
+        setTimeout(() => {
+          this.showNotification("🎉 Welcome to TaskFlow Pro! Your advanced task manager with photo completion and analytics is ready.", "success");
+        }, 1000);
+        
+        console.log("🚀 Enhanced TaskFlow Pro initialized with photo completion and analytics");
+      }
+    }
+
+    // Initialize the application
+    const taskManager = new TaskManager();
+    
+    // Make it globally accessible for onclick handlers
+    window.taskManager = taskManager;
+  </script>
+</body>
+</html>
+
+
