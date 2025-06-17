@@ -1,0 +1,2012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pivot Admin Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --primary-light: #818cf8;
+      --secondary: #f59e0b;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --info: #3b82f6;
+      
+      --bg-primary: #0f0f23;
+      --bg-secondary: #1a1a2e;
+      --bg-tertiary: #16213e;
+      --bg-card: rgba(255, 255, 255, 0.03);
+      --bg-card-hover: rgba(255, 255, 255, 0.06);
+      --bg-glass: rgba(255, 255, 255, 0.05);
+      
+      --text-primary: #ffffff;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --text-accent: #6366f1;
+      
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.15);
+      --border-focus: #6366f1;
+      
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+      --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.3);
+      
+      --radius-sm: 6px;
+      --radius: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      --radius-full: 9999px;
+      
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-slow: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Animated background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(245, 158, 11, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+      z-index: -1;
+      animation: backgroundFloat 20s ease-in-out infinite;
+    }
+
+    @keyframes backgroundFloat {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      33% { transform: translate(-20px, -10px) rotate(1deg); }
+      66% { transform: translate(20px, 10px) rotate(-1deg); }
+    }
+
+    /* Login Screen */
+    .login-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+    }
+
+    .login-card {
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 3rem;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      box-shadow: var(--shadow-xl);
+    }
+
+    .login-logo {
+      width: 4rem;
+      height: 4rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 2rem;
+      font-size: 2rem;
+      color: white;
+      box-shadow: var(--shadow-glow);
+    }
+
+    .login-title {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .login-subtitle {
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      font-size: 1rem;
+    }
+
+    .login-form {
+      text-align: left;
+    }
+
+    .login-input {
+      width: 100%;
+      padding: 1rem;
+      background: var(--bg-secondary);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      transition: var(--transition);
+      text-align: center;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+
+    .login-input:focus {
+      outline: none;
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: var(--transition);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .login-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg), var(--shadow-glow);
+    }
+
+    .login-error {
+      color: var(--danger);
+      font-size: 0.875rem;
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    /* Header */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(15, 15, 35, 0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 0;
+    }
+
+    .header-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.25rem;
+      box-shadow: var(--shadow-glow);
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+    }
+
+    .user-badge {
+      background: var(--bg-glass);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .notification-badge {
+      background: var(--danger);
+      color: white;
+      border-radius: var(--radius-full);
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      min-width: 1.5rem;
+      text-align: center;
+    }
+
+    .logout-btn, .messages-btn {
+      background: var(--bg-glass);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: var(--transition);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logout-btn:hover, .messages-btn:hover {
+      background: var(--bg-card-hover);
+      color: var(--text-primary);
+    }
+
+    /* Main Content */
+    .main {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+      min-height: calc(100vh - 100px);
+    }
+
+    /* Cards */
+    .card {
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-lg);
+      transition: var(--transition-slow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light), var(--secondary));
+      opacity: 0.6;
+    }
+
+    .card:hover {
+      border-color: var(--border-hover);
+      box-shadow: var(--shadow-xl);
+      transform: translateY(-2px);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .card-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.125rem;
+    }
+
+    /* Admin Grid */
+    .admin-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .analytics-section {
+      grid-column: 1 / -1;
+    }
+
+    @media (max-width: 1024px) {
+      .admin-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Forms */
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      padding: 1rem;
+      background: var(--bg-secondary);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      font-size: 1rem;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+
+    .form-textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      outline: none;
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+      background: var(--bg-card);
+    }
+
+    .form-input::placeholder, .form-textarea::placeholder {
+      color: var(--text-muted);
+    }
+
+    .form-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: 0.5rem;
+    }
+
+    .form-checkbox input {
+      width: 1.25rem;
+      height: 1.25rem;
+      accent-color: var(--primary);
+    }
+
+    .form-checkbox label {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      text-transform: none;
+      letter-spacing: normal;
+      margin: 0;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      min-height: 3rem;
+      text-decoration: none;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg), var(--shadow-glow);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, var(--danger), #dc2626);
+      color: white;
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+      min-height: auto;
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    /* Task List */
+    .task-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .task-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .task-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      transform: scaleY(0);
+      transition: var(--transition);
+    }
+
+    .task-item:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-hover);
+      transform: translateX(8px);
+    }
+
+    .task-item:hover::before {
+      transform: scaleY(1);
+    }
+
+    .task-item.completed {
+      opacity: 0.7;
+    }
+
+    .task-item.completed::before {
+      background: linear-gradient(135deg, var(--success), #059669);
+      transform: scaleY(1);
+    }
+
+    .task-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .task-text {
+      font-size: 1rem;
+      line-height: 1.5;
+      color: var(--text-primary);
+      transition: var(--transition);
+      margin-bottom: 0.5rem;
+    }
+
+    .task-text.completed {
+      text-decoration: line-through;
+      color: var(--text-muted);
+      opacity: 0.7;
+    }
+
+    .task-details {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .task-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      min-width: 120px;
+    }
+
+    .task-actions {
+      display: flex;
+      gap: 0.5rem;
+      opacity: 0;
+      transition: var(--transition);
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .task-item:hover .task-actions {
+      opacity: 1;
+    }
+
+    /* Status Badges */
+    .status-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: var(--radius-full);
+      font-size: 0.625rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0.25rem;
+    }
+
+    .status-not-started {
+      background: rgba(148, 163, 184, 0.2);
+      color: #cbd5e1;
+    }
+
+    .status-in-progress {
+      background: rgba(59, 130, 246, 0.2);
+      color: #93c5fd;
+    }
+
+    .status-blocked {
+      background: rgba(239, 68, 68, 0.2);
+      color: #fca5a5;
+    }
+
+    .status-completed {
+      background: rgba(16, 185, 129, 0.2);
+      color: #6ee7b7;
+    }
+
+    .priority-badge {
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius-full);
+      font-size: 0.625rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .priority-high {
+      background: rgba(239, 68, 68, 0.2);
+      color: #fca5a5;
+    }
+
+    .priority-medium {
+      background: rgba(245, 158, 11, 0.2);
+      color: #fcd34d;
+    }
+
+    .priority-low {
+      background: rgba(16, 185, 129, 0.2);
+      color: #6ee7b7;
+    }
+
+    .photo-required-badge {
+      background: rgba(245, 158, 11, 0.2);
+      color: #fcd34d;
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius-full);
+      font-size: 0.625rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .task-photo {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      object-fit: cover;
+      cursor: pointer;
+      border: 2px solid var(--border);
+      transition: var(--transition);
+    }
+
+    .task-photo:hover {
+      border-color: var(--border-hover);
+      transform: scale(1.1);
+    }
+
+    .timestamp-info {
+      font-size: 0.625rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+      font-style: italic;
+    }
+
+    /* Empty States */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--text-muted);
+    }
+
+    .empty-state-icon {
+      width: 5rem;
+      height: 5rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border-radius: var(--radius-xl);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 2rem;
+      font-size: 2rem;
+      color: white;
+      opacity: 0.8;
+    }
+
+    .empty-state-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--text-secondary);
+    }
+
+    .empty-state-description {
+      font-size: 1rem;
+      line-height: 1.6;
+      max-width: 400px;
+      margin: 0 auto 2rem;
+    }
+
+    /* Analytics */
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--bg-glass);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      text-align: center;
+      transition: var(--transition);
+      backdrop-filter: blur(20px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    }
+
+    .stat-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+    }
+
+    .chart-container {
+      background: var(--bg-glass);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      backdrop-filter: blur(20px);
+    }
+
+    .chart-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .chart-canvas {
+      position: relative;
+      height: 300px;
+    }
+
+    .charts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    /* Messages Panel */
+    .messages-panel {
+      position: fixed;
+      top: 0;
+      right: -400px;
+      width: 400px;
+      height: 100vh;
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      border-left: 1px solid var(--border);
+      transition: var(--transition-slow);
+      z-index: 1500;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .messages-panel.open {
+      right: 0;
+    }
+
+    .messages-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .messages-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      flex: 1;
+    }
+
+    .messages-close {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .messages-close:hover {
+      color: var(--text-primary);
+    }
+
+    .messages-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem;
+    }
+
+    .message {
+      background: var(--bg-card);
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      margin-bottom: 1rem;
+      border-left: 3px solid var(--primary);
+    }
+
+    .message.unread {
+      border-left-color: var(--secondary);
+      background: rgba(245, 158, 11, 0.1);
+    }
+
+    .message-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .message-from {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .message-time {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .message-content {
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Photo Modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      backdrop-filter: blur(10px);
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--bg-glass);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      max-width: 90vw;
+      max-height: 90vh;
+      overflow: auto;
+      position: relative;
+      backdrop-filter: blur(20px);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .modal-close:hover {
+      color: var(--text-primary);
+    }
+
+    .modal img {
+      max-width: 100%;
+      height: auto;
+      border-radius: var(--radius-md);
+    }
+
+    /* Notifications */
+    .notification {
+      position: fixed;
+      top: 6rem;
+      right: 2rem;
+      padding: 1rem 1.5rem;
+      border-radius: var(--radius-md);
+      color: white;
+      font-weight: 500;
+      font-size: 0.875rem;
+      box-shadow: var(--shadow-lg);
+      transform: translateX(100%);
+      transition: var(--transition-slow);
+      z-index: 1001;
+      max-width: 350px;
+      backdrop-filter: blur(20px);
+    }
+
+    .notification.show {
+      transform: translateX(0);
+    }
+
+    .notification.success {
+      background: linear-gradient(135deg, var(--success), #059669);
+    }
+
+    .notification.error {
+      background: linear-gradient(135deg, var(--danger), #dc2626);
+    }
+
+    .notification.info {
+      background: linear-gradient(135deg, var(--info), #2563eb);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .main {
+        padding: 1rem;
+      }
+
+      .card {
+        padding: 1.5rem;
+      }
+
+      .analytics-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      }
+
+      .admin-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .charts-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .task-actions {
+        opacity: 1;
+        width: 100%;
+        justify-content: flex-end;
+        margin-top: 0.5rem;
+      }
+
+      .messages-panel {
+        width: 100%;
+        right: -100%;
+      }
+    }
+
+    /* Focus styles for accessibility */
+    button:focus-visible, input:focus-visible, select:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-secondary);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--border-hover);
+    }
+  </style>
+</head>
+<body>
+  <!-- Login Screen -->
+  <div id="login-screen" class="login-screen">
+    <div class="login-card">
+      <div class="login-logo">
+        <i class="fas fa-chart-line"></i>
+      </div>
+      <h1 class="login-title">Admin Dashboard</h1>
+      <p class="login-subtitle">Manage tasks and view analytics</p>
+      
+      <form class="login-form" id="login-form">
+        <input type="password" class="login-input" id="admin-passcode" placeholder="Admin Passcode" maxlength="8">
+        
+        <button type="submit" class="login-btn">
+          <i class="fas fa-sign-in-alt"></i>
+          Login
+        </button>
+        
+        <div id="login-error" class="login-error" style="display: none;"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Main Application -->
+  <div id="main-app" style="display: none;">
+    <header class="header">
+      <div class="header-content">
+        <a href="#" class="logo">
+          <div class="logo-icon">
+            <i class="fas fa-chart-line"></i>
+          </div>
+          <span>Admin Dashboard</span>
+        </a>
+        
+        <div class="user-info">
+          <div class="user-badge">
+            <i class="fas fa-user-shield"></i>
+            <span>Administrator</span>
+          </div>
+          <button class="messages-btn" onclick="adminDashboard.toggleMessages()">
+            <i class="fas fa-comments"></i>
+            Messages
+            <span id="unread-count" class="notification-badge" style="display: none;">0</span>
+          </button>
+          <button class="logout-btn" onclick="adminDashboard.logout()">
+            <i class="fas fa-sign-out-alt"></i>
+            Logout
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Messages Panel -->
+    <div id="messages-panel" class="messages-panel">
+      <div class="messages-header">
+        <h3 class="messages-title">Messages</h3>
+        <button class="messages-close" onclick="adminDashboard.toggleMessages()">&times;</button>
+      </div>
+      <div class="messages-content" id="messages-content">
+        <!-- Messages will be populated here -->
+      </div>
+    </div>
+
+    <div id="notification" class="notification">
+      <span id="notification-message"></span>
+    </div>
+
+    <!-- Photo Modal -->
+    <div id="photo-modal" class="modal">
+      <div class="modal-content">
+        <button class="modal-close" onclick="adminDashboard.closePhotoModal()">&times;</button>
+        <img id="modal-photo" src="" alt="Task completion photo">
+        <div id="modal-photo-info" style="margin-top: 1rem; text-align: center; color: var(--text-secondary);"></div>
+      </div>
+    </div>
+
+    <main class="main">
+      <div class="admin-grid">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon">
+              <i class="fas fa-plus-circle"></i>
+            </div>
+            <h2 class="card-title">Create New Task</h2>
+          </div>
+          
+          <form id="task-form">
+            <div class="form-group">
+              <label class="form-label" for="task-date">
+                <i class="fas fa-calendar"></i>
+                Date
+              </label>
+              <input type="date" id="task-date" class="form-input" required />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="assigned-employee">
+                <i class="fas fa-user"></i>
+                Assign to Employee
+              </label>
+              <select id="assigned-employee" class="form-select" required>
+                <option value="">Select Employee</option>
+                <option value="emp001">John Smith (ID: 001)</option>
+                <option value="emp002">Sarah Johnson (ID: 002)</option>
+                <option value="emp003">Mike Davis (ID: 003)</option>
+                <option value="emp004">Lisa Wilson (ID: 004)</option>
+                <option value="emp005">David Brown (ID: 005)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="task-description">
+                <i class="fas fa-edit"></i>
+                Task Description
+              </label>
+              <textarea 
+                id="task-description" 
+                class="form-textarea"
+                placeholder="Enter detailed task description..." 
+                maxlength="500"
+                required
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="task-priority">
+                <i class="fas fa-flag"></i>
+                Priority
+              </label>
+              <select id="task-priority" class="form-select">
+                <option value="low">Low Priority</option>
+                <option value="medium" selected>Medium Priority</option>
+                <option value="high">High Priority</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <div class="form-checkbox">
+                <input type="checkbox" id="require-photo" />
+                <label for="require-photo">Require photo completion proof</label>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="create-task-btn">
+              <i class="fas fa-plus"></i>
+              <span>Create Task</span>
+            </button>
+          </form>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon">
+              <i class="fas fa-list-check"></i>
+            </div>
+            <h2 class="card-title">Tasks for Selected Date</h2>
+          </div>
+          
+          <div id="admin-tasks" class="task-list"></div>
+          
+          <div id="admin-empty" class="empty-state">
+            <div class="empty-state-icon">
+              <i class="fas fa-clipboard-list"></i>
+            </div>
+            <h3 class="empty-state-title">No tasks for this date</h3>
+            <p class="empty-state-description">
+              Create your first task using the form on the left to get started.
+            </p>
+          </div>
+        </div>
+
+        <!-- Analytics Section -->
+        <div class="analytics-section">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-icon">
+                <i class="fas fa-chart-bar"></i>
+              </div>
+              <h2 class="card-title">Analytics Dashboard</h2>
+            </div>
+            
+            <div class="analytics-grid">
+              <div class="stat-card">
+                <div class="stat-value" id="total-tasks">0</div>
+                <div class="stat-label">Total Tasks</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="completed-tasks">0</div>
+                <div class="stat-label">Completed</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="completion-rate">0%</div>
+                <div class="stat-label">Completion Rate</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="active-tasks">0</div>
+                <div class="stat-label">Active Tasks</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="tasks-with-photos">0</div>
+                <div class="stat-label">Photo Completions</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="high-priority-tasks">0</div>
+                <div class="stat-label">High Priority</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="overdue-tasks">0</div>
+                <div class="stat-label">Overdue</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="avg-completion-time">0h</div>
+                <div class="stat-label">Avg Completion</div>
+              </div>
+            </div>
+
+            <div class="charts-grid">
+              <div class="chart-container">
+                <h3 class="chart-title">
+                  <i class="fas fa-chart-line"></i>
+                  Daily Completion Trends
+                </h3>
+                <div class="chart-canvas">
+                  <canvas id="completion-chart"></canvas>
+                </div>
+              </div>
+
+              <div class="chart-container">
+                <h3 class="chart-title">
+                  <i class="fas fa-chart-pie"></i>
+                  Task Priority Distribution
+                </h3>
+                <div class="chart-canvas">
+                  <canvas id="priority-chart"></canvas>
+                </div>
+              </div>
+
+              <div class="chart-container">
+                <h3 class="chart-title">
+                  <i class="fas fa-users"></i>
+                  Employee Performance
+                </h3>
+                <div class="chart-canvas">
+                  <canvas id="employee-chart"></canvas>
+                </div>
+              </div>
+
+              <div class="chart-container">
+                <h3 class="chart-title">
+                  <i class="fas fa-clock"></i>
+                  Task Status Overview
+                </h3>
+                <div class="chart-canvas">
+                  <canvas id="status-chart"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    class AdminDashboard {
+      constructor() {
+        this.employees = {
+          'emp001': { name: 'John Smith', passcode: '123456' },
+          'emp002': { name: 'Sarah Johnson', passcode: '234567' },
+          'emp003': { name: 'Mike Davis', passcode: '345678' },
+          'emp004': { name: 'Lisa Wilson', passcode: '456789' },
+          'emp005': { name: 'David Brown', passcode: '567890' }
+        };
+        this.charts = {};
+        
+        this.initializeElements();
+        this.attachEventListeners();
+        this.initializeSharedData();
+        this.startDataSync();
+      }
+
+      initializeElements() {
+        // Login elements
+        this.loginScreen = document.getElementById('login-screen');
+        this.mainApp = document.getElementById('main-app');
+        this.loginForm = document.getElementById('login-form');
+        this.adminPasscode = document.getElementById('admin-passcode');
+        this.loginError = document.getElementById('login-error');
+        
+        // Header elements
+        this.unreadCountEl = document.getElementById('unread-count');
+        
+        // Messages elements
+        this.messagesPanel = document.getElementById('messages-panel');
+        this.messagesContent = document.getElementById('messages-content');
+        
+        // Form elements
+        this.taskForm = document.getElementById('task-form');
+        this.taskDate = document.getElementById('task-date');
+        this.assignedEmployee = document.getElementById('assigned-employee');
+        this.taskDescription = document.getElementById('task-description');
+        this.taskPriority = document.getElementById('task-priority');
+        this.requirePhoto = document.getElementById('require-photo');
+        this.createTaskBtn = document.getElementById('create-task-btn');
+        
+        // Display elements
+        this.adminTasks = document.getElementById('admin-tasks');
+        this.adminEmpty = document.getElementById('admin-empty');
+        
+        // Analytics elements
+        this.totalTasksEl = document.getElementById('total-tasks');
+        this.completedTasksEl = document.getElementById('completed-tasks');
+        this.completionRateEl = document.getElementById('completion-rate');
+        this.activeTasksEl = document.getElementById('active-tasks');
+        this.tasksWithPhotosEl = document.getElementById('tasks-with-photos');
+        this.highPriorityTasksEl = document.getElementById('high-priority-tasks');
+        this.overdueTasksEl = document.getElementById('overdue-tasks');
+        this.avgCompletionTimeEl = document.getElementById('avg-completion-time');
+        
+        // Modal elements
+        this.photoModal = document.getElementById('photo-modal');
+        this.modalPhoto = document.getElementById('modal-photo');
+        this.modalPhotoInfo = document.getElementById('modal-photo-info');
+        
+        // Notification
+        this.notification = document.getElementById('notification');
+        this.notificationMessage = document.getElementById('notification-message');
+      }
+
+      attachEventListeners() {
+        this.loginForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          this.handleLogin();
+        });
+
+        this.taskForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          this.createTask();
+        });
+
+        this.taskDate.addEventListener('change', () => {
+          this.updateAdminTasks();
+        });
+
+        // Set today as default date
+        this.taskDate.valueAsDate = new Date();
+      }
+
+      initializeSharedData() {
+        // Initialize shared data structure if it doesn't exist
+        if (!localStorage.getItem('pivotData')) {
+          const initialData = {
+            tasks: {},
+            messages: [],
+            lastUpdated: new Date().toISOString()
+          };
+          
+          // Add some sample data
+          const today = new Date();
+          const yesterday = new Date(today);
+          yesterday.setDate(yesterday.getDate() - 1);
+          
+          const sampleTasks = [
+            {
+              id: '1',
+              description: 'Complete inventory check for warehouse section A',
+              priority: 'high',
+              assignedTo: 'emp001',
+              assignedBy: 'admin',
+              requirePhoto: true,
+              completed: true,
+              status: 'completed',
+              createdAt: yesterday.toISOString(),
+              completedAt: new Date(yesterday.getTime() + 2 * 60 * 60 * 1000).toISOString(),
+              photo: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCIgZmlsbD0iIzZmNzNkOSIvPjx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBkeT0iLjNlbSI+SW52ZW50b3J5IFBob3RvPC90ZXh0Pjwvc3ZnPg==',
+              photoMetadata: {
+                uploadedBy: 'emp001',
+                uploadedAt: new Date(yesterday.getTime() + 2 * 60 * 60 * 1000).toISOString(),
+                verified: true
+              }
+            },
+            {
+              id: '2',
+              description: 'Clean and sanitize customer service area',
+              priority: 'medium',
+              assignedTo: 'emp002',
+              assignedBy: 'admin',
+              requirePhoto: false,
+              completed: false,
+              status: 'in-progress',
+              createdAt: today.toISOString(),
+              completedAt: null,
+              photo: null
+            }
+          ];
+
+          // Add sample tasks to storage
+          sampleTasks.forEach(task => {
+            const dateKey = task.createdAt.split('T')[0];
+            if (!initialData.tasks[dateKey]) {
+              initialData.tasks[dateKey] = [];
+            }
+            initialData.tasks[dateKey].push(task);
+          });
+
+          localStorage.setItem('pivotData', JSON.stringify(initialData));
+        }
+      }
+
+      startDataSync() {
+        // Sync data every 2 seconds
+        setInterval(() => {
+          this.syncData();
+        }, 2000);
+      }
+
+      syncData() {
+        this.updateAdminTasks();
+        this.updateAnalytics();
+        this.updateUnreadCount();
+      }
+
+      getSharedData() {
+        const data = localStorage.getItem('pivotData');
+        return data ? JSON.parse(data) : { tasks: {}, messages: [], lastUpdated: new Date().toISOString() };
+      }
+
+      updateSharedData(data) {
+        data.lastUpdated = new Date().toISOString();
+        localStorage.setItem('pivotData', JSON.stringify(data));
+      }
+
+      handleLogin() {
+        const passcode = this.adminPasscode.value.trim();
+        
+        // FIXED: Compare with actual passcode value, not property name
+        if (passcode === 'admin123') {
+          this.login();
+        } else {
+          this.showLoginError('Invalid admin passcode');
+        }
+      }
+
+      login() {
+        this.loginScreen.style.display = 'none';
+        this.mainApp.style.display = 'block';
+        
+        this.updateAdminTasks();
+        this.updateAnalytics();
+        this.updateUnreadCount();
+        this.showNotification('Welcome, Administrator!', 'success');
+      }
+
+      logout() {
+        this.loginScreen.style.display = 'flex';
+        this.mainApp.style.display = 'none';
+        
+        // Reset login form
+        this.adminPasscode.value = '';
+        this.hideLoginError();
+        
+        // Close messages panel
+        this.messagesPanel.classList.remove('open');
+      }
+
+      showLoginError(message) {
+        this.loginError.textContent = message;
+        this.loginError.style.display = 'block';
+      }
+
+      hideLoginError() {
+        this.loginError.style.display = 'none';
+      }
+
+      createTask() {
+        const dateKey = this.taskDate.value;
+        const employeeId = this.assignedEmployee.value;
+        const description = this.taskDescription.value.trim();
+        const priority = this.taskPriority.value;
+        const requirePhoto = this.requirePhoto.checked;
+
+        if (!description || !dateKey || !employeeId) {
+          this.showNotification('Please fill in all required fields', 'error');
+          return;
+        }
+
+        const task = {
+          id: Date.now().toString(),
+          description: description,
+          priority: priority,
+          assignedTo: employeeId,
+          assignedBy: 'admin',
+          requirePhoto: requirePhoto,
+          completed: false,
+          status: 'not-started',
+          createdAt: new Date().toISOString(),
+          completedAt: null,
+          photo: null
+        };
+
+        // Add task to shared storage
+        const data = this.getSharedData();
+        if (!data.tasks[dateKey]) {
+          data.tasks[dateKey] = [];
+        }
+        data.tasks[dateKey].push(task);
+
+        // Send notification message to employee
+        const employeeName = this.employees[employeeId]?.name || 'Unknown';
+        this.addMessage('admin', employeeId, `New task assigned: "${description}"`);
+
+        this.updateSharedData(data);
+
+        // Clear form
+        this.taskDescription.value = '';
+        this.taskPriority.value = 'medium';
+        this.assignedEmployee.value = '';
+        this.requirePhoto.checked = false;
+
+        // Update displays
+        this.updateAdminTasks();
+        this.updateAnalytics();
+
+        this.showNotification(`Task assigned to ${employeeName}: "${description}"`, 'success');
+      }
+
+      deleteTask(taskId, dateKey) {
+        if (!confirm('Are you sure you want to delete this task?')) {
+          return;
+        }
+
+        const data = this.getSharedData();
+        const tasks = data.tasks[dateKey] || [];
+        const taskIndex = tasks.findIndex(t => t.id === taskId);
+        
+        if (taskIndex === -1) return;
+
+        const task = tasks[taskIndex];
+        tasks.splice(taskIndex, 1);
+
+        this.updateSharedData(data);
+        this.updateAdminTasks();
+        this.updateAnalytics();
+
+        this.showNotification(`Task deleted: "${task.description}"`, 'info');
+      }
+
+      showPhotoModal(photoUrl, task) {
+        this.modalPhoto.src = photoUrl;
+        
+        let timestampInfo = '';
+        if (task.photoMetadata) {
+          const uploadTime = new Date(task.photoMetadata.uploadedAt).toLocaleString();
+          const uploaderName = this.employees[task.photoMetadata.uploadedBy]?.name || 'Unknown';
+          timestampInfo = `<br><small>📅 Uploaded: ${uploadTime}<br>👤 By: ${uploaderName}<br>✅ Timestamp Verified</small>`;
+        }
+        
+        this.modalPhotoInfo.innerHTML = `
+          <strong>${task.description}</strong><br>
+          Completed: ${task.completedAt ? new Date(task.completedAt).toLocaleString() : 'N/A'}<br>
+          Employee: ${this.employees[task.assignedTo]?.name || 'Unknown'}
+          ${timestampInfo}
+        `;
+        this.photoModal.classList.add('show');
+      }
+
+      closePhotoModal() {
+        this.photoModal.classList.remove('show');
+      }
+
+      addMessage(from, to, content) {
+        const data = this.getSharedData();
+        const message = {
+          id: Date.now().toString(),
+          from: 'Administrator',
+          to: to,
+          content: content,
+          time: new Date().toISOString(),
+          read: false,
+          isAdmin: true
+        };
+
+        data.messages.push(message);
+        this.updateSharedData(data);
+      }
+
+      toggleMessages() {
+        this.messagesPanel.classList.toggle('open');
+        if (this.messagesPanel.classList.contains('open')) {
+          this.updateMessagesPanel();
+          this.markMessagesAsRead();
+        }
+      }
+
+      updateMessagesPanel() {
+        const data = this.getSharedData();
+        const relevantMessages = data.messages.filter(msg => 
+          msg.to === 'admin' || msg.from === 'Administrator'
+        );
+
+        this.messagesContent.innerHTML = '';
+        
+        if (relevantMessages.length === 0) {
+          this.messagesContent.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 2rem;">No messages yet</div>';
+          return;
+        }
+
+        relevantMessages.reverse().forEach(message => {
+          const messageEl = document.createElement('div');
+          messageEl.className = `message ${!message.read ? 'unread' : ''}`;
+          messageEl.innerHTML = `
+            <div class="message-header">
+              <span class="message-from">${message.from}</span>
+              <span class="message-time">${new Date(message.time).toLocaleString()}</span>
+            </div>
+            <div class="message-content">${message.content}</div>
+          `;
+          this.messagesContent.appendChild(messageEl);
+        });
+      }
+
+      markMessagesAsRead() {
+        const data = this.getSharedData();
+        data.messages.forEach(msg => {
+          if (msg.to === 'admin') {
+            msg.read = true;
+          }
+        });
+        this.updateSharedData(data);
+        this.updateUnreadCount();
+      }
+
+      updateUnreadCount() {
+        const data = this.getSharedData();
+        const unreadMessages = data.messages.filter(msg => 
+          !msg.read && msg.to === 'admin'
+        );
+
+        const unreadCount = unreadMessages.length;
+        
+        if (unreadCount > 0) {
+          this.unreadCountEl.textContent = unreadCount;
+          this.unreadCountEl.style.display = 'inline';
+        } else {
+          this.unreadCountEl.style.display = 'none';
+        }
+      }
+
+      updateAdminTasks() {
+        const dateKey = this.taskDate.value;
+        const data = this.getSharedData();
+        const tasks = data.tasks[dateKey] || [];
+
+        if (tasks.length === 0) {
+          this.adminTasks.style.display = 'none';
+          this.adminEmpty.style.display = 'block';
+        } else {
+          this.adminTasks.style.display = 'block';
+          this.adminEmpty.style.display = 'none';
+          this.renderTasks(tasks, dateKey);
+        }
+      }
+
+      renderTasks(tasks, dateKey) {
+        this.adminTasks.innerHTML = '';
+
+        tasks.forEach(task => {
+          const taskEl = document.createElement('div');
+          taskEl.className = `task-item ${task.completed ? 'completed' : ''}`;
+          
+          const employeeName = this.employees[task.assignedTo]?.name || 'Unknown';
+          
+          taskEl.innerHTML = `
+            <div class="task-content">
+              <div class="task-text ${task.completed ? 'completed' : ''}">${task.description}</div>
+              <div class="task-details">
+                Assigned to: ${employeeName} | 
+                Created: ${new Date(task.createdAt).toLocaleString()}
+                ${task.completedAt ? ` | Completed: ${new Date(task.completedAt).toLocaleString()}` : ''}
+              </div>
+            </div>
+            <div class="task-meta">
+              <span class="priority-badge priority-${task.priority}">${task.priority}</span>
+              <span class="status-badge status-${task.status}">${task.status.replace('-', ' ')}</span>
+              ${task.requirePhoto ? '<span class="photo-required-badge">Photo Required</span>' : ''}
+              ${task.photo && task.photoMetadata ? '<div class="timestamp-info">📅 Timestamp Verified</div>' : ''}
+              <div class="task-actions">
+                ${task.photo ? `<img src="${task.photo}" class="task-photo" onclick="adminDashboard.showPhotoModal('${task.photo}', ${JSON.stringify(task).replace(/"/g, '&quot;')})" alt="Task photo">` : ''}
+                <button class="btn btn-danger" onclick="adminDashboard.deleteTask('${task.id}', '${dateKey}')"><i class="fas fa-trash"></i></button>
+              </div>
+            </div>
+          `;
+
+          this.adminTasks.appendChild(taskEl);
+        });
+      }
+
+      updateAnalytics() {
+        const data = this.getSharedData();
+        let totalTasks = 0;
+        let completedTasks = 0;
+        let tasksWithPhotos = 0;
+        let highPriorityTasks = 0;
+        let overdueCount = 0;
+        let completionTimes = [];
+        const employeeStats = {};
+        const dailyCompletions = {};
+        const priorityStats = { high: 0, medium: 0, low: 0 };
+        const statusStats = { 'not-started': 0, 'in-progress': 0, 'blocked': 0, 'completed': 0 };
+
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+
+        for (const [dateKey, tasks] of Object.entries(data.tasks)) {
+          const taskDate = new Date(dateKey);
+          
+          tasks.forEach(task => {
+            totalTasks++;
+            
+            if (task.completed) {
+              completedTasks++;
+              
+              if (task.completedAt && task.createdAt) {
+                const completionTime = (new Date(task.completedAt) - new Date(task.createdAt)) / (1000 * 60 * 60); // hours
+                completionTimes.push(completionTime);
+              }
+              
+              const completionDate = task.completedAt ? new Date(task.completedAt).toDateString() : taskDate.toDateString();
+              dailyCompletions[completionDate] = (dailyCompletions[completionDate] || 0) + 1;
+            }
+            
+            if (task.photo) tasksWithPhotos++;
+            if (task.priority === 'high') highPriorityTasks++;
+            if (!task.completed && taskDate < today) overdueCount++;
+            
+            priorityStats[task.priority]++;
+            statusStats[task.status]++;
+            
+            // Employee stats
+            const empId = task.assignedTo;
+            if (!employeeStats[empId]) {
+              employeeStats[empId] = { total: 0, completed: 0 };
+            }
+            employeeStats[empId].total++;
+            if (task.completed) employeeStats[empId].completed++;
+          });
+        }
+
+        const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+        const activeTasks = totalTasks - completedTasks;
+        const avgCompletionTime = completionTimes.length > 0 ? 
+          Math.round(completionTimes.reduce((a, b) => a + b, 0) / completionTimes.length) : 0;
+
+        // Update stat cards
+        this.totalTasksEl.textContent = totalTasks;
+        this.completedTasksEl.textContent = completedTasks;
+        this.completionRateEl.textContent = `${completionRate}%`;
+        this.activeTasksEl.textContent = activeTasks;
+        this.tasksWithPhotosEl.textContent = tasksWithPhotos;
+        this.highPriorityTasksEl.textContent = highPriorityTasks;
+        this.overdueTasksEl.textContent = overdueCount;
+        this.avgCompletionTimeEl.textContent = `${avgCompletionTime}h`;
+
+        // Update charts
+        this.updateCompletionChart(dailyCompletions);
+        this.updatePriorityChart(priorityStats);
+        this.updateEmployeeChart(employeeStats);
+        this.updateStatusChart(statusStats);
+      }
+
+      updateCompletionChart(dailyCompletions) {
+        const ctx = document.getElementById('completion-chart').getContext('2d');
+        
+        if (this.charts.completion) {
+          this.charts.completion.destroy();
+        }
+        
+        const dates = Object.keys(dailyCompletions).sort();
+        const completions = dates.map(date => dailyCompletions[date]);
+        
+        this.charts.completion = new Chart(ctx, {
+          type: 'line',
+          data: {
+            labels: dates.map(date => new Date(date).toLocaleDateString()),
+            datasets: [{
+              label: 'Tasks Completed',
+              data: completions,
+              borderColor: '#6366f1',
+              backgroundColor: 'rgba(99, 102, 241, 0.1)',
+              tension: 0.4,
+              fill: true,
+              pointBackgroundColor: '#6366f1',
+              pointBorderColor: '#ffffff',
+              pointBorderWidth: 2,
+              pointRadius: 6
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                labels: { color: '#cbd5e1' }
+              }
+            },
+            scales: {
+              x: {
+                ticks: { color: '#94a3b8' },
+                grid: { color: 'rgba(255, 255, 255, 0.1)' }
+              },
+              y: {
+                ticks: { color: '#94a3b8' },
+                grid: { color: 'rgba(255, 255, 255, 0.1)' }
+              }
+            }
+          }
+        });
+      }
+
+      updatePriorityChart(priorityStats) {
+        const ctx = document.getElementById('priority-chart').getContext('2d');
+        
+        if (this.charts.priority) {
+          this.charts.priority.destroy();
+        }
+        
+        this.charts.priority = new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+            labels: ['High Priority', 'Medium Priority', 'Low Priority'],
+            datasets: [{
+              data: [priorityStats.high, priorityStats.medium, priorityStats.low],
+              backgroundColor: ['#ef4444', '#f59e0b', '#10b981'],
+              borderWidth: 0,
+              hoverOffset: 10
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: { color: '#cbd5e1', padding: 20 }
+              }
+            }
+          }
+        });
+      }
+
+      updateEmployeeChart(employeeStats) {
+        const ctx = document.getElementById('employee-chart').getContext('2d');
+        
+        if (this.charts.employee) {
+          this.charts.employee.destroy();
+        }
+        
+        const employees = Object.keys(employeeStats);
+        const completionRates = employees.map(empId => {
+          const stats = employeeStats[empId];
+          return stats.total > 0 ? Math.round((stats.completed / stats.total) * 100) : 0;
+        });
+        const employeeNames = employees.map(empId => this.employees[empId]?.name || 'Unknown');
+        
+        this.charts.employee = new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: employeeNames,
+            datasets: [{
+              label: 'Completion Rate (%)',
+              data: completionRates,
+              backgroundColor: '#6366f1',
+              borderRadius: 8,
+              borderSkipped: false
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                labels: { color: '#cbd5e1' }
+              }
+            },
+            scales: {
+              x: {
+                ticks: { color: '#94a3b8' },
+                grid: { color: 'rgba(255, 255, 255, 0.1)' }
+              },
+              y: {
+                ticks: { color: '#94a3b8' },
+                grid: { color: 'rgba(255, 255, 255, 0.1)' },
+                min: 0,
+                max: 100
+              }
+            }
+          }
+        });
+      }
+
+      updateStatusChart(statusStats) {
+        const ctx = document.getElementById('status-chart').getContext('2d');
+        
+        if (this.charts.status) {
+          this.charts.status.destroy();
+        }
+        
+        this.charts.status = new Chart(ctx, {
+          type: 'polarArea',
+          data: {
+            labels: ['Not Started', 'In Progress', 'Blocked', 'Completed'],
+            datasets: [{
+              data: [statusStats['not-started'], statusStats['in-progress'], statusStats['blocked'], statusStats['completed']],
+              backgroundColor: ['#94a3b8', '#3b82f6', '#ef4444', '#10b981'],
+              borderWidth: 2,
+              borderColor: '#ffffff'
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: 'bottom',
+                labels: { color: '#cbd5e1', padding: 15 }
+              }
+            },
+            scales: {
+              r: {
+                ticks: { color: '#94a3b8' },
+                grid: { color: 'rgba(255, 255, 255, 0.1)' }
+              }
+            }
+          }
+        });
+      }
+
+      showNotification(message, type = 'success') {
+        this.notificationMessage.textContent = message;
+        this.notification.className = `notification ${type} show`;
+        
+        setTimeout(() => {
+          this.notification.classList.remove('show');
+        }, 3000);
+      }
+    }
+
+    // Initialize Admin Dashboard
+    const adminDashboard = new AdminDashboard();
+    
+    // Make it globally accessible
+    window.adminDashboard = adminDashboard;
+  </script>
+</body>
+</html>
+
