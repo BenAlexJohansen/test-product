@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pivot - Business Intelligence Task Manager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --primary-light: #818cf8;
+      --secondary: #f59e0b;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --info: #3b82f6;
+      
+      --bg-primary: #0f0f23;
+      --bg-secondary: #1a1a2e;
+      --bg-tertiary: #16213e;
+      --bg-card: rgba(255, 255, 255, 0.03);
+      --bg-card-hover: rgba(255, 255, 255, 0.06);
+      --bg-glass: rgba(255, 255, 255, 0.05);
+      
+      --text-primary: #ffffff;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --text-accent: #6366f1;
+      
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.15);
+      --border-focus: #6366f1;
+      
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+      --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.3);
+      
+      --radius-sm: 6px;
+      --radius: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      --radius-full: 9999px;
+      
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-slow: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Animated background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(245, 158, 11, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+      z-index: -1;
+      animation: backgroundFloat 20s ease-in-out infinite;
+    }
+
+    @keyframes backgroundFloat {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      33% { transform: translate(-20px, -10px) rotate(1deg); }
+      66% { transform: translate(20px, 10px) rotate(-1deg); }
+    }
+
+    /* Header */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(15, 15, 35, 0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 0;
+    }
+
+    .header-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.25rem;
+      box-shadow: var(--shadow-glow);
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 0.25rem;
+      background: var(--bg-glass);
+      padding: 0.25rem;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-tab {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: transparent;
+      color: var(--text-secondary);
+      border: none;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.875rem;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-tab::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      opacity: 0;
+      transition: var(--transition);
+      z-index: -1;
+    }
+
+    .nav-tab:hover::before {
+      opacity: 0.1;
+    }
+
+    .nav-tab.active {
+      color: white;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      box-shadow: var(--shadow-glow);
+    }
+
+    .nav-tab.active::before {
+      opacity: 0;
+    }
+
+    .date-controls {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .date-btn {
+      width: 2.5rem;
+      height: 2.5rem;
+      border: none;
+      background: var(--bg-glass);
+      color: var(--text-secondary);
+      border-radius: var(--radius);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+    }
+
+    .date-btn:hover {
+      background: var(--bg-card-hover);
+      color: var(--text-primary);
+      border-color: var(--border-hover);
+      transform: translateY(-1px);
+    }
+
+    /* Main Content */
+    .main {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+      min-height: calc(100vh - 100px);
+    }
+
+    .view {
+      display: none;
+      animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .view.active {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Cards */
+    .card {
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-lg);
+      transition: var(--transition-slow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light), var(--secondary));
+      opacity: 0.6;
+    }
+
+    .card:hover {
+      border-color: var(--border-hover);
+      box-shadow: var(--shadow-xl);
+      transform: translateY(-2px);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .card-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.125rem;
+    }
+
+    /* Forms */
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-label {
+      display: block;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .form-input, .form-select {
+      width: 100%;
+      padding: 1rem;
+      background: var(--bg-secondary);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      font-size: 1rem;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+
+    .form-input:focus, .form-select:focus {
+      outline: none;
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+      background: var(--bg-card);
+    }
+
+    .form-input::placeholder {
+      color: var(--text-muted);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      min-height: 3rem;
+      text-decoration: none;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg), var(--shadow-glow);
+    }
+
+    .btn-secondary {
+      background: var(--bg-glass);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background: var(--bg-card-hover);
+      border-color: var(--border-hover);
+      transform: translateY(-1px);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, var(--danger), #dc2626);
+      color: white;
+      padding: 0.5rem 1rem;
+      font-size: 0.75rem;
+      min-height: auto;
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+
+    /* Empty States */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--text-muted);
+    }
+
+    .empty-state-icon {
+      width: 5rem;
+      height: 5rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border-radius: var(--radius-xl);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 2rem;
+      font-size: 2rem;
+      color: white;
+      opacity: 0.8;
+    }
+
+    .empty-state-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--text-secondary);
+    }
+
+    .empty-state-description {
+      font-size: 1rem;
+      line-height: 1.6;
+      max-width: 400px;
+      margin: 0 auto 2rem;
+    }
+
+    /* Task List */
+    .task-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .task-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .task-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      transform: scaleY(0);
+      transition: var(--transition);
+    }
+
+    .task-item:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-hover);
+      transform: translateX(8px);
+    }
+
+    .task-item:hover::before {
+      transform: scaleY(1);
+    }
+
+    .task-checkbox {
+      width: 1.25rem;
+      height: 1.25rem;
+      cursor: pointer;
+      accent-color: var(--primary);
+      transform: scale(1.2);
+    }
+
+    .task-text {
+      flex: 1;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: var(--text-primary);
+      transition: var(--transition);
+    }
+
+    .task-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.25rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .priority-badge {
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius-full);
+      font-size: 0.625rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .priority-high {
+      background: rgba(239, 68, 68, 0.2);
+      color: #fca5a5;
+    }
+
+    .priority-medium {
+      background: rgba(245, 158, 11, 0.2);
+      color: #fcd34d;
+    }
+
+    .priority-low {
+      background: rgba(16, 185, 129, 0.2);
+      color: #6ee7b7;
+    }
+
+    /* Analytics */
+    .analytics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--bg-glass);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      text-align: center;
+      transition: var(--transition);
+      backdrop-filter: blur(20px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light));
+    }
+
+    .stat-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-xl);
+    }
+
+    .stat-value {
+      font-size: 3rem;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-weight: 600;
+    }
+
+    /* Admin Grid */
+    .admin-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    @media (max-width: 1024px) {
+      .admin-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Notifications */
+    .notification {
+      position: fixed;
+      top: 6rem;
+      right: 2rem;
+      padding: 1rem 1.5rem;
+      border-radius: var(--radius-md);
+      color: white;
+      font-weight: 500;
+      font-size: 0.875rem;
+      box-shadow: var(--shadow-lg);
+      transform: translateX(100%);
+      transition: var(--transition-slow);
+      z-index: 1001;
+      max-width: 350px;
+      backdrop-filter: blur(20px);
+    }
+
+    .notification.show {
+      transform: translateX(0);
+    }
+
+    .notification.success {
+      background: linear-gradient(135deg, var(--success), #059669);
+    }
+
+    .notification.error {
+      background: linear-gradient(135deg, var(--danger), #dc2626);
+    }
+
+    .notification.info {
+      background: linear-gradient(135deg, var(--info), #2563eb);
+    }
+
+    /* Loading */
+    .loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      padding: 3rem;
+      color: var(--text-secondary);
+    }
+
+    .loading-spinner {
+      width: 2rem;
+      height: 2rem;
+      border: 2px solid var(--border);
+      border-top: 2px solid var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .main {
+        padding: 1rem;
+      }
+
+      .card {
+        padding: 1.5rem;
+      }
+
+      .analytics-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-tabs {
+        width: 100%;
+      }
+
+      .nav-tab {
+        flex: 1;
+        justify-content: center;
+      }
+    }
+
+    /* Focus styles for accessibility */
+    button:focus-visible, input:focus-visible, select:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-secondary);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--border-hover);
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="header-content">
+      <a href="#" class="logo">
+        <div class="logo-icon">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <span>Pivot</span>
+      </a>
+      
+      <div class="nav-tabs">
+        <button class="nav-tab active" id="calendar-tab" onclick="pivot.showView('calendar')">
+          <i class="fas fa-calendar-day"></i>
+          <span>Calendar</span>
+        </button>
+        <button class="nav-tab" id="admin-tab" onclick="pivot.showView('admin')">
+          <i class="fas fa-plus-circle"></i>
+          <span>Admin</span>
+        </button>
+        <button class="nav-tab" id="analytics-tab" onclick="pivot.showView('analytics')">
+          <i class="fas fa-chart-bar"></i>
+          <span>Analytics</span>
+        </button>
+      </div>
+      
+      <div class="date-controls" id="date-controls" style="display: none;">
+        <button class="date-btn" id="prev-day" onclick="pivot.navigateDate(-1)">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="date-btn" id="next-day" onclick="pivot.navigateDate(1)">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div id="notification" class="notification">
+    <span id="notification-message"></span>
+  </div>
+
+  <main class="main">
+    <!-- Calendar View -->
+    <div id="calendar-view" class="view active">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">
+            <i class="fas fa-calendar-check"></i>
+          </div>
+          <h2 class="card-title">
+            Tasks for <span id="current-date"></span>
+          </h2>
+        </div>
+        
+        <div id="calendar-loading" class="loading" style="display: none;">
+          <div class="loading-spinner"></div>
+          <span>Loading tasks...</span>
+        </div>
+        
+        <div id="calendar-tasks" class="task-list"></div>
+        
+        <div id="calendar-empty" class="empty-state">
+          <div class="empty-state-icon">
+            <i class="fas fa-calendar-plus"></i>
+          </div>
+          <h3 class="empty-state-title">No tasks scheduled</h3>
+          <p class="empty-state-description">
+            You're all set for today! Create your first task using the Admin panel to get started with Pivot.
+          </p>
+          <button class="btn btn-primary" onclick="pivot.showView('admin')">
+            <i class="fas fa-plus"></i>
+            Create First Task
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin View -->
+    <div id="admin-view" class="view">
+      <div class="admin-grid">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon">
+              <i class="fas fa-plus-circle"></i>
+            </div>
+            <h2 class="card-title">Create New Task</h2>
+          </div>
+          
+          <form id="task-form">
+            <div class="form-group">
+              <label class="form-label" for="task-date">
+                <i class="fas fa-calendar"></i>
+                Date
+              </label>
+              <input type="date" id="task-date" class="form-input" required />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="task-description">
+                <i class="fas fa-edit"></i>
+                Task Description
+              </label>
+              <input 
+                type="text" 
+                id="task-description" 
+                class="form-input"
+                placeholder="Enter task description..." 
+                maxlength="200"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="task-priority">
+                <i class="fas fa-flag"></i>
+                Priority
+              </label>
+              <select id="task-priority" class="form-select">
+                <option value="low">Low Priority</option>
+                <option value="medium" selected>Medium Priority</option>
+                <option value="high">High Priority</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary" id="create-task-btn">
+              <i class="fas fa-plus"></i>
+              <span>Create Task</span>
+            </button>
+          </form>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-icon">
+              <i class="fas fa-list-check"></i>
+            </div>
+            <h2 class="card-title">Tasks for Selected Date</h2>
+          </div>
+          
+          <div id="admin-loading" class="loading" style="display: none;">
+            <div class="loading-spinner"></div>
+            <span>Loading tasks...</span>
+          </div>
+          
+          <div id="admin-tasks" class="task-list"></div>
+          
+          <div id="admin-empty" class="empty-state">
+            <div class="empty-state-icon">
+              <i class="fas fa-clipboard-list"></i>
+            </div>
+            <h3 class="empty-state-title">No tasks for this date</h3>
+            <p class="empty-state-description">
+              Create your first task using the form on the left to get started.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Analytics View -->
+    <div id="analytics-view" class="view">
+      <div class="analytics-grid">
+        <div class="stat-card">
+          <div class="stat-value" id="total-tasks">0</div>
+          <div class="stat-label">Total Tasks</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="completed-tasks">0</div>
+          <div class="stat-label">Completed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="completion-rate">0%</div>
+          <div class="stat-label">Completion Rate</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="active-tasks">0</div>
+          <div class="stat-label">Active Tasks</div>
+        </div>
+      </div>
+
+      <div id="analytics-empty" class="empty-state">
+        <div class="empty-state-icon">
+          <i class="fas fa-chart-line"></i>
+        </div>
+        <h3 class="empty-state-title">No analytics data yet</h3>
+        <p class="empty-state-description">
+          Create and complete some tasks to see your productivity analytics and insights here.
+        </p>
+        <button class="btn btn-primary" onclick="pivot.showView('admin')">
+          <i class="fas fa-plus"></i>
+          Create Your First Task
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    class Pivot {
+      constructor() {
+        this.currentDate = new Date();
+        this.currentView = 'calendar';
+        this.tasks = new Map(); // dateKey -> tasks array
+        
+        this.initializeElements();
+        this.attachEventListeners();
+        this.updateCurrentDate();
+        this.showView('calendar');
+      }
+
+      initializeElements() {
+        // Navigation elements
+        this.calendarTab = document.getElementById('calendar-tab');
+        this.adminTab = document.getElementById('admin-tab');
+        this.analyticsTab = document.getElementById('analytics-tab');
+        this.dateControls = document.getElementById('date-controls');
+        
+        // Form elements
+        this.taskForm = document.getElementById('task-form');
+        this.taskDate = document.getElementById('task-date');
+        this.taskDescription = document.getElementById('task-description');
+        this.taskPriority = document.getElementById('task-priority');
+        this.createTaskBtn = document.getElementById('create-task-btn');
+        
+        // Display elements
+        this.currentDateEl = document.getElementById('current-date');
+        this.calendarTasks = document.getElementById('calendar-tasks');
+        this.adminTasks = document.getElementById('admin-tasks');
+        this.calendarEmpty = document.getElementById('calendar-empty');
+        this.adminEmpty = document.getElementById('admin-empty');
+        this.analyticsEmpty = document.getElementById('analytics-empty');
+        
+        // Analytics elements
+        this.totalTasksEl = document.getElementById('total-tasks');
+        this.completedTasksEl = document.getElementById('completed-tasks');
+        this.completionRateEl = document.getElementById('completion-rate');
+        this.activeTasksEl = document.getElementById('active-tasks');
+        
+        // Notification
+        this.notification = document.getElementById('notification');
+        this.notificationMessage = document.getElementById('notification-message');
+      }
+
+      attachEventListeners() {
+        this.taskForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          this.createTask();
+        });
+
+        this.taskDate.addEventListener('change', () => {
+          this.updateAdminTasks();
+        });
+
+        // Set today as default date
+        this.taskDate.valueAsDate = new Date();
+      }
+
+      formatDateKey(date) {
+        return date.toISOString().split('T')[0];
+      }
+
+      formatDisplayDate(date) {
+        return date.toLocaleDateString('en-US', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+      }
+
+      updateCurrentDate() {
+        this.currentDateEl.textContent = this.formatDisplayDate(this.currentDate);
+      }
+
+      showView(viewName) {
+        // Hide all views
+        document.querySelectorAll('.view').forEach(view => {
+          view.classList.remove('active');
+        });
+        
+        // Remove active class from all tabs
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+          tab.classList.remove('active');
+        });
+        
+        // Show selected view and activate tab
+        document.getElementById(`${viewName}-view`).classList.add('active');
+        document.getElementById(`${viewName}-tab`).classList.add('active');
+        
+        // Show/hide date controls for calendar view
+        this.dateControls.style.display = viewName === 'calendar' ? 'flex' : 'none';
+        
+        this.currentView = viewName;
+        
+        // Update content based on view
+        if (viewName === 'calendar') {
+          this.updateCalendarTasks();
+        } else if (viewName === 'admin') {
+          this.updateAdminTasks();
+        } else if (viewName === 'analytics') {
+          this.updateAnalytics();
+        }
+      }
+
+      navigateDate(direction) {
+        this.currentDate.setDate(this.currentDate.getDate() + direction);
+        this.updateCurrentDate();
+        this.updateCalendarTasks();
+      }
+
+      createTask() {
+        const dateKey = this.taskDate.value;
+        const description = this.taskDescription.value.trim();
+        const priority = this.taskPriority.value;
+
+        if (!description || !dateKey) {
+          this.showNotification('Please fill in all required fields', 'error');
+          return;
+        }
+
+        const task = {
+          id: Date.now().toString(),
+          description: description,
+          priority: priority,
+          completed: false,
+          createdAt: new Date(),
+          completedAt: null
+        };
+
+        // Add task to storage
+        if (!this.tasks.has(dateKey)) {
+          this.tasks.set(dateKey, []);
+        }
+        this.tasks.get(dateKey).push(task);
+
+        // Clear form
+        this.taskDescription.value = '';
+        this.taskPriority.value = 'medium';
+
+        // Update displays
+        this.updateAdminTasks();
+        if (this.formatDateKey(this.currentDate) === dateKey) {
+          this.updateCalendarTasks();
+        }
+        this.updateAnalytics();
+
+        this.showNotification(`Task created: "${description}"`, 'success');
+      }
+
+      toggleTask(taskId, dateKey) {
+        const tasks = this.tasks.get(dateKey);
+        if (!tasks) return;
+
+        const task = tasks.find(t => t.id === taskId);
+        if (!task) return;
+
+        task.completed = !task.completed;
+        task.completedAt = task.completed ? new Date() : null;
+
+        // Update displays
+        this.updateCalendarTasks();
+        this.updateAdminTasks();
+        this.updateAnalytics();
+
+        this.showNotification(
+          task.completed ? 
+          `Task completed: "${task.description}"` : 
+          `Task reopened: "${task.description}"`,
+          'success'
+        );
+      }
+
+      deleteTask(taskId, dateKey) {
+        if (!confirm('Are you sure you want to delete this task?')) {
+          return;
+        }
+
+        const tasks = this.tasks.get(dateKey);
+        if (!tasks) return;
+
+        const taskIndex = tasks.findIndex(t => t.id === taskId);
+        if (taskIndex === -1) return;
+
+        const task = tasks[taskIndex];
+        tasks.splice(taskIndex, 1);
+
+        // Update displays
+        this.updateCalendarTasks();
+        this.updateAdminTasks();
+        this.updateAnalytics();
+
+        this.showNotification(`Task deleted: "${task.description}"`, 'info');
+      }
+
+      updateCalendarTasks() {
+        const dateKey = this.formatDateKey(this.currentDate);
+        const tasks = this.tasks.get(dateKey) || [];
+
+        if (tasks.length === 0) {
+          this.calendarTasks.style.display = 'none';
+          this.calendarEmpty.style.display = 'block';
+        } else {
+          this.calendarTasks.style.display = 'block';
+          this.calendarEmpty.style.display = 'none';
+          this.renderTasks(tasks, this.calendarTasks, dateKey, false);
+        }
+      }
+
+      updateAdminTasks() {
+        const dateKey = this.taskDate.value;
+        const tasks = this.tasks.get(dateKey) || [];
+
+        if (tasks.length === 0) {
+          this.adminTasks.style.display = 'none';
+          this.adminEmpty.style.display = 'block';
+        } else {
+          this.adminTasks.style.display = 'block';
+          this.adminEmpty.style.display = 'none';
+          this.renderTasks(tasks, this.adminTasks, dateKey, true);
+        }
+      }
+
+      renderTasks(tasks, container, dateKey, showDelete = false) {
+        container.innerHTML = '';
+
+        tasks.forEach(task => {
+          const taskEl = document.createElement('div');
+          taskEl.className = `task-item ${task.completed ? 'completed' : ''}`;
+          
+          taskEl.innerHTML = `
+            <input 
+              type="checkbox" 
+              class="task-checkbox" 
+              ${task.completed ? 'checked' : ''}
+              onchange="pivot.toggleTask('${task.id}', '${dateKey}')"
+            />
+            <span class="task-text ${task.completed ? 'completed' : ''}">${task.description}</span>
+            <div class="task-meta">
+              <span>${new Date(task.createdAt).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}</span>
+              <span class="priority-badge priority-${task.priority}">${task.priority}</span>
+              ${showDelete ? `<button class="btn btn-danger" onclick="pivot.deleteTask('${task.id}', '${dateKey}')" style="margin-top: 0.5rem; padding: 0.25rem 0.5rem; font-size: 0.75rem;"><i class="fas fa-trash"></i></button>` : ''}
+            </div>
+          `;
+
+          container.appendChild(taskEl);
+        });
+      }
+
+      updateAnalytics() {
+        let totalTasks = 0;
+        let completedTasks = 0;
+
+        for (const tasks of this.tasks.values()) {
+          totalTasks += tasks.length;
+          completedTasks += tasks.filter(t => t.completed).length;
+        }
+
+        const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+        const activeTasks = totalTasks - completedTasks;
+
+        this.totalTasksEl.textContent = totalTasks;
+        this.completedTasksEl.textContent = completedTasks;
+        this.completionRateEl.textContent = `${completionRate}%`;
+        this.activeTasksEl.textContent = activeTasks;
+
+        // Show/hide empty state
+        if (totalTasks === 0) {
+          this.analyticsEmpty.style.display = 'block';
+          document.querySelector('.analytics-grid').style.display = 'none';
+        } else {
+          this.analyticsEmpty.style.display = 'none';
+          document.querySelector('.analytics-grid').style.display = 'grid';
+        }
+      }
+
+      showNotification(message, type = 'success') {
+        this.notificationMessage.textContent = message;
+        this.notification.className = `notification ${type} show`;
+        
+        setTimeout(() => {
+          this.notification.classList.remove('show');
+        }, 3000);
+      }
+    }
+
+    // Initialize Pivot
+    const pivot = new Pivot();
+    
+    // Make it globally accessible
+    window.pivot = pivot;
+  </script>
+</body>
+</html>
+
