@@ -272,7 +272,7 @@
       text-align: center;
     }
 
-    .logout-btn, .messages-btn, .refresh-btn {
+    .logout-btn, .messages-btn, .refresh-btn, .chat-btn {
       background: var(--bg-glass);
       color: var(--text-secondary);
       border: 1px solid var(--border);
@@ -287,7 +287,7 @@
       font-size: 0.875rem;
     }
 
-    .logout-btn:hover, .messages-btn:hover, .refresh-btn:hover {
+    .logout-btn:hover, .messages-btn:hover, .refresh-btn:hover, .chat-btn:hover {
       background: var(--bg-card-hover);
       color: var(--text-primary);
     }
@@ -683,7 +683,7 @@
     }
 
     .status-blocked {
-      background: rgba(239, 68, 68, 0.2);
+      background: rgba(220, 38, 38, 0.2);
       color: #fca5a5;
     }
 
@@ -968,7 +968,130 @@
       gap: 0.5rem;
     }
 
-    /* Messages Panel */
+    /* Chat System */
+    .chat-panel {
+      position: fixed;
+      top: 0;
+      right: -500px;
+      width: 500px;
+      height: 100vh;
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      border-left: 1px solid var(--border);
+      transition: var(--transition-slow);
+      z-index: 1500;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-panel.open {
+      right: 0;
+    }
+
+    .chat-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .chat-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      flex: 1;
+    }
+
+    .chat-close {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .chat-close:hover {
+      color: var(--text-primary);
+    }
+
+    .chat-employee-select {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .chat-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .chat-message {
+      max-width: 80%;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-md);
+      position: relative;
+    }
+
+    .chat-message.admin {
+      align-self: flex-end;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+    }
+
+    .chat-message.employee {
+      align-self: flex-start;
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+
+    .chat-message-time {
+      font-size: 0.625rem;
+      opacity: 0.7;
+      margin-top: 0.25rem;
+    }
+
+    .chat-input-area {
+      padding: 1rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .chat-input {
+      flex: 1;
+      padding: 0.75rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      resize: none;
+      min-height: 40px;
+      max-height: 120px;
+    }
+
+    .chat-send {
+      padding: 0.75rem 1rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .chat-send:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Messages Panel (Legacy) */
     .messages-panel {
       position: fixed;
       top: 0;
@@ -1179,7 +1302,7 @@
         margin-top: 0.5rem;
       }
 
-      .messages-panel {
+      .messages-panel, .chat-panel {
         width: 100%;
         right: -100%;
       }
@@ -1253,8 +1376,13 @@
             <i class="fas fa-sync-alt"></i>
             Refresh Analytics
           </button>
-          <button class="messages-btn" onclick="adminDashboard.toggleMessages()">
+          <button class="chat-btn" onclick="adminDashboard.toggleChat()">
             <i class="fas fa-comments"></i>
+            Chat
+            <span id="chat-unread-count" class="notification-badge" style="display: none;">0</span>
+          </button>
+          <button class="messages-btn" onclick="adminDashboard.toggleMessages()">
+            <i class="fas fa-envelope"></i>
             Messages
             <span id="unread-count" class="notification-badge" style="display: none;">0</span>
           </button>
@@ -1266,10 +1394,41 @@
       </div>
     </header>
 
-    <!-- Messages Panel -->
+    <!-- Enhanced Chat Panel -->
+    <div id="chat-panel" class="chat-panel">
+      <div class="chat-header">
+        <h3 class="chat-title">Chat with Employees</h3>
+        <button class="chat-close" onclick="adminDashboard.toggleChat()">&times;</button>
+      </div>
+      
+      <div class="chat-employee-select">
+        <label class="form-label" for="chat-employee-dropdown">
+          <i class="fas fa-user"></i>
+          Select Employee to Chat With
+        </label>
+        <select id="chat-employee-dropdown" class="form-select" onchange="adminDashboard.selectChatEmployee(this.value)">
+          <option value="">Choose an employee...</option>
+        </select>
+      </div>
+      
+      <div class="chat-content" id="chat-content">
+        <div style="text-align: center; color: var(--text-muted); padding: 2rem;">
+          Select an employee to start chatting
+        </div>
+      </div>
+      
+      <div class="chat-input-area" id="chat-input-area" style="display: none;">
+        <textarea id="chat-input" class="chat-input" placeholder="Type your message..." rows="1"></textarea>
+        <button class="chat-send" onclick="adminDashboard.sendChatMessage()">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Messages Panel (Legacy) -->
     <div id="messages-panel" class="messages-panel">
       <div class="messages-header">
-        <h3 class="messages-title">Messages</h3>
+        <h3 class="messages-title">All Messages</h3>
         <button class="messages-close" onclick="adminDashboard.toggleMessages()">&times;</button>
       </div>
       <div class="messages-content" id="messages-content">
@@ -1566,6 +1725,7 @@
         this.employees = {};
         this.charts = {};
         this.analyticsLastUpdated = null;
+        this.currentChatEmployee = null;
         
         this.initializeElements();
         this.attachEventListeners();
@@ -1584,7 +1744,15 @@
         
         // Header elements
         this.unreadCountEl = document.getElementById('unread-count');
+        this.chatUnreadCountEl = document.getElementById('chat-unread-count');
         this.analyticsUpdatedEl = document.getElementById('analytics-updated');
+        
+        // Chat elements
+        this.chatPanel = document.getElementById('chat-panel');
+        this.chatEmployeeDropdown = document.getElementById('chat-employee-dropdown');
+        this.chatContent = document.getElementById('chat-content');
+        this.chatInputArea = document.getElementById('chat-input-area');
+        this.chatInput = document.getElementById('chat-input');
         
         // Messages elements
         this.messagesPanel = document.getElementById('messages-panel');
@@ -1654,6 +1822,14 @@
           this.updateTaskViews();
         });
 
+        // Chat input handling
+        this.chatInput.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            this.sendChatMessage();
+          }
+        });
+
         // Set today as default dates
         const today = new Date().toISOString().split('T')[0];
         this.taskDate.value = today;
@@ -1665,6 +1841,7 @@
           const initialData = {
             tasks: {},
             messages: [],
+            chats: {},
             employees: {
               'emp001': { name: 'John Smith', passcode: '123456' },
               'emp002': { name: 'Sarah Johnson', passcode: '234567' },
@@ -1688,7 +1865,10 @@
       syncData() {
         this.updateTaskViews();
         this.updateUnreadCount();
-        // Note: Analytics are NOT auto-updated - only on manual refresh
+        this.updateChatUnreadCount();
+        if (this.currentChatEmployee) {
+          this.loadChatMessages(this.currentChatEmployee);
+        }
       }
 
       getSharedData() {
@@ -1696,6 +1876,7 @@
         return data ? JSON.parse(data) : { 
           tasks: {}, 
           messages: [], 
+          chats: {},
           employees: {},
           lastUpdated: new Date().toISOString() 
         };
@@ -1710,6 +1891,7 @@
         const data = this.getSharedData();
         this.employees = data.employees || {};
         this.updateEmployeeDropdown();
+        this.updateChatEmployeeDropdown();
         this.updateUserList();
       }
 
@@ -1721,6 +1903,17 @@
           option.value = id;
           option.textContent = `${employee.name} (ID: ${id.replace('emp', '')})`;
           this.assignedEmployee.appendChild(option);
+        });
+      }
+
+      updateChatEmployeeDropdown() {
+        this.chatEmployeeDropdown.innerHTML = '<option value="">Choose an employee...</option>';
+        
+        Object.entries(this.employees).forEach(([id, employee]) => {
+          const option = document.createElement('option');
+          option.value = id;
+          option.textContent = employee.name;
+          this.chatEmployeeDropdown.appendChild(option);
         });
       }
 
@@ -1736,6 +1929,10 @@
               <div class="user-id">ID: ${id} | Passcode: ${employee.passcode}</div>
             </div>
             <div class="user-actions">
+              <button class="btn btn-secondary" onclick="adminDashboard.startChatWithEmployee('${id}')">
+                <i class="fas fa-comments"></i>
+                Chat
+              </button>
               <button class="btn btn-danger" onclick="adminDashboard.deleteEmployee('${id}')">
                 <i class="fas fa-trash"></i>
                 Delete
@@ -1782,6 +1979,7 @@
 
         // Update UI
         this.updateEmployeeDropdown();
+        this.updateChatEmployeeDropdown();
         this.updateUserList();
 
         // Clear form
@@ -1809,9 +2007,134 @@
 
         // Update UI
         this.updateEmployeeDropdown();
+        this.updateChatEmployeeDropdown();
         this.updateUserList();
 
         this.showNotification(`Employee ${employee.name} deleted`, 'info');
+      }
+
+      // Chat System Methods
+      toggleChat() {
+        this.chatPanel.classList.toggle('open');
+        if (this.chatPanel.classList.contains('open')) {
+          this.updateChatUnreadCount();
+        }
+      }
+
+      startChatWithEmployee(employeeId) {
+        this.chatEmployeeDropdown.value = employeeId;
+        this.selectChatEmployee(employeeId);
+        this.toggleChat();
+      }
+
+      selectChatEmployee(employeeId) {
+        if (!employeeId) {
+          this.currentChatEmployee = null;
+          this.chatInputArea.style.display = 'none';
+          this.chatContent.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 2rem;">Select an employee to start chatting</div>';
+          return;
+        }
+
+        this.currentChatEmployee = employeeId;
+        this.chatInputArea.style.display = 'flex';
+        this.loadChatMessages(employeeId);
+      }
+
+      loadChatMessages(employeeId) {
+        const data = this.getSharedData();
+        const chatKey = `admin_${employeeId}`;
+        const messages = data.chats[chatKey] || [];
+
+        this.chatContent.innerHTML = '';
+
+        if (messages.length === 0) {
+          this.chatContent.innerHTML = `
+            <div style="text-align: center; color: var(--text-muted); padding: 2rem;">
+              No messages yet. Start the conversation with ${this.employees[employeeId]?.name || 'this employee'}!
+            </div>
+          `;
+          return;
+        }
+
+        messages.forEach(message => {
+          const messageEl = document.createElement('div');
+          messageEl.className = `chat-message ${message.from === 'admin' ? 'admin' : 'employee'}`;
+          messageEl.innerHTML = `
+            <div>${message.content}</div>
+            <div class="chat-message-time">${new Date(message.time).toLocaleString()}</div>
+          `;
+          this.chatContent.appendChild(messageEl);
+        });
+
+        // Scroll to bottom
+        this.chatContent.scrollTop = this.chatContent.scrollHeight;
+
+        // Mark messages as read
+        this.markChatMessagesAsRead(chatKey);
+      }
+
+      sendChatMessage() {
+        const content = this.chatInput.value.trim();
+        if (!content || !this.currentChatEmployee) return;
+
+        const data = this.getSharedData();
+        const chatKey = `admin_${this.currentChatEmployee}`;
+        
+        if (!data.chats[chatKey]) {
+          data.chats[chatKey] = [];
+        }
+
+        const message = {
+          id: Date.now().toString(),
+          from: 'admin',
+          to: this.currentChatEmployee,
+          content: content,
+          time: new Date().toISOString(),
+          read: false
+        };
+
+        data.chats[chatKey].push(message);
+        this.updateSharedData(data);
+
+        // Clear input
+        this.chatInput.value = '';
+
+        // Reload messages
+        this.loadChatMessages(this.currentChatEmployee);
+
+        this.showNotification(`Message sent to ${this.employees[this.currentChatEmployee]?.name}`, 'success');
+      }
+
+      markChatMessagesAsRead(chatKey) {
+        const data = this.getSharedData();
+        if (data.chats[chatKey]) {
+          data.chats[chatKey].forEach(msg => {
+            if (msg.to === 'admin') {
+              msg.read = true;
+            }
+          });
+          this.updateSharedData(data);
+        }
+      }
+
+      updateChatUnreadCount() {
+        const data = this.getSharedData();
+        let unreadCount = 0;
+
+        Object.values(data.chats).forEach(chatMessages => {
+          chatMessages.forEach(msg => {
+            if (!msg.read && msg.to === 'admin') {
+              unreadCount++;
+            }
+          });
+        });
+
+        if (unreadCount > 0) {
+          this.chatUnreadCountEl.textContent = unreadCount;
+          this.chatUnreadCountEl.style.display = 'inline';
+        } else {
+          this.chatUnreadCountEl.style.display = 'none';
+        }
       }
 
       handleLogin() {
@@ -1831,6 +2154,7 @@
         this.loadEmployees();
         this.updateTaskViews();
         this.updateUnreadCount();
+        this.updateChatUnreadCount();
         this.showNotification('Welcome, Administrator!', 'success');
       }
 
@@ -1842,8 +2166,9 @@
         this.adminPasscode.value = '';
         this.hideLoginError();
         
-        // Close messages panel
+        // Close panels
         this.messagesPanel.classList.remove('open');
+        this.chatPanel.classList.remove('open');
       }
 
       showLoginError(message) {
@@ -2522,4 +2847,6 @@
   </script>
 </body>
 </html>
+
+
 
