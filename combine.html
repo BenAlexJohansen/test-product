@@ -114,6 +114,12 @@
       width: 90%;
       text-align: center;
       box-shadow: var(--shadow-xl);
+      animation: cardAppear 0.5s ease-out;
+    }
+
+    @keyframes cardAppear {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
     }
 
     .login-logo {
@@ -128,6 +134,13 @@
       font-size: 2rem;
       color: white;
       box-shadow: var(--shadow-glow);
+      animation: logoPulse 2s infinite;
+    }
+
+    @keyframes logoPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
     }
 
     .login-title {
@@ -359,6 +372,7 @@
     .card-header {
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 1rem;
       margin-bottom: 2rem;
       padding-bottom: 1rem;
@@ -824,6 +838,151 @@
       font-style: italic;
     }
 
+    /* Bulk Actions */
+    .bulk-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      padding: 0.5rem;
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .bulk-select {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Recurrence Filter */
+    .filter-row {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-group {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    /* Employee Overview */
+    .employee-overview {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+
+    .employee-card {
+      background: var(--bg-secondary);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      border: 1px solid var(--border);
+      transition: var(--transition);
+    }
+
+    .employee-card:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-3px);
+    }
+
+    .employee-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .employee-avatar {
+      width: 3rem;
+      height: 3rem;
+      border-radius: var(--radius-full);
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+    }
+
+    .employee-name {
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .employee-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .stat-item {
+      background: var(--bg-glass);
+      padding: 0.75rem;
+      border-radius: var(--radius-md);
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 1.25rem;
+      font-weight: 800;
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .employee-tasks {
+      max-height: 200px;
+      overflow-y: auto;
+      padding-right: 0.5rem;
+    }
+
+    .employee-task {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .employee-task:last-child {
+      border-bottom: none;
+    }
+
+    .task-status-indicator {
+      width: 10px;
+      height: 10px;
+      border-radius: var(--radius-full);
+    }
+
+    .task-status-indicator.completed {
+      background: var(--success);
+    }
+
+    .task-status-indicator.pending {
+      background: var(--warning);
+    }
+
+    .task-status-indicator.not-started {
+      background: var(--text-muted);
+    }
+
+    .task-status-indicator.in-progress {
+      background: var(--primary-light);
+    }
+
     /* Empty States */
     .empty-state {
       text-align: center;
@@ -898,10 +1057,6 @@
     .stat-value {
       font-size: 2rem;
       font-weight: 800;
-      background: linear-gradient(135deg, var(--primary), var(--primary-light));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
       margin-bottom: 0.5rem;
       line-height: 1;
     }
@@ -956,51 +1111,6 @@
       font-size: 0.875rem;
       color: var(--text-muted);
       font-style: italic;
-    }
-
-    /* User Management */
-    .user-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .user-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 1rem;
-      margin-bottom: 0.5rem;
-      background: var(--bg-secondary);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-md);
-      transition: var(--transition);
-    }
-
-    .user-item:hover {
-      background: var(--bg-card-hover);
-      border-color: var(--border-hover);
-    }
-
-    .user-info-item {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-    }
-
-    .user-name {
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-
-    .user-id {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
-
-    .user-actions {
-      display: flex;
-      gap: 0.5rem;
     }
 
     /* Chat System */
@@ -1567,6 +1677,20 @@
             </form>
           </div>
 
+          <!-- Employee Task Overview -->
+          <div class="card full-width">
+            <div class="card-header">
+              <div class="card-icon">
+                <i class="fas fa-user-tie"></i>
+              </div>
+              <h2 class="card-title">Employee Task Overview</h2>
+            </div>
+            
+            <div id="employee-task-overview" class="employee-overview">
+              <!-- Employee cards will be populated here -->
+            </div>
+          </div>
+
           <!-- Task Management -->
           <div class="card full-width">
             <div class="card-header">
@@ -1576,12 +1700,39 @@
               <h2 class="card-title">Task Management</h2>
             </div>
             
-            <div style="margin-bottom: 2rem;">
-              <label class="form-label" for="admin-view-date">
-                <i class="fas fa-calendar-day"></i>
-                View Tasks for Date
-              </label>
-              <input type="date" id="admin-view-date" class="form-input" style="max-width: 200px;" />
+            <div class="filter-row">
+              <div class="filter-group">
+                <label class="form-label" for="admin-view-date">
+                  <i class="fas fa-calendar-day"></i>
+                  View Tasks for Date
+                </label>
+                <input type="date" id="admin-view-date" class="form-input" />
+              </div>
+              
+              <div class="filter-group">
+                <label class="form-label" for="recurrence-filter">
+                  <i class="fas fa-filter"></i>
+                  Filter by Recurrence
+                </label>
+                <select id="recurrence-filter" class="form-select" onchange="pivotApp.filterTasksByRecurrence()">
+                  <option value="all">All Tasks</option>
+                  <option value="none">Non-Recurring</option>
+                  <option value="daily">Daily</option>
+                  <option value="weekly">Weekly</option>
+                  <option value="monthly">Monthly</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="bulk-actions">
+              <div class="bulk-select">
+                <input type="checkbox" id="select-all-tasks" onchange="pivotApp.toggleSelectAllTasks(this)">
+                <label for="select-all-tasks">Select All</label>
+              </div>
+              <button class="btn btn-danger" id="delete-selected-tasks" onclick="pivotApp.deleteSelectedTasks()" disabled>
+                <i class="fas fa-trash"></i>
+                Delete Selected
+              </button>
             </div>
 
             <div id="admin-pending-approvals-section" style="margin-bottom: 2rem;">
@@ -1620,6 +1771,22 @@
               </div>
               <div class="last-updated" id="analytics-updated">
                 Last updated: Never
+              </div>
+            </div>
+            
+            <div class="filter-row">
+              <div class="filter-group">
+                <label class="form-label" for="analytics-recurrence-filter">
+                  <i class="fas fa-filter"></i>
+                  Filter by Recurrence
+                </label>
+                <select id="analytics-recurrence-filter" class="form-select" onchange="pivotApp.updateAnalytics()">
+                  <option value="all">All Tasks</option>
+                  <option value="none">Non-Recurring</option>
+                  <option value="daily">Daily</option>
+                  <option value="weekly">Weekly</option>
+                  <option value="monthly">Monthly</option>
+                </select>
               </div>
             </div>
             
@@ -1740,18 +1907,21 @@
   <script>
     class PivotCombinedApp {
       constructor() {
-        this.currentView = null; // admin or employee
+        this.currentView = null;
         this.currentAdmin = null;
         this.currentEmployee = null;
         this.employees = {};
         this.charts = {};
         this.analyticsLastUpdated = null;
-        this.currentChatEmployee = null; // For admin chat
+        this.currentChatEmployee = null;
+        this.selectedTasks = {};
+        this.selectedRecurrenceFilter = "all";
+        this.selectedAnalyticsFilter = "all";
         
         this.initializeElements();
         this.attachEventListeners();
-        this.initializeSharedData(); // Ensure this is called before loadEmployees
-        this.loadEmployees(); // Load employees after data is initialized
+        this.initializeSharedData();
+        this.loadEmployees();
         this.startDataSync();
       }
 
@@ -1810,6 +1980,11 @@
         this.tasksWithPhotosEl = document.getElementById("tasks-with-photos");
         this.highPriorityTasksEl = document.getElementById("high-priority-tasks");
         this.overdueTasksEl = document.getElementById("overdue-tasks");
+        this.recurrenceFilter = document.getElementById("recurrence-filter");
+        this.analyticsRecurrenceFilter = document.getElementById("analytics-recurrence-filter");
+        this.selectAllTasks = document.getElementById("select-all-tasks");
+        this.deleteSelectedTasksBtn = document.getElementById("delete-selected-tasks");
+        this.employeeTaskOverview = document.getElementById("employee-task-overview");
         
         // Employee view elements
         this.employeeView = document.getElementById("employee-view");
@@ -1825,6 +2000,12 @@
         // Notification
         this.notification = document.getElementById("notification");
         this.notificationMessage = document.getElementById("notification-message");
+        
+        // Set today as default dates
+        const today = new Date().toISOString().split("T")[0];
+        this.adminTaskDate.value = today;
+        this.adminViewDate.value = today;
+        this.employeeViewDate.value = today;
       }
 
       attachEventListeners() {
@@ -1863,22 +2044,14 @@
             this.sendChatMessage();
           }
         });
-
-        // Set today as default dates
-        const today = new Date().toISOString().split("T")[0];
-        this.adminTaskDate.value = today;
-        this.adminViewDate.value = today;
-        this.employeeViewDate.value = today;
       }
 
       initializeSharedData() {
         if (!localStorage.getItem("pivotEnhancedData")) {
           const initialData = {
-            tasks: {}, // Start with empty tasks
-            messages: [], // Legacy, can be removed if chat is fully separate
-            chats: {}, // Start with empty chats
+            tasks: {},
+            chats: {},
             employees: {
-              // Initial employees, admin can add more
               "emp001": { name: "John Smith", passcode: "123456" },
               "emp002": { name: "Sarah Johnson", passcode: "234567" },
               "emp003": { name: "Mike Davis", passcode: "345678" },
@@ -1904,6 +2077,7 @@
           if (this.currentChatEmployee) {
             this.loadAdminChatMessages(this.currentChatEmployee);
           }
+          this.updateEmployeeTaskOverview();
         } else if (this.currentView === "employee") {
           this.updateEmployeeTaskView();
           this.updateEmployeeChatUnreadCount();
@@ -1915,7 +2089,6 @@
         const data = localStorage.getItem("pivotEnhancedData");
         return data ? JSON.parse(data) : { 
           tasks: {}, 
-          messages: [], 
           chats: {},
           employees: {},
           lastUpdated: new Date().toISOString() 
@@ -1971,11 +2144,11 @@
               <div class="user-id">ID: ${id} | Passcode: ${employee.passcode}</div>
             </div>
             <div class="user-actions">
-              <button class="btn btn-secondary" onclick="pivotApp.startChatWithEmployee(\'${id}\')">
+              <button class="btn btn-secondary" onclick="pivotApp.startChatWithEmployee('${id}')">
                 <i class="fas fa-comments"></i>
                 Chat
               </button>
-              <button class="btn btn-danger" onclick="pivotApp.deleteEmployee(\'${id}\')">
+              <button class="btn btn-danger" onclick="pivotApp.deleteEmployee('${id}')">
                 <i class="fas fa-trash"></i>
                 Delete
               </button>
@@ -2082,6 +2255,7 @@
           return;
         }
 
+        // FIXED: Proper employee login validation
         const employeeEntry = Object.entries(this.employees)
           .find(([id, emp]) => emp.passcode === passcode);
 
@@ -2112,6 +2286,7 @@
         this.loadEmployees();
         this.updateAdminTaskViews();
         this.updateAdminChatUnreadCount();
+        this.updateEmployeeTaskOverview();
         this.showNotification("Welcome, Administrator!", "success");
       }
 
@@ -2151,7 +2326,7 @@
         this.adminPasscode.value = "";
         this.employeePasscode.value = "";
         this.hideLoginError();
-        this.showAdminLogin(); // Default to admin login tab
+        this.showAdminLogin();
 
         this.chatPanel.classList.remove("open");
       }
@@ -2181,6 +2356,7 @@
         }
 
         const dueDateTime = time ? `${dateKey}T${time}:00` : `${dateKey}T23:59:59`;
+        const seriesId = recurring !== "none" ? `series_${Date.now()}` : null;
 
         const task = {
           id: Date.now().toString(),
@@ -2193,6 +2369,7 @@
           approved: false,
           status: "not-started",
           recurring: recurring,
+          seriesId: seriesId,
           dueDate: dueDateTime,
           createdAt: new Date().toISOString(),
           completedAt: null,
@@ -2221,6 +2398,7 @@
         this.adminTaskTime.value = "";
 
         this.updateAdminTaskViews();
+        this.updateEmployeeTaskOverview();
         this.showNotification(`Task assigned to ${this.employees[employeeId]?.name || "Unknown"}: "${description}"`, "success");
       }
 
@@ -2270,6 +2448,7 @@
 
         this.updateSharedData(data);
         this.updateAdminTaskViews();
+        this.updateEmployeeTaskOverview();
         this.showNotification(`Task approved: "${task.description}"`, "success");
       }
 
@@ -2287,12 +2466,11 @@
 
         this.updateSharedData(data);
         this.updateAdminTaskViews();
+        this.updateEmployeeTaskOverview();
         this.showNotification(`Task rejected: "${task.description}"`, "info");
       }
 
       deleteTask(taskId, dateKey) {
-        if (!confirm("Are you sure you want to delete this task?")) return;
-
         const data = this.getSharedData();
         const tasks = data.tasks[dateKey] || [];
         const taskIndex = tasks.findIndex(t => t.id === taskId);
@@ -2303,7 +2481,30 @@
 
         this.updateSharedData(data);
         this.updateAdminTaskViews();
+        this.updateEmployeeTaskOverview();
         this.showNotification(`Task deleted: "${task.description}"`, "info");
+      }
+
+      deleteRecurringSeries(seriesId) {
+        if (!confirm("Are you sure you want to delete this entire recurring task series?")) return;
+        
+        const data = this.getSharedData();
+        let deletedCount = 0;
+        
+        for (const dateKey in data.tasks) {
+          const tasks = data.tasks[dateKey];
+          const filteredTasks = tasks.filter(task => task.seriesId !== seriesId);
+          
+          if (tasks.length !== filteredTasks.length) {
+            deletedCount += tasks.length - filteredTasks.length;
+            data.tasks[dateKey] = filteredTasks;
+          }
+        }
+        
+        this.updateSharedData(data);
+        this.updateAdminTaskViews();
+        this.updateEmployeeTaskOverview();
+        this.showNotification(`Deleted ${deletedCount} tasks in the recurring series`, "success");
       }
 
       getDueDateStatus(dueDate) {
@@ -2317,10 +2518,22 @@
         return "upcoming";
       }
 
+      filterTasksByRecurrence() {
+        this.selectedRecurrenceFilter = this.recurrenceFilter.value;
+        this.updateAdminTaskViews();
+      }
+
       updateAdminTaskViews() {
         const dateKey = this.adminViewDate.value;
         const data = this.getSharedData();
-        const allTasks = data.tasks[dateKey] || [];
+        let allTasks = data.tasks[dateKey] || [];
+
+        // Apply recurrence filter
+        if (this.selectedRecurrenceFilter !== "all") {
+          allTasks = allTasks.filter(task => 
+            task.recurring === this.selectedRecurrenceFilter
+          );
+        }
 
         const pendingTasks = allTasks.filter(task => 
           task.completed && !task.approved && task.status === "pending-approval"
@@ -2372,11 +2585,11 @@
               ${task.recurring !== "none" ? 
                 `<span class="recurring-badge">${task.recurring}</span>` : ''}
               <div class="task-actions">
-                ${task.photo ? `<img src="${task.photo}" class="task-photo" onclick="pivotApp.showPhotoModal(\'${task.photo}\', ${JSON.stringify(task).replace(/"/g, "&quot;")})" alt="Task photo">` : ''}
-                <button class="btn btn-success" onclick="pivotApp.approveTask(\'${task.id}\', \'${dateKey}\')">
+                ${task.photo ? `<img src="${task.photo}" class="task-photo" onclick="pivotApp.showPhotoModal('${task.photo}', ${JSON.stringify(task).replace(/"/g, "&quot;")})" alt="Task photo">` : ''}
+                <button class="btn btn-success" onclick="pivotApp.approveTask('${task.id}', '${dateKey}')">
                   <i class="fas fa-check"></i> Approve
                 </button>
-                <button class="btn btn-danger" onclick="pivotApp.rejectTask(\'${task.id}\', \'${dateKey}\')">
+                <button class="btn btn-danger" onclick="pivotApp.rejectTask('${task.id}', '${dateKey}')">
                   <i class="fas fa-times"></i> Reject
                 </button>
               </div>
@@ -2415,8 +2628,13 @@
               ${task.photo && task.photoMetadata ? 
                 '<div class="timestamp-info">📅 Timestamp Verified</div>' : ''}
               <div class="task-actions">
-                ${task.photo ? `<img src="${task.photo}" class="task-photo" onclick="pivotApp.showPhotoModal(\'${task.photo}\', ${JSON.stringify(task).replace(/"/g, "&quot;")})" alt="Task photo">` : ''}
-                <button class="btn btn-danger" onclick="pivotApp.deleteTask(\'${task.id}\', \'${dateKey}\')"><i class="fas fa-trash"></i></button>
+                ${task.photo ? `<img src="${task.photo}" class="task-photo" onclick="pivotApp.showPhotoModal('${task.photo}', ${JSON.stringify(task).replace(/"/g, "&quot;")})" alt="Task photo">` : ''}
+                ${task.seriesId ? `
+                  <button class="btn btn-warning" onclick="pivotApp.deleteRecurringSeries('${task.seriesId}')">
+                    <i class="fas fa-trash"></i> Delete Series
+                  </button>
+                ` : ''}
+                <button class="btn btn-danger" onclick="pivotApp.deleteTask('${task.id}', '${dateKey}')"><i class="fas fa-trash"></i></button>
               </div>
             </div>
           `;
@@ -2475,7 +2693,7 @@
               ${task.photo && task.photoMetadata ? 
                 '<div class="timestamp-info">📅 Timestamp Verified</div>' : ''}
               <div class="task-actions">
-                ${task.photo ? `<img src="${task.photo}" class="task-photo" onclick="pivotApp.showPhotoModal(\'${task.photo}\', ${JSON.stringify(task).replace(/"/g, "&quot;")})" alt="Task photo">` : ''}
+                ${task.photo ? `<img src="${task.photo}" class="task-photo" onclick="pivotApp.showPhotoModal('${task.photo}', ${JSON.stringify(task).replace(/"/g, "&quot;")})" alt="Task photo">` : ''}
                 ${canComplete ? this.getEmployeeTaskActionButtons(task, dateKey) : ''}
                 ${isPendingApproval ? 
                   '<span style="color: var(--warning); font-size: 0.75rem; font-weight: 600;">⏳ Awaiting Admin Approval</span>' : ''}
@@ -2491,17 +2709,17 @@
       getEmployeeTaskActionButtons(task, dateKey) {
         let buttons = "";
         if (task.status === "not-started") {
-          buttons += `<button class="btn btn-secondary" onclick="pivotApp.updateTaskStatus(\'${task.id}\', \'${dateKey}\', \'in-progress\')">
+          buttons += `<button class="btn btn-secondary" onclick="pivotApp.updateTaskStatus('${task.id}', '${dateKey}', 'in-progress')">
             <i class="fas fa-play"></i> Start
           </button>`;
         }
         if (task.status === "in-progress") {
-          buttons += `<button class="btn btn-warning" onclick="pivotApp.updateTaskStatus(\'${task.id}\', \'${dateKey}\', \'blocked\')">
+          buttons += `<button class="btn btn-warning" onclick="pivotApp.updateTaskStatus('${task.id}', '${dateKey}', 'blocked')">
             <i class="fas fa-pause"></i> Blocked
           </button>`;
         }
         if (task.status === "blocked") {
-          buttons += `<button class="btn btn-secondary" onclick="pivotApp.updateTaskStatus(\'${task.id}\', \'${dateKey}\', \'in-progress\')">
+          buttons += `<button class="btn btn-secondary" onclick="pivotApp.updateTaskStatus('${task.id}', '${dateKey}', 'in-progress')">
             <i class="fas fa-play"></i> Resume
           </button>`;
         }
@@ -2510,14 +2728,14 @@
           if (task.requirePhoto && !task.photo) {
             buttons += `
               <div class="photo-upload">
-                <input type="file" accept="image/*" onchange="pivotApp.uploadPhoto(\'${task.id}\', \'${dateKey}\', this)">
+                <input type="file" accept="image/*" onchange="pivotApp.uploadPhoto('${task.id}', '${dateKey}', this)">
                 <button class="photo-upload-btn">
                   <i class="fas fa-camera"></i> Upload Photo to Complete
                 </button>
               </div>
             `;
           } else {
-            buttons += `<button class="btn btn-success" onclick="pivotApp.completeTask(\'${task.id}\', \'${dateKey}\')">
+            buttons += `<button class="btn btn-success" onclick="pivotApp.completeTask('${task.id}', '${dateKey}')">
               <i class="fas fa-check"></i> Complete
             </button>`;
           }
@@ -2599,9 +2817,159 @@
         this.showNotification("Task submitted for admin approval!", "success");
       }
 
-      // Analytics Methods (Admin Only)
+      // Employee Task Overview
+      updateEmployeeTaskOverview() {
+        if (!this.employeeTaskOverview) return;
+        
+        this.employeeTaskOverview.innerHTML = "";
+        const data = this.getSharedData();
+        
+        Object.entries(this.employees).forEach(([employeeId, employee]) => {
+          let totalTasks = 0;
+          let completedTasks = 0;
+          let pendingTasks = 0;
+          let inProgressTasks = 0;
+          const employeeTasks = [];
+          
+          // Collect tasks for this employee
+          for (const dateKey in data.tasks) {
+            const tasks = data.tasks[dateKey] || [];
+            tasks.forEach(task => {
+              if (task.assignedTo === employeeId) {
+                totalTasks++;
+                if (task.approved) completedTasks++;
+                if (task.status === "pending-approval") pendingTasks++;
+                if (task.status === "in-progress") inProgressTasks++;
+                
+                // Only add 3 tasks to preview
+                if (employeeTasks.length < 3) {
+                  employeeTasks.push({
+                    id: task.id,
+                    description: task.description,
+                    status: task.approved ? "completed" : task.status,
+                    dueDate: task.dueDate
+                  });
+                }
+              }
+            });
+          }
+          
+          const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+          
+          const employeeCard = document.createElement("div");
+          employeeCard.className = "employee-card";
+          employeeCard.innerHTML = `
+            <div class="employee-header">
+              <div class="employee-avatar">${employee.name.charAt(0)}</div>
+              <div>
+                <div class="employee-name">${employee.name}</div>
+                <div class="employee-id">ID: ${employeeId}</div>
+              </div>
+            </div>
+            
+            <div class="employee-stats">
+              <div class="stat-item">
+                <div class="stat-value">${totalTasks}</div>
+                <div class="stat-label">Total Tasks</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value">${completionRate}%</div>
+                <div class="stat-label">Completion</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value">${pendingTasks}</div>
+                <div class="stat-label">Pending</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value">${inProgressTasks}</div>
+                <div class="stat-label">In Progress</div>
+              </div>
+            </div>
+            
+            <div class="employee-tasks">
+              ${employeeTasks.length > 0 ? 
+                employeeTasks.map(task => `
+                  <div class="employee-task">
+                    <div class="task-status-indicator ${task.status}"></div>
+                    <div>
+                      <div>${task.description}</div>
+                      <small>Due: ${new Date(task.dueDate).toLocaleDateString()} • ${task.status}</small>
+                    </div>
+                  </div>
+                `).join('') : 
+                '<div style="text-align: center; padding: 1rem; color: var(--text-muted);">No tasks assigned</div>'
+              }
+            </div>
+          `;
+          
+          this.employeeTaskOverview.appendChild(employeeCard);
+        });
+      }
+
+      // Bulk Task Management
+      toggleSelectAllTasks(checkbox) {
+        const isChecked = checkbox.checked;
+        this.selectedTasks = {};
+        
+        if (isChecked) {
+          const dateKey = this.adminViewDate.value;
+          const data = this.getSharedData();
+          const tasks = data.tasks[dateKey] || [];
+          
+          tasks.forEach(task => {
+            this.selectedTasks[task.id] = true;
+          });
+        }
+        
+        this.updateBulkActionsState();
+      }
+
+      toggleTaskSelection(checkbox) {
+        const taskId = checkbox.dataset.taskId;
+        
+        if (checkbox.checked) {
+          this.selectedTasks[taskId] = true;
+        } else {
+          delete this.selectedTasks[taskId];
+        }
+        
+        this.updateBulkActionsState();
+      }
+
+      updateBulkActionsState() {
+        const hasSelectedTasks = Object.keys(this.selectedTasks).length > 0;
+        this.deleteSelectedTasksBtn.disabled = !hasSelectedTasks;
+        
+        // Update "Select All" checkbox state
+        const dateKey = this.adminViewDate.value;
+        const data = this.getSharedData();
+        const tasks = data.tasks[dateKey] || [];
+        this.selectAllTasks.checked = tasks.length > 0 && 
+          Object.keys(this.selectedTasks).length === tasks.length;
+      }
+
+      deleteSelectedTasks() {
+        if (!confirm(`Are you sure you want to delete ${Object.keys(this.selectedTasks).length} tasks?`)) return;
+        
+        const dateKey = this.adminViewDate.value;
+        const data = this.getSharedData();
+        const tasks = data.tasks[dateKey] || [];
+        
+        // Filter out selected tasks
+        const remainingTasks = tasks.filter(task => !this.selectedTasks[task.id]);
+        data.tasks[dateKey] = remainingTasks;
+        
+        this.updateSharedData(data);
+        this.selectedTasks = {};
+        this.updateAdminTaskViews();
+        this.updateEmployeeTaskOverview();
+        this.showNotification(`Deleted ${tasks.length - remainingTasks.length} tasks`, "success");
+      }
+
+      // Analytics Methods
       refreshAnalytics() {
         if (this.currentView !== "admin") return;
+        this.selectedAnalyticsFilter = this.analyticsRecurrenceFilter.value;
         this.updateAnalytics();
         this.analyticsLastUpdated = new Date();
         this.analyticsUpdatedEl.textContent = `Last updated: ${this.analyticsLastUpdated.toLocaleString()}`;
@@ -2626,6 +2994,12 @@
 
         for (const [dateKey, tasks] of Object.entries(data.tasks)) {
           tasks.forEach(task => {
+            // Apply recurrence filter
+            if (this.selectedAnalyticsFilter !== "all" && 
+                task.recurring !== this.selectedAnalyticsFilter) {
+              return;
+            }
+            
             totalTasks++;
             if (task.approved) {
               completedTasks++;
@@ -2766,7 +3140,7 @@
         });
       }
 
-      // Chat System Methods (Combined)
+      // Chat System Methods
       toggleChat() {
         this.chatPanel.classList.toggle("open");
         if (this.chatPanel.classList.contains("open")) {
@@ -2780,7 +3154,7 @@
         }
       }
 
-      selectChatEmployee(employeeId) { // Admin only
+      selectChatEmployee(employeeId) {
         if (!employeeId) {
           this.currentChatEmployee = null;
           this.chatInputArea.style.display = "none";
@@ -2982,7 +3356,7 @@
     }
 
     const pivotApp = new PivotCombinedApp();
-    window.pivotApp = pivotApp; // Make it globally accessible for onclick handlers
+    window.pivotApp = pivotApp;
   </script>
 </body>
 </html>
