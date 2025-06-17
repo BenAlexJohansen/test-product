@@ -1,0 +1,1481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pivot Employee Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --primary-light: #818cf8;
+      --secondary: #f59e0b;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --info: #3b82f6;
+      
+      --bg-primary: #0f0f23;
+      --bg-secondary: #1a1a2e;
+      --bg-tertiary: #16213e;
+      --bg-card: rgba(255, 255, 255, 0.03);
+      --bg-card-hover: rgba(255, 255, 255, 0.06);
+      --bg-glass: rgba(255, 255, 255, 0.05);
+      
+      --text-primary: #ffffff;
+      --text-secondary: #cbd5e1;
+      --text-muted: #94a3b8;
+      --text-accent: #6366f1;
+      
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.15);
+      --border-focus: #6366f1;
+      
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+      --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.3);
+      
+      --radius-sm: 6px;
+      --radius: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+      --radius-full: 9999px;
+      
+      --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      --transition-slow: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* Animated background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(245, 158, 11, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+      z-index: -1;
+      animation: backgroundFloat 20s ease-in-out infinite;
+    }
+
+    @keyframes backgroundFloat {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      33% { transform: translate(-20px, -10px) rotate(1deg); }
+      66% { transform: translate(20px, 10px) rotate(-1deg); }
+    }
+
+    /* Login Screen */
+    .login-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--bg-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+    }
+
+    .login-card {
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: 3rem;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      box-shadow: var(--shadow-xl);
+    }
+
+    .login-logo {
+      width: 4rem;
+      height: 4rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border-radius: var(--radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 2rem;
+      font-size: 2rem;
+      color: white;
+      box-shadow: var(--shadow-glow);
+    }
+
+    .login-title {
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .login-subtitle {
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      font-size: 1rem;
+    }
+
+    .login-form {
+      text-align: left;
+    }
+
+    .employee-select, .login-input {
+      width: 100%;
+      padding: 1rem;
+      background: var(--bg-secondary);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      transition: var(--transition);
+    }
+
+    .login-input {
+      text-align: center;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+    }
+
+    .employee-select:focus, .login-input:focus {
+      outline: none;
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+
+    .login-btn {
+      width: 100%;
+      padding: 1rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: var(--transition);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .login-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg), var(--shadow-glow);
+    }
+
+    .login-error {
+      color: var(--danger);
+      font-size: 0.875rem;
+      margin-top: 1rem;
+      text-align: center;
+    }
+
+    /* Header */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: rgba(15, 15, 35, 0.8);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 0;
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.25rem;
+      box-shadow: var(--shadow-glow);
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+    }
+
+    .user-badge {
+      background: var(--bg-glass);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .notification-badge {
+      background: var(--danger);
+      color: white;
+      border-radius: var(--radius-full);
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      min-width: 1.5rem;
+      text-align: center;
+    }
+
+    .logout-btn, .messages-btn {
+      background: var(--bg-glass);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: var(--transition);
+      backdrop-filter: blur(10px);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logout-btn:hover, .messages-btn:hover {
+      background: var(--bg-card-hover);
+      color: var(--text-primary);
+    }
+
+    .date-controls {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .date-btn {
+      width: 2.5rem;
+      height: 2.5rem;
+      border: none;
+      background: var(--bg-glass);
+      color: var(--text-secondary);
+      border-radius: var(--radius);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(10px);
+    }
+
+    .date-btn:hover {
+      background: var(--bg-card-hover);
+      color: var(--text-primary);
+      border-color: var(--border-hover);
+      transform: translateY(-1px);
+    }
+
+    /* Main Content */
+    .main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      min-height: calc(100vh - 100px);
+    }
+
+    /* Cards */
+    .card {
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      margin-bottom: 2rem;
+      box-shadow: var(--shadow-lg);
+      transition: var(--transition-slow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-light), var(--secondary));
+      opacity: 0.6;
+    }
+
+    .card:hover {
+      border-color: var(--border-hover);
+      box-shadow: var(--shadow-xl);
+      transform: translateY(-2px);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .card-icon {
+      width: 2.5rem;
+      height: 2.5rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.125rem;
+    }
+
+    /* Task List */
+    .task-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .task-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .task-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      transform: scaleY(0);
+      transition: var(--transition);
+    }
+
+    .task-item:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-hover);
+      transform: translateX(8px);
+    }
+
+    .task-item:hover::before {
+      transform: scaleY(1);
+    }
+
+    .task-item.completed {
+      opacity: 0.7;
+    }
+
+    .task-item.completed::before {
+      background: linear-gradient(135deg, var(--success), #059669);
+      transform: scaleY(1);
+    }
+
+    .task-checkbox {
+      width: 1.25rem;
+      height: 1.25rem;
+      cursor: pointer;
+      accent-color: var(--primary);
+      transform: scale(1.2);
+      margin-top: 0.25rem;
+    }
+
+    .task-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .task-text {
+      font-size: 1rem;
+      line-height: 1.5;
+      color: var(--text-primary);
+      transition: var(--transition);
+      margin-bottom: 0.5rem;
+    }
+
+    .task-text.completed {
+      text-decoration: line-through;
+      color: var(--text-muted);
+      opacity: 0.7;
+    }
+
+    .task-details {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+
+    .task-meta {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      min-width: 120px;
+    }
+
+    .task-actions {
+      display: flex;
+      gap: 0.5rem;
+      opacity: 0;
+      transition: var(--transition);
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .task-item:hover .task-actions {
+      opacity: 1;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+      text-decoration: none;
+    }
+
+    .btn-photo {
+      background: linear-gradient(135deg, var(--secondary), #d97706);
+      color: white;
+    }
+
+    .btn-status {
+      background: linear-gradient(135deg, var(--info), #2563eb);
+      color: white;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-md);
+    }
+
+    /* Status Badges */
+    .status-badge {
+      padding: 0.25rem 0.75rem;
+      border-radius: var(--radius-full);
+      font-size: 0.625rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0.25rem;
+    }
+
+    .status-not-started {
+      background: rgba(148, 163, 184, 0.2);
+      color: #cbd5e1;
+    }
+
+    .status-in-progress {
+      background: rgba(59, 130, 246, 0.2);
+      color: #93c5fd;
+    }
+
+    .status-blocked {
+      background: rgba(239, 68, 68, 0.2);
+      color: #fca5a5;
+    }
+
+    .status-completed {
+      background: rgba(16, 185, 129, 0.2);
+      color: #6ee7b7;
+    }
+
+    .priority-badge {
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius-full);
+      font-size: 0.625rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .priority-high {
+      background: rgba(239, 68, 68, 0.2);
+      color: #fca5a5;
+    }
+
+    .priority-medium {
+      background: rgba(245, 158, 11, 0.2);
+      color: #fcd34d;
+    }
+
+    .priority-low {
+      background: rgba(16, 185, 129, 0.2);
+      color: #6ee7b7;
+    }
+
+    .photo-required-badge {
+      background: rgba(245, 158, 11, 0.2);
+      color: #fcd34d;
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius-full);
+      font-size: 0.625rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .task-photo {
+      width: 40px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      object-fit: cover;
+      cursor: pointer;
+      border: 2px solid var(--border);
+      transition: var(--transition);
+    }
+
+    .task-photo:hover {
+      border-color: var(--border-hover);
+      transform: scale(1.1);
+    }
+
+    .timestamp-info {
+      font-size: 0.625rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+      font-style: italic;
+    }
+
+    /* Empty States */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: var(--text-muted);
+    }
+
+    .empty-state-icon {
+      width: 5rem;
+      height: 5rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      border-radius: var(--radius-xl);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 2rem;
+      font-size: 2rem;
+      color: white;
+      opacity: 0.8;
+    }
+
+    .empty-state-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--text-secondary);
+    }
+
+    .empty-state-description {
+      font-size: 1rem;
+      line-height: 1.6;
+      max-width: 400px;
+      margin: 0 auto 2rem;
+    }
+
+    /* Messages Panel */
+    .messages-panel {
+      position: fixed;
+      top: 0;
+      right: -400px;
+      width: 400px;
+      height: 100vh;
+      background: var(--bg-glass);
+      backdrop-filter: blur(20px);
+      border-left: 1px solid var(--border);
+      transition: var(--transition-slow);
+      z-index: 1500;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .messages-panel.open {
+      right: 0;
+    }
+
+    .messages-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .messages-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      flex: 1;
+    }
+
+    .messages-close {
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .messages-close:hover {
+      color: var(--text-primary);
+    }
+
+    .messages-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem;
+    }
+
+    .message {
+      background: var(--bg-card);
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      margin-bottom: 1rem;
+      border-left: 3px solid var(--primary);
+    }
+
+    .message.unread {
+      border-left-color: var(--secondary);
+      background: rgba(245, 158, 11, 0.1);
+    }
+
+    .message-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .message-from {
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .message-time {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .message-content {
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Photo Modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      backdrop-filter: blur(10px);
+    }
+
+    .modal.show {
+      display: flex;
+    }
+
+    .modal-content {
+      background: var(--bg-glass);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      max-width: 90vw;
+      max-height: 90vh;
+      overflow: auto;
+      position: relative;
+      backdrop-filter: blur(20px);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: none;
+      border: none;
+      color: var(--text-secondary);
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .modal-close:hover {
+      color: var(--text-primary);
+    }
+
+    .modal img {
+      max-width: 100%;
+      height: auto;
+      border-radius: var(--radius-md);
+    }
+
+    /* Notifications */
+    .notification {
+      position: fixed;
+      top: 6rem;
+      right: 2rem;
+      padding: 1rem 1.5rem;
+      border-radius: var(--radius-md);
+      color: white;
+      font-weight: 500;
+      font-size: 0.875rem;
+      box-shadow: var(--shadow-lg);
+      transform: translateX(100%);
+      transition: var(--transition-slow);
+      z-index: 1001;
+      max-width: 350px;
+      backdrop-filter: blur(20px);
+    }
+
+    .notification.show {
+      transform: translateX(0);
+    }
+
+    .notification.success {
+      background: linear-gradient(135deg, var(--success), #059669);
+    }
+
+    .notification.error {
+      background: linear-gradient(135deg, var(--danger), #dc2626);
+    }
+
+    .notification.info {
+      background: linear-gradient(135deg, var(--info), #2563eb);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .main {
+        padding: 1rem;
+      }
+
+      .card {
+        padding: 1.5rem;
+      }
+
+      .task-actions {
+        opacity: 1;
+        width: 100%;
+        justify-content: flex-end;
+        margin-top: 0.5rem;
+      }
+
+      .messages-panel {
+        width: 100%;
+        right: -100%;
+      }
+    }
+
+    /* Focus styles for accessibility */
+    button:focus-visible, input:focus-visible, select:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--bg-secondary);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--border-hover);
+    }
+  </style>
+</head>
+<body>
+  <!-- Login Screen -->
+  <div id="login-screen" class="login-screen">
+    <div class="login-card">
+      <div class="login-logo">
+        <i class="fas fa-user"></i>
+      </div>
+      <h1 class="login-title">Employee Portal</h1>
+      <p class="login-subtitle">Access your tasks and updates</p>
+      
+      <form class="login-form" id="login-form">
+        <select class="employee-select" id="employee-select">
+          <option value="">Select Your Name</option>
+          <option value="emp001">John Smith (ID: 001)</option>
+          <option value="emp002">Sarah Johnson (ID: 002)</option>
+          <option value="emp003">Mike Davis (ID: 003)</option>
+          <option value="emp004">Lisa Wilson (ID: 004)</option>
+          <option value="emp005">David Brown (ID: 005)</option>
+        </select>
+        <input type="password" class="login-input" id="user-passcode" placeholder="Your Passcode" maxlength="6">
+        
+        <button type="submit" class="login-btn">
+          <i class="fas fa-sign-in-alt"></i>
+          Login
+        </button>
+        
+        <div id="login-error" class="login-error" style="display: none;"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Main Application -->
+  <div id="main-app" style="display: none;">
+    <header class="header">
+      <div class="header-content">
+        <a href="#" class="logo">
+          <div class="logo-icon">
+            <i class="fas fa-user"></i>
+          </div>
+          <span>Employee Portal</span>
+        </a>
+        
+        <div class="user-info">
+          <div class="user-badge" id="user-badge">
+            <i class="fas fa-user"></i>
+            <span id="current-user">Employee</span>
+          </div>
+          <button class="messages-btn" onclick="employeePortal.toggleMessages()">
+            <i class="fas fa-comments"></i>
+            Messages
+            <span id="unread-count" class="notification-badge" style="display: none;">0</span>
+          </button>
+          <button class="logout-btn" onclick="employeePortal.logout()">
+            <i class="fas fa-sign-out-alt"></i>
+            Logout
+          </button>
+        </div>
+        
+        <div class="date-controls">
+          <button class="date-btn" onclick="employeePortal.navigateDate(-1)">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button class="date-btn" onclick="employeePortal.navigateDate(1)">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Messages Panel -->
+    <div id="messages-panel" class="messages-panel">
+      <div class="messages-header">
+        <h3 class="messages-title">Messages</h3>
+        <button class="messages-close" onclick="employeePortal.toggleMessages()">&times;</button>
+      </div>
+      <div class="messages-content" id="messages-content">
+        <!-- Messages will be populated here -->
+      </div>
+    </div>
+
+    <div id="notification" class="notification">
+      <span id="notification-message"></span>
+    </div>
+
+    <!-- Photo Modal -->
+    <div id="photo-modal" class="modal">
+      <div class="modal-content">
+        <button class="modal-close" onclick="employeePortal.closePhotoModal()">&times;</button>
+        <img id="modal-photo" src="" alt="Task completion photo">
+        <div id="modal-photo-info" style="margin-top: 1rem; text-align: center; color: var(--text-secondary);"></div>
+      </div>
+    </div>
+
+    <main class="main">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-icon">
+            <i class="fas fa-calendar-check"></i>
+          </div>
+          <h2 class="card-title">
+            My Tasks for <span id="current-date"></span>
+          </h2>
+        </div>
+        
+        <div id="user-tasks" class="task-list"></div>
+        
+        <div id="user-empty" class="empty-state">
+          <div class="empty-state-icon">
+            <i class="fas fa-calendar-check"></i>
+          </div>
+          <h3 class="empty-state-title">No tasks assigned</h3>
+          <p class="empty-state-description">
+            You have no tasks assigned for today. Check back later or contact your supervisor.
+          </p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    class EmployeePortal {
+      constructor() {
+        this.currentDate = new Date();
+        this.currentUser = null;
+        this.employees = {
+          'emp001': { name: 'John Smith', passcode: '123456' },
+          'emp002': { name: 'Sarah Johnson', passcode: '234567' },
+          'emp003': { name: 'Mike Davis', passcode: '345678' },
+          'emp004': { name: 'Lisa Wilson', passcode: '456789' },
+          'emp005': { name: 'David Brown', passcode: '567890' }
+        };
+        
+        this.initializeElements();
+        this.attachEventListeners();
+        this.updateCurrentDate();
+        this.initializeSharedData();
+        this.startDataSync();
+      }
+
+      initializeElements() {
+        // Login elements
+        this.loginScreen = document.getElementById('login-screen');
+        this.mainApp = document.getElementById('main-app');
+        this.loginForm = document.getElementById('login-form');
+        this.employeeSelect = document.getElementById('employee-select');
+        this.userPasscode = document.getElementById('user-passcode');
+        this.loginError = document.getElementById('login-error');
+        
+        // Header elements
+        this.currentUserEl = document.getElementById('current-user');
+        this.unreadCountEl = document.getElementById('unread-count');
+        
+        // Messages elements
+        this.messagesPanel = document.getElementById('messages-panel');
+        this.messagesContent = document.getElementById('messages-content');
+        
+        // Display elements
+        this.currentDateEl = document.getElementById('current-date');
+        this.userTasks = document.getElementById('user-tasks');
+        this.userEmpty = document.getElementById('user-empty');
+        
+        // Modal elements
+        this.photoModal = document.getElementById('photo-modal');
+        this.modalPhoto = document.getElementById('modal-photo');
+        this.modalPhotoInfo = document.getElementById('modal-photo-info');
+        
+        // Notification
+        this.notification = document.getElementById('notification');
+        this.notificationMessage = document.getElementById('notification-message');
+      }
+
+      attachEventListeners() {
+        this.loginForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          this.handleLogin();
+        });
+      }
+
+      initializeSharedData() {
+        // Initialize shared data structure if it doesn't exist
+        if (!localStorage.getItem('pivotData')) {
+          const initialData = {
+            tasks: {},
+            messages: [],
+            lastUpdated: new Date().toISOString()
+          };
+          localStorage.setItem('pivotData', JSON.stringify(initialData));
+        }
+      }
+
+      startDataSync() {
+        // Sync data every 2 seconds
+        setInterval(() => {
+          this.syncData();
+        }, 2000);
+      }
+
+      syncData() {
+        if (this.currentUser) {
+          this.updateUserTasks();
+          this.updateUnreadCount();
+        }
+      }
+
+      getSharedData() {
+        const data = localStorage.getItem('pivotData');
+        return data ? JSON.parse(data) : { tasks: {}, messages: [], lastUpdated: new Date().toISOString() };
+      }
+
+      updateSharedData(data) {
+        data.lastUpdated = new Date().toISOString();
+        localStorage.setItem('pivotData', JSON.stringify(data));
+      }
+
+      handleLogin() {
+        const employeeId = this.employeeSelect.value;
+        const passcode = this.userPasscode.value.trim();
+        
+        if (!employeeId) {
+          this.showLoginError('Please select your name');
+          return;
+        }
+        
+        const employee = this.employees[employeeId];
+        if (employee && passcode === employee.passcode) {
+          this.login(employeeId, employee.name);
+        } else {
+          this.showLoginError('Invalid passcode');
+        }
+      }
+
+      login(userId, userName) {
+        this.currentUser = userId;
+        this.currentUserEl.textContent = userName;
+        
+        this.loginScreen.style.display = 'none';
+        this.mainApp.style.display = 'block';
+        
+        this.updateUserTasks();
+        this.updateUnreadCount();
+        this.showNotification(`Welcome, ${userName}!`, 'success');
+      }
+
+      logout() {
+        this.currentUser = null;
+        this.loginScreen.style.display = 'flex';
+        this.mainApp.style.display = 'none';
+        
+        // Reset login form
+        this.employeeSelect.value = '';
+        this.userPasscode.value = '';
+        this.hideLoginError();
+        
+        // Close messages panel
+        this.messagesPanel.classList.remove('open');
+      }
+
+      showLoginError(message) {
+        this.loginError.textContent = message;
+        this.loginError.style.display = 'block';
+      }
+
+      hideLoginError() {
+        this.loginError.style.display = 'none';
+      }
+
+      formatDateKey(date) {
+        return date.toISOString().split('T')[0];
+      }
+
+      formatDisplayDate(date) {
+        return date.toLocaleDateString('en-US', {
+          weekday: 'long',
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric'
+        });
+      }
+
+      updateCurrentDate() {
+        this.currentDateEl.textContent = this.formatDisplayDate(this.currentDate);
+      }
+
+      navigateDate(direction) {
+        this.currentDate.setDate(this.currentDate.getDate() + direction);
+        this.updateCurrentDate();
+        this.updateUserTasks();
+      }
+
+      updateTaskStatus(taskId, dateKey, newStatus) {
+        const data = this.getSharedData();
+        const tasks = data.tasks[dateKey] || [];
+        const task = tasks.find(t => t.id === taskId);
+        
+        if (!task || task.assignedTo !== this.currentUser) return;
+
+        task.status = newStatus;
+        
+        // Auto-complete if status is completed
+        if (newStatus === 'completed' && !task.completed) {
+          task.completed = true;
+          task.completedAt = new Date().toISOString();
+        } else if (newStatus !== 'completed' && task.completed) {
+          task.completed = false;
+          task.completedAt = null;
+        }
+
+        // Send notification to admin
+        const employeeName = this.employees[this.currentUser]?.name || 'Unknown';
+        this.addMessage(this.currentUser, 'admin', `Task status updated to "${newStatus}": ${task.description}`);
+
+        this.updateSharedData(data);
+        this.updateUserTasks();
+        this.showNotification(`Task status updated to: ${newStatus}`, 'success');
+      }
+
+      toggleTask(taskId, dateKey) {
+        const data = this.getSharedData();
+        const tasks = data.tasks[dateKey] || [];
+        const task = tasks.find(t => t.id === taskId);
+        
+        if (!task || task.assignedTo !== this.currentUser) return;
+
+        // Check if photo is required but not provided
+        if (!task.completed && task.requirePhoto && !task.photo) {
+          this.showNotification('Photo required to complete this task', 'error');
+          return;
+        }
+
+        task.completed = !task.completed;
+        task.completedAt = task.completed ? new Date().toISOString() : null;
+        task.status = task.completed ? 'completed' : 'not-started';
+
+        // Send notification to admin if employee completes task
+        if (task.completed) {
+          const employeeName = this.employees[this.currentUser]?.name || 'Unknown';
+          this.addMessage(this.currentUser, 'admin', `Task completed: ${task.description}`);
+        }
+
+        this.updateSharedData(data);
+        this.updateUserTasks();
+
+        this.showNotification(
+          task.completed ? 
+          `Task completed: "${task.description}"` : 
+          `Task reopened: "${task.description}"`,
+          'success'
+        );
+      }
+
+      uploadPhoto(taskId, dateKey) {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        input.addEventListener('change', async (e) => {
+          const file = e.target.files[0];
+          if (file) {
+            try {
+              this.showNotification('📸 Uploading photo...', 'info');
+              
+              // Convert file to base64 with timestamp verification
+              const reader = new FileReader();
+              reader.onload = (e) => {
+                const photoData = e.target.result;
+                const timestamp = new Date().toISOString();
+                
+                const data = this.getSharedData();
+                const tasks = data.tasks[dateKey] || [];
+                const task = tasks.find(t => t.id === taskId);
+                
+                if (task && task.assignedTo === this.currentUser) {
+                  task.photo = photoData;
+                  task.photoTimestamp = timestamp;
+                  task.photoMetadata = {
+                    uploadedBy: this.currentUser,
+                    uploadedAt: timestamp,
+                    fileSize: file.size,
+                    fileName: file.name,
+                    verified: true
+                  };
+                  
+                  // Auto-complete task if photo was required
+                  if (task.requirePhoto && !task.completed) {
+                    task.completed = true;
+                    task.completedAt = new Date().toISOString();
+                    task.status = 'completed';
+                    
+                    // Send notification to admin
+                    const employeeName = this.employees[this.currentUser]?.name || 'Unknown';
+                    this.addMessage(this.currentUser, 'admin', `Task completed with photo: ${task.description}`);
+                  }
+                  
+                  this.updateSharedData(data);
+                  this.updateUserTasks();
+                  
+                  this.showNotification('📸 Photo uploaded and verified successfully!', 'success');
+                }
+              };
+              reader.readAsDataURL(file);
+              
+            } catch (error) {
+              console.error('Error uploading photo:', error);
+              this.showNotification('❌ Failed to upload photo', 'error');
+            }
+          }
+        });
+        input.click();
+      }
+
+      showPhotoModal(photoUrl, task) {
+        this.modalPhoto.src = photoUrl;
+        
+        let timestampInfo = '';
+        if (task.photoMetadata) {
+          const uploadTime = new Date(task.photoMetadata.uploadedAt).toLocaleString();
+          const uploaderName = this.employees[task.photoMetadata.uploadedBy]?.name || 'Unknown';
+          timestampInfo = `<br><small>📅 Uploaded: ${uploadTime}<br>👤 By: ${uploaderName}<br>✅ Timestamp Verified</small>`;
+        }
+        
+        this.modalPhotoInfo.innerHTML = `
+          <strong>${task.description}</strong><br>
+          Completed: ${task.completedAt ? new Date(task.completedAt).toLocaleString() : 'N/A'}
+          ${timestampInfo}
+        `;
+        this.photoModal.classList.add('show');
+      }
+
+      closePhotoModal() {
+        this.photoModal.classList.remove('show');
+      }
+
+      addMessage(from, to, content) {
+        const data = this.getSharedData();
+        const message = {
+          id: Date.now().toString(),
+          from: this.employees[from]?.name || 'Unknown',
+          to: to,
+          content: content,
+          time: new Date().toISOString(),
+          read: false,
+          isAdmin: false
+        };
+
+        data.messages.push(message);
+        this.updateSharedData(data);
+      }
+
+      toggleMessages() {
+        this.messagesPanel.classList.toggle('open');
+        if (this.messagesPanel.classList.contains('open')) {
+          this.updateMessagesPanel();
+          this.markMessagesAsRead();
+        }
+      }
+
+      updateMessagesPanel() {
+        const data = this.getSharedData();
+        const relevantMessages = data.messages.filter(msg => 
+          msg.to === this.currentUser || msg.from === this.employees[this.currentUser]?.name
+        );
+
+        this.messagesContent.innerHTML = '';
+        
+        if (relevantMessages.length === 0) {
+          this.messagesContent.innerHTML = '<div style="text-align: center; color: var(--text-muted); padding: 2rem;">No messages yet</div>';
+          return;
+        }
+
+        relevantMessages.reverse().forEach(message => {
+          const messageEl = document.createElement('div');
+          messageEl.className = `message ${!message.read ? 'unread' : ''}`;
+          messageEl.innerHTML = `
+            <div class="message-header">
+              <span class="message-from">${message.from}</span>
+              <span class="message-time">${new Date(message.time).toLocaleString()}</span>
+            </div>
+            <div class="message-content">${message.content}</div>
+          `;
+          this.messagesContent.appendChild(messageEl);
+        });
+      }
+
+      markMessagesAsRead() {
+        const data = this.getSharedData();
+        data.messages.forEach(msg => {
+          if (msg.to === this.currentUser) {
+            msg.read = true;
+          }
+        });
+        this.updateSharedData(data);
+        this.updateUnreadCount();
+      }
+
+      updateUnreadCount() {
+        if (!this.currentUser) return;
+        
+        const data = this.getSharedData();
+        const unreadMessages = data.messages.filter(msg => 
+          !msg.read && msg.to === this.currentUser
+        );
+
+        const unreadCount = unreadMessages.length;
+        
+        if (unreadCount > 0) {
+          this.unreadCountEl.textContent = unreadCount;
+          this.unreadCountEl.style.display = 'inline';
+        } else {
+          this.unreadCountEl.style.display = 'none';
+        }
+      }
+
+      updateUserTasks() {
+        if (!this.currentUser) return;
+        
+        const dateKey = this.formatDateKey(this.currentDate);
+        const data = this.getSharedData();
+        const allTasks = data.tasks[dateKey] || [];
+        const userTasks = allTasks.filter(task => task.assignedTo === this.currentUser);
+
+        if (userTasks.length === 0) {
+          this.userTasks.style.display = 'none';
+          this.userEmpty.style.display = 'block';
+        } else {
+          this.userTasks.style.display = 'block';
+          this.userEmpty.style.display = 'none';
+          this.renderTasks(userTasks, dateKey);
+        }
+      }
+
+      renderTasks(tasks, dateKey) {
+        this.userTasks.innerHTML = '';
+
+        tasks.forEach(task => {
+          const taskEl = document.createElement('div');
+          taskEl.className = `task-item ${task.completed ? 'completed' : ''}`;
+          
+          const statusOptions = ['not-started', 'in-progress', 'blocked', 'completed'];
+          const statusSelect = `
+            <select onchange="employeePortal.updateTaskStatus('${task.id}', '${dateKey}', this.value)" style="background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 4px; color: var(--text-primary); padding: 0.25rem; font-size: 0.75rem;">
+              ${statusOptions.map(status => `<option value="${status}" ${task.status === status ? 'selected' : ''}>${status.replace('-', ' ').toUpperCase()}</option>`).join('')}
+            </select>
+          `;
+          
+          taskEl.innerHTML = `
+            <input 
+              type="checkbox" 
+              class="task-checkbox" 
+              ${task.completed ? 'checked' : ''}
+              onchange="employeePortal.toggleTask('${task.id}', '${dateKey}')"
+            />
+            <div class="task-content">
+              <div class="task-text ${task.completed ? 'completed' : ''}">${task.description}</div>
+              <div class="task-details">
+                Created: ${new Date(task.createdAt).toLocaleString()}
+                ${task.completedAt ? ` | Completed: ${new Date(task.completedAt).toLocaleString()}` : ''}
+              </div>
+            </div>
+            <div class="task-meta">
+              <span class="priority-badge priority-${task.priority}">${task.priority}</span>
+              ${statusSelect}
+              ${task.requirePhoto ? '<span class="photo-required-badge">Photo Required</span>' : ''}
+              ${task.photo && task.photoMetadata ? '<div class="timestamp-info">📅 Timestamp Verified</div>' : ''}
+              <div class="task-actions">
+                ${task.photo ? `<img src="${task.photo}" class="task-photo" onclick="employeePortal.showPhotoModal('${task.photo}', ${JSON.stringify(task).replace(/"/g, '&quot;')})" alt="Task photo">` : ''}
+                ${!task.completed && (task.requirePhoto || !task.photo) ? `<button class="btn btn-photo" onclick="employeePortal.uploadPhoto('${task.id}', '${dateKey}')"><i class="fas fa-camera"></i></button>` : ''}
+              </div>
+            </div>
+          `;
+
+          this.userTasks.appendChild(taskEl);
+        });
+      }
+
+      showNotification(message, type = 'success') {
+        this.notificationMessage.textContent = message;
+        this.notification.className = `notification ${type} show`;
+        
+        setTimeout(() => {
+          this.notification.classList.remove('show');
+        }, 3000);
+      }
+    }
+
+    // Initialize Employee Portal
+    const employeePortal = new EmployeePortal();
+    
+    // Make it globally accessible
+    window.employeePortal = employeePortal;
+  </script>
+</body>
+</html>
+
